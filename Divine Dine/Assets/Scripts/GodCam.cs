@@ -108,13 +108,13 @@ public class GodCam : MonoBehaviour {
                 heightDistance < maxHeight &&
                 heightDistance > minHeight)
             {
-                //Move the camera
+                //Move the camera (Leashed)
                 transform.Translate(new Vector3(x_axis, y_axis, z_axis));
             }
         }
         else
         {
-            //Move the camera
+            //Move the camera (Unleashed)
             transform.Translate(new Vector3(x_axis, y_axis, z_axis));
         }
     }
