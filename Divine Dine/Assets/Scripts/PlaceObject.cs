@@ -20,9 +20,14 @@ public class PlaceObject : MonoBehaviour {
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100))
                 {
-                    Instantiate(placeablePrefabs[selectedPrefab], 
-                        new Vector3(hit.transform.position.x, hit.transform.position.y + prefabOffset, hit.transform.position.z),
-                        hit.transform.rotation);
+                    if(hit.transform.tag == "Floor")
+                    {
+                        Instantiate(placeablePrefabs[selectedPrefab],
+                            new Vector3(hit.transform.position.x, hit.transform.position.y + prefabOffset, hit.transform.position.z),
+                            hit.transform.rotation);
+
+                        active = false;
+                    }
                 }
             }
         }

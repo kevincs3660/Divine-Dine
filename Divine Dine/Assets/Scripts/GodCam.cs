@@ -20,6 +20,7 @@ public class GodCam : MonoBehaviour {
     private Quaternion startRotation;    //Copy of the start rotation for when resetting back to the start position
     private Quaternion currentRotation;  //Copy the current rotation when resetting camera
     private bool isResetting = false;    //Check to see if camera is performing Reset function
+    private bool changingY = false;      //Make sure we're only going up or down if shift or space was pressed
     private float resetTimer;            //Keeps track of Lerp Time for smooth camera movement
     private float rotateFix = 200;       //How fast the camera can rotate (higher number = slower speed)
     private float radiusDistance;        //How far in XZ new position is from centerpoint
@@ -29,9 +30,13 @@ public class GodCam : MonoBehaviour {
     private float z_axis;                //Z Axis movement
     private float x_rotate;              //X Rotation movement
     private float y_rotate;              //Y Rotation movement
+    private float x_copy;                //Fix for moving left/right when just trying to move up down
+    private float y_copy;                //Fix for moving left/right when just trying to move up down
+    private float z_copy;                //Fix for moving up or down if shift or space wasn't pressed
 
 
-	void Start ()
+
+    void Start ()
     {
         startPosition = transform.position;
         startRotation = transform.rotation;
@@ -65,6 +70,12 @@ public class GodCam : MonoBehaviour {
         y_axis = 0;
         z_axis = 0;
 
+        //Reset vertical fix check variables
+        changingY = false;
+        x_copy = transform.position.x;
+        y_copy = transform.position.y;
+        z_copy = transform.position.z;
+
         //Camera moving right
         if (Input.GetAxis("Horizontal") > 0)
         {
@@ -89,11 +100,13 @@ public class GodCam : MonoBehaviour {
         if (Input.GetKey(KeyCode.Space))
         {
             y_axis += movementSpeed * Time.deltaTime;
+            changingY = true;
         }
         //Camera moving down
         if (Input.GetKey(KeyCode.LeftShift))
         {
             y_axis -= movementSpeed * Time.deltaTime;
+            changingY = true;
         }
 
         if(isLeashedToCenterPoint)
@@ -110,12 +123,28 @@ public class GodCam : MonoBehaviour {
             {
                 //Move the camera (Leashed)
                 transform.Translate(new Vector3(x_axis, y_axis, z_axis));
+                if(!changingY)
+                {
+                    transform.position = new Vector3(transform.position.x, y_copy, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(x_copy, transform.position.y, z_copy);
+                }
             }
         }
         else
         {
             //Move the camera (Unleashed)
             transform.Translate(new Vector3(x_axis, y_axis, z_axis));
+            if (!changingY)
+            {
+                transform.position = new Vector3(transform.position.x, y_copy, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(x_copy, transform.position.y, z_copy);
+            }
         }
     }
 
