@@ -1,15 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelHiding : MonoBehaviour {
+public class LevelHiding : MonoBehaviour
+{
+    public int level;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private GameObject manager;
+    private bool set;
+
+    void Awake ()
+    {
+        manager = GameObject.Find("Game Manager");
+        set = false;
+        tag = "Grass";
+        GetComponent<Renderer>().material.mainTexture = manager.GetComponent<FloorTextures>().textures[0];
+        Check();
+    }
+
+    public void Check()
+    {
+        manager.GetComponent<GlobalVariables>().CalculateLevel();
+        if(level <= manager.GetComponent<GlobalVariables>().CurrentLevel() && !set)
+        {
+            set = true;
+            tag = "Floor";
+            GetComponent<Renderer>().material.mainTexture = manager.GetComponent<FloorTextures>().textures[1];
+        }
+    }
 }

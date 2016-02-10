@@ -36,6 +36,7 @@ public class GlobalVariables : MonoBehaviour {
             nextLevelXP = (int)(nextLevelXP * 1.1);
             currentLevel++;
         }
+        levelText.GetComponent<Text>().text = "Level " + currentLevel;
     }
 
     public float GetLevelPercentage()
@@ -62,4 +63,9 @@ public class GlobalVariables : MonoBehaviour {
         experienceMeter.GetComponent<RectTransform>().anchorMax = new Vector2(GetLevelPercentage(), 1);
     }
 
+    public int CurrentLevel()
+    {
+        return currentLevel;
+        Debug.Log("Level " + currentLevel);
+    }
 }
