@@ -52,7 +52,7 @@ public class GodCam : MonoBehaviour {
             RotateCamera();
 
             //Controls to reset camera back to the start position
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
             {
                 StartReset();
             }
