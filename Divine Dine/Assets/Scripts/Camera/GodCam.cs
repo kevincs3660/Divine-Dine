@@ -4,6 +4,7 @@ using System.Collections;
 public class GodCam : MonoBehaviour {
 
     public float movementSpeed = 5;      //How fast the camera can move
+    public float zoomSpeed = 3;          //How fast the camera can zoom
     public bool isLeashedToCenterPoint;  //Is the camera stuck to a certain spot
 
     //The following public variables are only neccessary if isLeashedToCenterPoint is true
@@ -19,6 +20,8 @@ public class GodCam : MonoBehaviour {
     private Vector3 currentPosition;     //Copy the current position when resetting camera
     private Quaternion startRotation;    //Copy of the start rotation for when resetting back to the start position
     private Quaternion currentRotation;  //Copy the current rotation when resetting camera
+    private float startZoom;             //Copy of the camera's starting zoom
+    private float currentZoom;           //Copy of the current zoom on the camera
     private bool isResetting = false;    //Check to see if camera is performing Reset function
     private bool changingY = false;      //Make sure we're only going up or down if shift or space was pressed
     private float resetTimer;            //Keeps track of Lerp Time for smooth camera movement
@@ -40,6 +43,7 @@ public class GodCam : MonoBehaviour {
     {
         startPosition = transform.position;
         startRotation = transform.rotation;
+        startZoom = GetComponent<Camera>().fieldOfView;
         positionCopy = transform.GetChild(0);
 	}
 	
@@ -50,6 +54,7 @@ public class GodCam : MonoBehaviour {
             //Always check if camera needs to be moved or rotated
             MoveCamera();
             RotateCamera();
+            ZoomCamera();
 
             //Controls to reset camera back to the start position
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
@@ -151,10 +156,10 @@ public class GodCam : MonoBehaviour {
     void RotateCamera()
     {
         //Are we getting a request to rotate the camera?
-        if(Input.GetMouseButton(2))
+        if(Input.GetMouseButton(2) || (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0)))
         {
             //Is this a new request?
-            if(Input.GetMouseButtonDown(2))
+            if(Input.GetMouseButtonDown(2) || (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(0)))
             {
                 startRotating = Input.mousePosition;
             }
@@ -172,11 +177,17 @@ public class GodCam : MonoBehaviour {
         }
     }
 
+    void ZoomCamera()
+    {
+        GetComponent<Camera>().fieldOfView += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * (-1);
+    }
+
     void Reset()
     {
         resetTimer += Time.deltaTime;
         transform.position = Vector3.Lerp(currentPosition, startPosition, resetTimer);
         transform.rotation = Quaternion.Lerp(currentRotation, startRotation, resetTimer);
+        GetComponent<Camera>().fieldOfView = Mathf.Lerp(currentZoom, startZoom, resetTimer);
 
         if(resetTimer > 1)
         {
@@ -188,6 +199,7 @@ public class GodCam : MonoBehaviour {
     {
         currentPosition = transform.position;
         currentRotation = transform.rotation;
+        currentZoom = GetComponent<Camera>().fieldOfView;
         resetTimer = 0f;
         isResetting = true;
     }
