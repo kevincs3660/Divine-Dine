@@ -66,6 +66,5 @@ public class GlobalVariables : MonoBehaviour {
     public int CurrentLevel()
     {
         return currentLevel;
-        Debug.Log("Level " + currentLevel);
     }
 }

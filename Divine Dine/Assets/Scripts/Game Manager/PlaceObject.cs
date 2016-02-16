@@ -137,4 +137,10 @@ public class PlaceObject : MonoBehaviour {
             canRotate = false;
         }
     }
+
+    public void ReadyObject(int index)
+    {
+        SetPrefab(index);
+        active = true;
+    }
 }
