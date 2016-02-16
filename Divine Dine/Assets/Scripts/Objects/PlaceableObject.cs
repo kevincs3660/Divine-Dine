@@ -5,4 +5,5 @@ public class PlaceableObject : MonoBehaviour
 {
     public float spacingOffset;
     public float rotationOffset;
+    public int cashValue;
 }

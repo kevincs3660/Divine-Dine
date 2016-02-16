@@ -7,6 +7,7 @@ public class PlaceObject : MonoBehaviour {
 
     private bool active = false;                           //If you are able to place an object with the mouse
     private bool canRotate = false;                        //Option to rotate object if just placed in scene 
+    private bool enoughMoney = false;                      //Check if you have enough money to place the object
     private int selectedPrefab;                            //Which object in the list you are going to place
     private float prefabSpaceOffset;                       //The Y offset position from the tile you are placing the new object on
     private float prefabRotationOffset;                    //The rotation offset so it faces south
@@ -18,7 +19,7 @@ public class PlaceObject : MonoBehaviour {
 
 	void Update ()
     {
-        if (active && !canRotate)
+        if (active && enoughMoney && !canRotate)
         {
             ShowPreview();
             //Place the new object by left clicking
@@ -135,6 +136,8 @@ public class PlaceObject : MonoBehaviour {
         if (Input.GetMouseButtonUp(0))
         {
             canRotate = false;
+            GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
+            MoneyCheck();
         }
     }
 
@@ -142,5 +145,18 @@ public class PlaceObject : MonoBehaviour {
     {
         SetPrefab(index);
         active = true;
+        MoneyCheck();
+    }
+
+    private void MoneyCheck()
+    {
+        if (placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue <= GetComponent<GlobalVariables>().money)
+        {
+            enoughMoney = true;
+        }
+        else
+        {
+            enoughMoney = false;
+        }
     }
 }
