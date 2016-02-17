@@ -7,19 +7,20 @@ public class PlaceObject : MonoBehaviour {
 
     private bool active = false;                           //If you are able to place an object with the mouse
     private bool canRotate = false;                        //Option to rotate object if just placed in scene 
-    private bool enoughMoney = false;                      //Check if you have enough money to place the object
+    private bool alreadyExisted = false;                   //If the item is being replaced from an existing one or new from shop
     private int selectedPrefab;                            //Which object in the list you are going to place
     private float prefabSpaceOffset;                       //The Y offset position from the tile you are placing the new object on
     private float prefabRotationOffset;                    //The rotation offset so it faces south
     private GameObject previewObject;                      //Object created in the scene that is just a preview
     private GameObject placedObject;                       //Object created in the scene after clicking
-    private Vector3 previewFloor = Vector3.zero;           //Floorspace that the preview is ontop of
-    private Vector3 placedFloor = Vector3.zero;            //Floorspace that the placed object is ontop of
-    private Vector3 facingFloor = Vector3.zero;            //Floorspace that the placed object should face during rotation
+    private GameObject floorRef;                           //Floorspace that the placed object is ontop of
+    private Vector3 previewFloor = Vector3.zero;           //Position of floorspace that the preview is ontop of
+    private Vector3 placedFloor = Vector3.zero;            //Position of floorspace that the placed object is ontop of
+    private Vector3 facingFloor = Vector3.zero;            //Position of floorspace that the placed object should face during rotation
 
 	void Update ()
     {
-        if (active && enoughMoney && !canRotate)
+        if (active && !canRotate)
         {
             ShowPreview();
             //Place the new object by left clicking
@@ -31,6 +32,10 @@ public class PlaceObject : MonoBehaviour {
         else if(canRotate)
         {
             RotateObject();
+        }
+        else if (!active && Input.GetMouseButtonDown(0))
+        {
+            ReplaceObject();
         }
     }
 
@@ -46,6 +51,8 @@ public class PlaceObject : MonoBehaviour {
     public void SetActive(bool boolean)
     {
         active = boolean;
+        if (!active && previewObject != null)
+            Destroy(previewObject);
     }
 
     private void CreateObject()
@@ -60,6 +67,7 @@ public class PlaceObject : MonoBehaviour {
                 Destroy(previewObject);
                 previewFloor = Vector3.zero;
                 placedFloor = hit.transform.position;
+                floorRef = hit.transform.gameObject;
 
                 //Create object in scene
                 placedObject = Instantiate(placeablePrefabs[selectedPrefab],
@@ -135,9 +143,35 @@ public class PlaceObject : MonoBehaviour {
         }
         if (Input.GetMouseButtonUp(0))
         {
+            //Object has been perminately placed in the scene
             canRotate = false;
-            GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
-            MoneyCheck();
+            placedObject.GetComponent<PlaceableObject>().indexNumber = selectedPrefab;
+            placedObject.GetComponent<PlaceableObject>().isPreview = false;
+            placedObject.GetComponent<PlaceableObject>().floorSpace = floorRef;
+            placedObject.GetComponent<BoxCollider>().enabled = true;
+            if(!alreadyExisted)
+            {
+                GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
+                MoneyCheck();
+            }
+            alreadyExisted = false;
+        }
+    }
+
+    private void ReplaceObject()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+            if(hit.transform.GetComponent<PlaceableObject>() != null)
+            {
+                alreadyExisted = true;
+                hit.transform.GetComponent<PlaceableObject>().floorSpace.GetComponent<FloorBehavior>().SetUsed(false);
+                ReadyObject(hit.transform.GetComponent<PlaceableObject>().indexNumber);
+                Destroy(hit.transform.gameObject);
+                Debug.Log("active = " + active.ToString());
+            }
         }
     }
 
@@ -145,18 +179,15 @@ public class PlaceObject : MonoBehaviour {
     {
         SetPrefab(index);
         active = true;
-        MoneyCheck();
+        if(!alreadyExisted)
+        {
+            MoneyCheck();
+        }
     }
 
     private void MoneyCheck()
     {
-        if (placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue <= GetComponent<GlobalVariables>().money)
-        {
-            enoughMoney = true;
-        }
-        else
-        {
-            enoughMoney = false;
-        }
+        if (!(placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue <= GetComponent<GlobalVariables>().money))
+            active = false;
     }
 }
