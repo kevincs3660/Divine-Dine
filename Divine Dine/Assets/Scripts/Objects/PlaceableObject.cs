@@ -9,4 +9,5 @@ public class PlaceableObject : MonoBehaviour
     public int indexNumber;
     public bool isPreview = true;
     public GameObject floorSpace;
+	public bool taken;
 }
