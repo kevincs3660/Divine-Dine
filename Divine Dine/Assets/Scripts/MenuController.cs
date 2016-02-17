@@ -118,6 +118,7 @@ public class MenuController : MonoBehaviour
         {
             item1.SetActive(true);
             item1Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
+            item1Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].GetComponent<PlaceableObject>().cashValue.ToString();
             item1Button.GetComponent<Button>().onClick.RemoveAllListeners();
             item1Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 0));
         }
@@ -129,6 +130,7 @@ public class MenuController : MonoBehaviour
         {
             item2.SetActive(true);
             item2Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
+            item2Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].GetComponent<PlaceableObject>().cashValue.ToString();
             item2Button.GetComponent<Button>().onClick.RemoveAllListeners();
             item2Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 1));
         }
@@ -140,6 +142,7 @@ public class MenuController : MonoBehaviour
         {
             item3.SetActive(true);
             item3Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
+            item3Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].GetComponent<PlaceableObject>().cashValue.ToString();
             item3Button.GetComponent<Button>().onClick.RemoveAllListeners();
             item3Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 2));
         }
@@ -151,6 +154,7 @@ public class MenuController : MonoBehaviour
         {
             item4.SetActive(true);
             item4Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
+            item4Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].GetComponent<PlaceableObject>().cashValue.ToString();
             item4Button.GetComponent<Button>().onClick.RemoveAllListeners();
             item4Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 3));
         }
