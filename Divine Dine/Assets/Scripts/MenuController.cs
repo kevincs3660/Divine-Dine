@@ -25,6 +25,7 @@ public class MenuController : MonoBehaviour
     private GameObject item4Text;
 
     private int startIndex;
+    private string menuType;
 
     void Awake()
     {
@@ -60,13 +61,18 @@ public class MenuController : MonoBehaviour
     {
         ClearAll();
         menuScroller.SetActive(true);
+        menuType = "ItemStore";
         startIndex = 0;
         LoadItems(startIndex);
     }
 
     public void ShowFloorStore()
     {
-
+        ClearAll();
+        menuScroller.SetActive(true);
+        menuType = "FloorStore";
+        startIndex = 0;
+        LoadItems(startIndex);
     }
 
     public void ShowWallpaperStore()
@@ -96,10 +102,21 @@ public class MenuController : MonoBehaviour
 
     public void PageNext()
     {
-        if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startIndex + 4)
+        if(menuType == "ItemShop")
         {
-            startIndex += 4;
-            LoadItems(startIndex);
+            if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startIndex + 4)
+            {
+                startIndex += 4;
+                LoadItems(startIndex);
+            }
+        }
+        else if (menuType == "FloorShop")
+        {
+            if (gameManager.GetComponent<PlaceMaterial>().textures.Length > startIndex + 4)
+            {
+                startIndex += 4;
+                LoadItems(startIndex);
+            }
         }
     }
 
@@ -114,54 +131,110 @@ public class MenuController : MonoBehaviour
 
     private void LoadItems(int startingIndex)
     {
-        if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 0)
+        if (menuType == "ItemStore")
         {
-            item1.SetActive(true);
-            item1Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
-            item1Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].GetComponent<PlaceableObject>().cashValue.ToString();
-            item1Button.GetComponent<Button>().onClick.RemoveAllListeners();
-            item1Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 0));
+            if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 0)
+            {
+                item1.SetActive(true);
+                item1Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item1Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 0].GetComponent<PlaceableObject>().cashValue.ToString();
+                item1Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item1Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 0));
+            }
+            else
+            {
+                item1.SetActive(false);
+            }
+
+            if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 1)
+            {
+                item2.SetActive(true);
+                item2Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item2Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].GetComponent<PlaceableObject>().cashValue.ToString();
+                item2Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item2Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 1));
+            }
+            else
+            {
+                item2.SetActive(false);
+            }
+            if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 2)
+            {
+                item3.SetActive(true);
+                item3Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item3Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].GetComponent<PlaceableObject>().cashValue.ToString();
+                item3Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item3Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 2));
+            }
+            else
+            {
+                item3.SetActive(false);
+            }
+            if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 3)
+            {
+                item4.SetActive(true);
+                item4Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item4Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].GetComponent<PlaceableObject>().cashValue.ToString();
+                item4Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item4Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 3));
+            }
+            else
+            {
+                item4.SetActive(false);
+            }
         }
-        else
+        else if (menuType == "FloorStore")
         {
-            item1.SetActive(false);
+            if (gameManager.GetComponent<PlaceMaterial>().textures.Length > startingIndex + 0)
+            {
+                item1.SetActive(true);
+                item1Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item1Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 0].GetComponent<PlaceableMaterial>().cashValue.ToString();
+                item1Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item1Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceMaterial>().ReadyMaterial(startingIndex + 0));
+            }
+            else
+            {
+                item1.SetActive(false);
+            }
+            if (gameManager.GetComponent<PlaceMaterial>().textures.Length > startingIndex + 1)
+            {
+                item2.SetActive(true);
+                item2Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item2Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 1].GetComponent<PlaceableMaterial>().cashValue.ToString();
+                item2Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item2Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceMaterial>().ReadyMaterial(startingIndex + 1));
+            }
+            else
+            {
+                item2.SetActive(false);
+            }
+            if (gameManager.GetComponent<PlaceMaterial>().textures.Length > startingIndex + 2)
+            {
+                item3.SetActive(true);
+                item3Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item3Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 2].GetComponent<PlaceableMaterial>().cashValue.ToString();
+                item3Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item3Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceMaterial>().ReadyMaterial(startingIndex + 2));
+            }
+            else
+            {
+                item3.SetActive(false);
+            }
+            if (gameManager.GetComponent<PlaceMaterial>().textures.Length > startingIndex + 3)
+            {
+                item4.SetActive(true);
+                item4Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
+                item4Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceMaterial>().textures[startingIndex + 3].GetComponent<PlaceableMaterial>().cashValue.ToString();
+                item4Button.GetComponent<Button>().onClick.RemoveAllListeners();
+                item4Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceMaterial>().ReadyMaterial(startingIndex + 3));
+            }
+            else
+            {
+                item4.SetActive(false);
+            }
         }
-        if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 1)
-        {
-            item2.SetActive(true);
-            item2Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
-            item2Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 1].GetComponent<PlaceableObject>().cashValue.ToString();
-            item2Button.GetComponent<Button>().onClick.RemoveAllListeners();
-            item2Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 1));
-        }
-        else
-        {
-            item2.SetActive(false);
-        }
-        if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 2)
-        {
-            item3.SetActive(true);
-            item3Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
-            item3Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 2].GetComponent<PlaceableObject>().cashValue.ToString();
-            item3Button.GetComponent<Button>().onClick.RemoveAllListeners();
-            item3Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 2));
-        }
-        else
-        {
-            item3.SetActive(false);
-        }
-        if (gameManager.GetComponent<PlaceObject>().placeablePrefabs.Length > startingIndex + 3)
-        {
-            item4.SetActive(true);
-            item4Text.GetComponent<Text>().text = gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
-            item4Text.GetComponent<Text>().text += "\n$" + gameManager.GetComponent<PlaceObject>().placeablePrefabs[startingIndex + 3].GetComponent<PlaceableObject>().cashValue.ToString();
-            item4Button.GetComponent<Button>().onClick.RemoveAllListeners();
-            item4Button.GetComponent<Button>().onClick.AddListener(() => gameManager.GetComponent<PlaceObject>().ReadyObject(startingIndex + 3));
-        }
-        else
-        {
-            item4.SetActive(false);
-        }
+
     }
 
     private void ClearAll()

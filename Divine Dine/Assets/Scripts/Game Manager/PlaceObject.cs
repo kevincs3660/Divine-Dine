@@ -170,7 +170,6 @@ public class PlaceObject : MonoBehaviour {
                 hit.transform.GetComponent<PlaceableObject>().floorSpace.GetComponent<FloorBehavior>().SetUsed(false);
                 ReadyObject(hit.transform.GetComponent<PlaceableObject>().indexNumber);
                 Destroy(hit.transform.gameObject);
-                Debug.Log("active = " + active.ToString());
             }
         }
     }
