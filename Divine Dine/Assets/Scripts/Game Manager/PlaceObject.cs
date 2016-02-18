@@ -4,6 +4,7 @@ using System.Collections;
 public class PlaceObject : MonoBehaviour {
 
     public GameObject[] placeablePrefabs;                  //List of objects you can place with the mouse
+    public GameObject customerPrefabTESTONLY;              //For spawning a customer TEST ONLY
 
     private bool active = false;                           //If you are able to place an object with the mouse
     private bool canRotate = false;                        //Option to rotate object if just placed in scene 
@@ -153,6 +154,10 @@ public class PlaceObject : MonoBehaviour {
             {
                 GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
                 MoneyCheck();
+                if (placedObject.tag == "Chair")
+                {
+                    Instantiate(customerPrefabTESTONLY, Vector3.zero, new Quaternion(0, 0, 0, 0));
+                }
             }
             alreadyExisted = false;
         }
