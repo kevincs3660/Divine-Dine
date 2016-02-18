@@ -10,6 +10,7 @@ public class CustomerAI : MonoBehaviour {
 	private NavMeshAgent agent;
 	private bool hasMoved = false;
 	private NavMeshPath path;
+	private bool pathComplete = false;
 	void Start () {
 		path = new NavMeshPath();
 	}
@@ -57,7 +58,7 @@ public class CustomerAI : MonoBehaviour {
 			}
 			//Debug.Log(agent.CalculatePath(new Vector3(0.5f, 0f, 0.5f), path));
 			//Debug.Log(agent.CalculatePath(nearestChair.gameObject.transform.position, path));
-			//agent.SetDestination(nearestChair.gameObject.transform.position);
+			//agent.SetDestination(nearestChair.gameObject.transform.position);   
 			hasMoved = true;
 			//Debug.Log (nearestChair.gameObject.transform.position);
 			Debug.Log("Calculating location");
@@ -74,6 +75,18 @@ public class CustomerAI : MonoBehaviour {
 						agent.SetDestination(nearestChair.gameObject.transform.position);
 						chair.taken = true;
 						chairCarve.carving = true;
+					}
+				}
+			}
+			if (!agent.pathPending && pathComplete == false)
+			{
+				if (agent.remainingDistance <= agent.stoppingDistance)
+				{
+					if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+					{
+						// Done
+						pathComplete = true;
+						agent.Stop();
 					}
 				}
 			}
