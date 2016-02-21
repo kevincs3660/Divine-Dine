@@ -154,10 +154,11 @@ public class PlaceObject : MonoBehaviour {
             {
                 GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
                 MoneyCheck();
-                if (placedObject.tag == "Chair")
+				// Testing purposes only
+                /*if (placedObject.tag == "Chair")
                 {
                     Instantiate(customerPrefabTESTONLY, Vector3.zero, new Quaternion(0, 0, 0, 0));
-                }
+                }*/
             }
             alreadyExisted = false;
         }
