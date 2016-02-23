@@ -41,13 +41,13 @@ public class CustomerAI : MonoBehaviour {
 
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f)
 		{
-			Debug.Log("THE FUN HAS ARRIVED");
+			//Debug.Log("THE FUN HAS ARRIVED");
 			arrived = true;
 		}
 
 		if (arrived && finishedChair == false) 
 		{
-			Debug.Log("Finding me dat chair");
+			//Debug.Log("Finding me dat chair");
 			findChair();
 		}
 
@@ -60,7 +60,7 @@ public class CustomerAI : MonoBehaviour {
 		{
 			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.3f) 
 			{
-				Debug.Log("Sitting in ma chair");
+				//Debug.Log("Sitting in ma chair");
 				StartCoroutine(eatFood());
 			}
 		}
@@ -81,7 +81,7 @@ public class CustomerAI : MonoBehaviour {
 	private IEnumerator eatFood()
 	{
 		eatingNow = true;
-		Debug.Log ("eating ma food now");
+		//Debug.Log ("eating ma food now");
 		float timer = 0;
 		
 		while (timer < eatTime)
@@ -90,14 +90,14 @@ public class CustomerAI : MonoBehaviour {
 			
 			yield return null;
 		}
-		Debug.Log ("Done eating ma food");
+		//Debug.Log ("Done eating ma food");
 		finishedEating = true;
 		leaving ();
 	}
 
 	private void leaving()
 	{
-		Debug.Log ("Imma leave now");
+		//Debug.Log ("Imma leave now");
 		PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
 		NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
 		chair.taken = false;
@@ -163,7 +163,7 @@ public class CustomerAI : MonoBehaviour {
 					PlaceableObject chair = nearestChair.GetComponent<PlaceableObject>();
 					if(chair.taken == false)
 					{
-						Debug.Log("Found me a chair. Awwww yissssss");
+						//Debug.Log("Found me a chair. Awwww yissssss");
 						agent.SetDestination(nearestChair.gameObject.transform.position);
 						chair.taken = true;
 						chairCarve.carving = true;
@@ -187,7 +187,7 @@ public class CustomerAI : MonoBehaviour {
 		}
 		else
 		{
-			Debug.Log("Hmm this place seems busy. Imma just go home");
+			//Debug.Log("Hmm this place seems busy. Imma just go home");
 			agent.SetDestination(despawnPoint.transform.position);
 			finishedChair = true;
 			imGoingHome = true;
