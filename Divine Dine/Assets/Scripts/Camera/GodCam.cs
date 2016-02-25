@@ -102,13 +102,13 @@ public class GodCam : MonoBehaviour {
             z_axis -= movementSpeed * Time.deltaTime;
         }
         //Camera moving up
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.E))
         {
             y_axis += movementSpeed * Time.deltaTime;
             changingY = true;
         }
         //Camera moving down
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Q))
         {
             y_axis -= movementSpeed * Time.deltaTime;
             changingY = true;
@@ -179,7 +179,11 @@ public class GodCam : MonoBehaviour {
 
     void ZoomCamera()
     {
-        GetComponent<Camera>().fieldOfView += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * (-1);
+        float x = GetComponent<Camera>().fieldOfView + Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * (-1);
+        if (x >= 0 && x <= 100)
+        {
+            GetComponent<Camera>().fieldOfView += Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * (-1);
+        }
     }
 
     void Reset()
