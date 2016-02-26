@@ -4,7 +4,7 @@ using System.Collections;
 public class FloorBehavior : MonoBehaviour {
 
     private bool used = false;
-    private string objTag = "";
+    private GameObject obj = null;
 
     public bool IsUsed()
     {
@@ -16,13 +16,13 @@ public class FloorBehavior : MonoBehaviour {
         used = value;
     }
 
-    public string GetObjTag()
+    public GameObject GetObject()
     {
-        return objTag;
+        return obj;
     }
 
-    public void SetObjTag(string value)
+    public void SetObj(GameObject value)
     {
-        objTag = value;
+        obj = value;
     }
 }

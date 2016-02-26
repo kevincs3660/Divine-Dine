@@ -4,9 +4,9 @@ using System.Collections;
 public class PlaceObject : MonoBehaviour {
 
     public GameObject[] placeablePrefabs;                  //List of objects you can place with the mouse
-    public GameObject customerPrefabTESTONLY;              //For spawning a customer TEST ONLY
 
     private bool active = false;                           //If you are able to place an object with the mouse
+    private bool replace = false;                          //If you are able to replace an existing object
     private bool canRotate = false;                        //Option to rotate object if just placed in scene 
     private bool alreadyExisted = false;                   //If the item is being replaced from an existing one or new from shop
     private int selectedPrefab;                            //Which object in the list you are going to place
@@ -34,7 +34,7 @@ public class PlaceObject : MonoBehaviour {
         {
             RotateObject();
         }
-        else if (!active && Input.GetMouseButtonDown(0))
+        else if (!active && replace && Input.GetMouseButtonDown(0))
         {
             ReplaceObject();
         }
@@ -48,12 +48,17 @@ public class PlaceObject : MonoBehaviour {
         prefabRotationOffset = placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().rotationOffset;
     }
 
-    //Allow or disallow the placeing of objects
+    //Allow or disallow the placing of objects
     public void SetActive(bool boolean)
     {
         active = boolean;
         if (!active && previewObject != null)
             Destroy(previewObject);
+    }
+
+    public void SetReplace(bool boolean)
+    {
+        replace = boolean;
     }
 
     private void CreateObject()
@@ -77,7 +82,7 @@ public class PlaceObject : MonoBehaviour {
 
                 //Update floor behavior
                 hit.transform.GetComponent<FloorBehavior>().SetUsed(true);
-                hit.transform.GetComponent<FloorBehavior>().SetObjTag(placeablePrefabs[selectedPrefab].tag);
+                hit.transform.GetComponent<FloorBehavior>().SetObj(placeablePrefabs[selectedPrefab]);
 
                 //Allow the player to rotate the object
                 canRotate = true;
@@ -153,14 +158,9 @@ public class PlaceObject : MonoBehaviour {
             if(!alreadyExisted)
             {
                 GetComponent<GlobalVariables>().AddMoney(0 - placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().cashValue);
-                MoneyCheck();
-				// Testing purposes only
-                /*if (placedObject.tag == "Chair")
-                {
-                    Instantiate(customerPrefabTESTONLY, Vector3.zero, new Quaternion(0, 0, 0, 0));
-                }*/
             }
             alreadyExisted = false;
+            MoneyCheck();
         }
     }
 
