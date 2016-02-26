@@ -14,7 +14,10 @@ public class CustomerAI : MonoBehaviour {
 	private GameObject entrance;
 	private GameObject despawnPoint;
 	private GameObject nearestChair;
-	public int eatTime = 5;
+	private GameObject table; 
+	public int eatTime = 10;
+	public int orderTime = 5;
+	private GameObject[] menu;
 	private bool arrived = false;
 	private bool finishedChair = false;
 	private bool imGoingHome = false;
@@ -23,6 +26,9 @@ public class CustomerAI : MonoBehaviour {
 	private bool imLeaving = false;
 	private bool left = false;
 	private bool eatingNow = false;
+	public bool waitingForFood = false;
+	private bool orderingNow = false;
+	private bool goingToOrder = false;
 
 	void Start () {
 		path = new NavMeshPath();
@@ -56,12 +62,13 @@ public class CustomerAI : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 
-		if (imEating && nearestChair != null && eatingNow == false)
+		if (goingToOrder && nearestChair != null && orderingNow == false)
 		{
 			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.3f) 
 			{
 				//Debug.Log("Sitting in ma chair");
-				StartCoroutine(eatFood());
+				//StartCoroutine(eatFood());
+				StartCoroutine(ordering());
 			}
 		}
 
@@ -76,6 +83,22 @@ public class CustomerAI : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 
+	}
+	
+
+	private IEnumerator ordering()
+	{
+		orderingNow = true;
+		float timer = 0;
+		
+		while (timer < orderTime)
+		{
+			timer += Time.deltaTime;
+			
+			yield return null;
+		}
+
+		waitingForFood = true;
 	}
 
 	private IEnumerator eatFood()
@@ -168,7 +191,9 @@ public class CustomerAI : MonoBehaviour {
 						chair.taken = true;
 						chairCarve.carving = true;
 						finishedChair = true;
-						imEating = true;
+						//waitingForFood = true;
+						goingToOrder = true;
+						//imEating = true;
 					}
 				}
 			}
