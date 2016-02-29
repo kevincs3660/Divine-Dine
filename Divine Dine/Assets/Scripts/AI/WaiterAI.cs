@@ -65,7 +65,7 @@ public class WaiterAI : MonoBehaviour {
 
 	}
 
-	private void checkForDirtyTable();
+	private void checkForDirtyTable()
 	{
 	}
 

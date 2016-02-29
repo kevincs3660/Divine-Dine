@@ -13,8 +13,9 @@ public class FoodScript : MonoBehaviour {
 	public FoodScript(GameObject foodSelection, GameObject customerObject)
 	{
 		customer = customerObject;
-		if(foundStove == false)
-			findStove();
+		if (foundStove == false) {
+			//findStove();
+		}
 
 	}
 
