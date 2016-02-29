@@ -14,7 +14,7 @@ public class WaiterAI : MonoBehaviour {
 	private FoodScript currentFood;
 	private GameObject currentStove;
 
-	private enum waiterStates
+	public enum waiterStates
 	{
 		NOTHING = 0,
 		TAKING_ORDER = 1,
@@ -46,7 +46,7 @@ public class WaiterAI : MonoBehaviour {
 		if (state == waiterStates.DELIVERING_ORDER && currentStove != null)
 			if(Vector3.Distance (currentStove.transform.position, agent.nextPosition) <= 0.3f) 
 			{
-				deliverFood();
+				//deliverFood();
 			}
 	}
 
@@ -57,9 +57,6 @@ public class WaiterAI : MonoBehaviour {
 		//findStove();
 	}
 
-	private void deliverFood(GameObject food)
-	{
-	}
 
 	private void checkForCustomer()
 	{
