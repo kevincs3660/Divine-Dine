@@ -5,6 +5,7 @@ public class FloorBehavior : MonoBehaviour {
 
     private bool used = false;
     private GameObject obj = null;
+    private float objRotation = 0;
 
     public bool IsUsed()
     {
@@ -24,5 +25,15 @@ public class FloorBehavior : MonoBehaviour {
     public void SetObj(GameObject value)
     {
         obj = value;
+    }
+
+    public float GetRotation()
+    {
+        return objRotation;
+    }
+
+    public void SetRotation(float value)
+    {
+        objRotation = value;
     }
 }

@@ -10,5 +10,4 @@ public class PlaceableObject : MonoBehaviour
     public bool isPreview = true;
     public GameObject floorSpace;
 	public bool taken;
-    public int yRotation;
 }
