@@ -18,7 +18,7 @@ public class SaveData : ISerializable {
 	//public bool tile1;
 	public string[] tileMaterials = new string[382]; // added one so we can start at index 1
 	public string[] tileObjects = new string[382];
-	public int levelReached;
+	public int experience;
 	public int money;
 	// === /Values ===
 	
@@ -37,7 +37,7 @@ public class SaveData : ISerializable {
 			tileObjects[i] = (string)info.GetValue("tileObject" + i, typeof(string));
 		}
 		
-		levelReached = (int)info.GetValue("levelReached", typeof(int));
+		experience = (int)info.GetValue("levelReached", typeof(int));
 		money = (int)info.GetValue ("Money", typeof(int));
 	}
 	
@@ -50,7 +50,7 @@ public class SaveData : ISerializable {
 			info.AddValue("tileMaterial" + i, tileMaterials[i]);
 			info.AddValue("tileObject" + i, tileObjects[i]);
 		}
-		info.AddValue("levelReached", levelReached);
+		info.AddValue("levelReached", experience);
 		info.AddValue ("Money", money);
 	}
 }

@@ -126,7 +126,7 @@ public class CustomerAI : MonoBehaviour {
 	
 	private void leaving()
 	{
-		//Debug.Log ("Imma leave now");
+		Debug.Log ("Imma leave now");
 		PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
 		NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
 		chair.taken = false;

@@ -22,6 +22,14 @@ public class Load : MonoBehaviour {
 	private void doLoad()
 	{
 		data = SaveLoad.Load ("SaveData.dd");
+
+		int money = data.money;
+		int experience = data.experience;
+
+		GlobalVariables stats = GameObject.Find("Game Manager").GetComponent<GlobalVariables>();
+		stats.money = money;
+		stats.experience = experience;
+
 		
 		
 		for(int i = 1; i < 382; i++)
@@ -42,25 +50,7 @@ public class Load : MonoBehaviour {
 					tile.transform.GetComponent<Renderer>().material.mainTexture = thing.GetComponent<PlaceableMaterial>().material;
 				}
 			}
-			
-			/*
-			if(currentMaterial == "Grass")
-			{
-				tile.transform.GetComponent<Renderer>().material.mainTexture = textures[0];
-			}
-			else if(currentMaterial == "Cement")
-			{
-				tile.transform.GetComponent<Renderer>().material.mainTexture = textures[1];
-			}
-			else if(currentMaterial == "DarkWood")
-			{
-				tile.transform.GetComponent<Renderer>().material.mainTexture = textures[2];
-			}
-			else if(currentMaterial == "CeramicTile")
-			{
-				tile.transform.GetComponent<Renderer>().material.mainTexture = textures[3];
-			}
-			*/
+
 			
 			foreach(GameObject thing in placeableObjects)
 			{
@@ -71,20 +61,6 @@ public class Load : MonoBehaviour {
 
 				}
 			}
-			/*
-			if(currentObject == "Chair")
-			{
-				Instantiate(objects[0], tile.transform.position, Quaternion.identity);
-			}
-			else if(currentObject == "Table")
-			{
-				Instantiate(objects[1], tile.transform.position, Quaternion.identity);
-			}
-			else if (currentObject == "Stove");
-			{
-				Instantiate(objects[2], tile.transform.position, Quaternion.identity);
-			}
-			*/
 		}
 	}
 }

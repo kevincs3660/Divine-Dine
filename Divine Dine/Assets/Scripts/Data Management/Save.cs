@@ -5,7 +5,7 @@ public class Save : MonoBehaviour {
 
 	private string[] tileTextures;
 	private string[] tileObjects;
-	public int level;
+	public int experience;
 	public int money;
 	// Use this for initialization
 	void Start () {
@@ -23,6 +23,9 @@ public class Save : MonoBehaviour {
 	{
 		tileTextures = new string[382];
 		tileObjects = new string[382];
+		GlobalVariables stats = GameObject.Find("Game Manager").GetComponent<GlobalVariables>();
+		experience = stats.experience;
+		money = stats.money;
 		
 		for (int i = 1; i < 382; i++) 
 		{
@@ -36,7 +39,7 @@ public class Save : MonoBehaviour {
 		SaveData data = new SaveData ();
 		data.tileObjects = this.tileObjects;
 		data.tileMaterials = tileTextures;
-		data.levelReached = level;
+		data.experience = experience;
 		data.money = money;
 		
 		SaveLoad.Save ("SaveData.dd", data);
