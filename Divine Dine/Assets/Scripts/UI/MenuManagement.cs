@@ -12,6 +12,7 @@ public class MenuManagement : MonoBehaviour
     private GameObject menuScroll;
     private GameObject marketScroll;
     private GameObject foodSelection;
+    private GameObject ingredientScroll;
 
     //Main Menu
     private GameObject main1;
@@ -125,6 +126,7 @@ public class MenuManagement : MonoBehaviour
         menuScroll = mainCanvas.transform.GetChild(2).gameObject;
         marketScroll = mainCanvas.transform.GetChild(3).gameObject;
         foodSelection = mainCanvas.transform.GetChild(4).gameObject;
+        ingredientScroll = mainCanvas.transform.GetChild(5).gameObject;
 
         //Main Menu
         main1 = mainMenu.transform.GetChild(0).gameObject;
@@ -205,7 +207,7 @@ public class MenuManagement : MonoBehaviour
         //Market Menu
 
         //Food Selection
-        f_close = foodSelection.transform.GetChild(0).GetComponent<Button>();
+        f_close = foodSelection.transform.GetChild(0).gameObject.GetComponent<Button>();
         f_desc = foodSelection.transform.GetChild(1).GetChild(0).GetComponent<Text>();
         f_image = foodSelection.transform.GetChild(2).GetComponent<Image>().sprite;
         f_ingredient1 = foodSelection.transform.GetChild(3).GetChild(0).gameObject;
@@ -260,11 +262,15 @@ public class MenuManagement : MonoBehaviour
         ClearButtonsMainMenu();
         mainButton1.onClick.AddListener(() => ShowMainMenu());
         mainButton2.onClick.AddListener(() => LoadIngredients(0));
+        mainButton2.onClick.AddListener(() => CloseFoodSelection());
         mainButton3.onClick.AddListener(() => LoadAppetizers(0));
+        mainButton3.onClick.AddListener(() => CloseFoodSelection());
         mainButton3.onClick.AddListener(() => ResetMenuScrollIndex());
         mainButton4.onClick.AddListener(() => LoadEntrees(0));
+        mainButton4.onClick.AddListener(() => CloseFoodSelection());
         mainButton4.onClick.AddListener(() => ResetMenuScrollIndex());
         mainButton5.onClick.AddListener(() => LoadDesserts(0));
+        mainButton5.onClick.AddListener(() => CloseFoodSelection());
         mainButton5.onClick.AddListener(() => ResetMenuScrollIndex());
 
         mainMenu.SetActive(true);
@@ -307,11 +313,6 @@ public class MenuManagement : MonoBehaviour
     }
 
     public void ShowMarketMenu()
-    {
-        //ClearAll();
-    }
-
-    public void ShowFoodSelection()
     {
         //ClearAll();
     }
@@ -361,6 +362,89 @@ public class MenuManagement : MonoBehaviour
         LoadWallpaper(shopScrollIndex);
 
         shopScroll.SetActive(true);
+    }
+
+    public void ShowFood(GameObject food)
+    {
+        menuScroll.SetActive(false);
+
+        //Back Button
+        f_close.onClick.RemoveAllListeners();
+        f_close.onClick.AddListener(() => CloseFoodSelection());
+        if (MenuType == "Appetizers")
+            f_close.onClick.AddListener(() => LoadAppetizers(menuScrollIndex));
+        else if (MenuType == "Entrees")
+            f_close.onClick.AddListener(() => LoadEntrees(menuScrollIndex));
+        else if (MenuType == "Desserts")
+            f_close.onClick.AddListener(() => LoadDesserts(menuScrollIndex));
+
+        //Description
+        f_desc.text = food.ToString().Replace(" (UnityEngine.GameObject)", "");
+        if (food.GetComponent<Food>().level > 0)
+            f_desc.text += "\nLevel " + food.GetComponent<Food>().level;
+        else
+            f_desc.text += "\n<Unlock>";
+
+        //Food Image
+        if (food.GetComponent<Food>().menuSprite != null)
+            f_image = food.GetComponent<Food>().menuSprite;
+        else
+            f_image = defaultFoodSprite;
+
+        //Ingredient Images
+        try
+        {
+            if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
+                f_ingredient1.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
+            else
+                f_ingredient1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            f_ingredient1.SetActive(true);
+        }
+        catch
+        {
+            f_ingredient1.SetActive(false);
+        }
+
+        try
+        {
+            if (food.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
+                f_ingredient2.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
+            else
+                f_ingredient2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            f_ingredient2.SetActive(true);
+        }
+        catch
+        {
+            f_ingredient2.SetActive(false);
+        }
+
+        try
+        {
+            if (food.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
+                f_ingredient3.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
+            else
+                f_ingredient3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            f_ingredient3.SetActive(true);
+        }
+        catch
+        {
+            f_ingredient3.SetActive(false);
+        }
+
+        try
+        {
+            if (food.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
+                f_ingredient4.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
+            else
+                f_ingredient4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            f_ingredient4.SetActive(true);
+        }
+        catch
+        {
+            f_ingredient4.SetActive(false);
+        }
+
+        foodSelection.SetActive(true);
     }
 
     public void LoadIngredients(int index)
@@ -1489,11 +1573,6 @@ public class MenuManagement : MonoBehaviour
         }
     }
 
-    public void ShowFood(GameObject food)
-    {
-        Debug.Log("SHOW FOOD");
-    }
-
     public void MenuScrollNext()
     {
         if(MenuType == "Ingredients")
@@ -1573,6 +1652,7 @@ public class MenuManagement : MonoBehaviour
         menuScroll.SetActive(false);
         marketScroll.SetActive(false);
         foodSelection.SetActive(false);
+        ingredientScroll.SetActive(false);
     }
 
     private void ClearButtonsMainMenu()
@@ -1615,5 +1695,10 @@ public class MenuManagement : MonoBehaviour
     public void ResetMenuScrollIndex()
     {
         menuScrollIndex = 0;
+    }
+
+    public void CloseFoodSelection()
+    {
+        foodSelection.SetActive(false);
     }
 }
