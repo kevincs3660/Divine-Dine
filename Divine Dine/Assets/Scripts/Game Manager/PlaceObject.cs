@@ -133,18 +133,22 @@ public class PlaceObject : MonoBehaviour {
             if (facingFloor.x - placedFloor.x < 0)
             {
                 placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset+ 90, 0));
+                placedObject.GetComponent<PlaceableObject>().yRotation = 90;
             }
             else if (facingFloor.x - placedFloor.x > 0)
             {
                 placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 270, 0));
+                placedObject.GetComponent<PlaceableObject>().yRotation = 270;
             }
             else if (facingFloor.z - placedFloor.z < 0)
             {
                 placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset, 0));
+                placedObject.GetComponent<PlaceableObject>().yRotation = 0;
             }
             else if (facingFloor.z - placedFloor.z > 0)
             {
                 placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 180, 0));
+                placedObject.GetComponent<PlaceableObject>().yRotation = 180;
             }
         }
         if (Input.GetMouseButtonUp(0))
