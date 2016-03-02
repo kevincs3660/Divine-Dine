@@ -26,7 +26,7 @@ public class CustomerAI : MonoBehaviour {
 	//private bool imLeaving = false;
 	private bool left = false;
 	private bool ordered = false;
-	private GameObject food;
+	private FoodScript food;
 	//private bool eatingNow = false;
 	//public bool waitingForFood = false;
 	//private bool orderingNow = false;
@@ -102,8 +102,13 @@ public class CustomerAI : MonoBehaviour {
 	private void order()
 	{
 		state = customerStates.WAITING;
-		StartCoroutine (eatFood ());
+		//StartCoroutine (eatFood ());
 
+	}
+
+	public void acceptFood()
+	{
+		StartCoroutine(eatFood());
 	}
 	
 	private IEnumerator eatFood()
@@ -135,6 +140,11 @@ public class CustomerAI : MonoBehaviour {
 		//imLeaving = true;
 		state = customerStates.LEAVING;
 	}
+
+	public FoodScript giveOrder()
+	{
+		return food;
+	}
 	
 	private void findChair()
 	{
@@ -155,12 +165,9 @@ public class CustomerAI : MonoBehaviour {
 		{
 			//Debug.Log("INSIDE THING");
 			float distance = 0;
-			//Vector3 nearestChairLocation = new Vector3(0,0,0);
-			
 			
 			//Debug.Log ("Chair length: " + chairs.Count);
 			distance = Vector3.Distance(this.gameObject.transform.position, chairs[0].gameObject.transform.position);
-			//nearestChairLocation = chairs[0].gameObject.transform.position;
 			nearestChair = chairs[0];
 			
 			if(chairs.Count > 1)
@@ -176,10 +183,7 @@ public class CustomerAI : MonoBehaviour {
 					}
 				}
 			}
-			
-			//Debug.Log(agent.CalculatePath(new Vector3(0.5f, 0f, 0.5f), path));
-			//Debug.Log(agent.CalculatePath(nearestChair.gameObject.transform.position, path));
-			//agent.SetDestination(nearestChair.gameObject.transform.position);   
+			   
 			hasMoved = true;
 			//Debug.Log (nearestChair.gameObject.transform.position);
 			//Debug.Log("Calculating location");
@@ -197,10 +201,6 @@ public class CustomerAI : MonoBehaviour {
 						agent.SetDestination(nearestChair.gameObject.transform.position);
 						chair.taken = true;
 						chairCarve.carving = true;
-						//finishedChair = true;
-						//waitingForFood = true;
-						//goingToOrder = true;
-						//imEating = true;
 						state = customerStates.FOUND_CHAIR;
 					}
 				}
@@ -222,8 +222,6 @@ public class CustomerAI : MonoBehaviour {
 		{
 			//Debug.Log("Hmm this place seems busy. Imma just go home");
 			agent.SetDestination(despawnPoint.transform.position);
-			//finishedChair = true;
-			//imGoingHome = true;
 			state = customerStates.LEAVING;
 		}
 	}

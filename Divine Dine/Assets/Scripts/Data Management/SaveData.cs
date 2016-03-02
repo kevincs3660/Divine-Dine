@@ -18,6 +18,7 @@ public class SaveData : ISerializable {
 	//public bool tile1;
 	public string[] tileMaterials = new string[382]; // added one so we can start at index 1
 	public string[] tileObjects = new string[382];
+	public Quaternion[] objectRotations = new Quaternion[382];
 	public int experience;
 	public int money;
 	// === /Values ===
@@ -35,6 +36,7 @@ public class SaveData : ISerializable {
 		{
 			tileMaterials[i] = (string)info.GetValue("tileMaterial" + i, typeof(string));
 			tileObjects[i] = (string)info.GetValue("tileObject" + i, typeof(string));
+			objectRotations[i] = (Quaternion)info.GetValue("objectRotation" + i, typeof(Quaternion));
 		}
 		
 		experience = (int)info.GetValue("levelReached", typeof(int));
@@ -49,6 +51,7 @@ public class SaveData : ISerializable {
 		{
 			info.AddValue("tileMaterial" + i, tileMaterials[i]);
 			info.AddValue("tileObject" + i, tileObjects[i]);
+			info.AddValue("objectRotation" + i, objectRotations[i]);
 		}
 		info.AddValue("levelReached", experience);
 		info.AddValue ("Money", money);
