@@ -367,6 +367,7 @@ public class MenuManagement : MonoBehaviour
     public void ShowFood(GameObject food)
     {
         menuScroll.SetActive(false);
+        bool canLevel = true;
 
         //Back Button
         f_close.onClick.RemoveAllListeners();
@@ -377,6 +378,13 @@ public class MenuManagement : MonoBehaviour
             f_close.onClick.AddListener(() => LoadEntrees(menuScrollIndex));
         else if (MenuType == "Desserts")
             f_close.onClick.AddListener(() => LoadDesserts(menuScrollIndex));
+
+        //Level Up Button
+        f_level_button.onClick.RemoveAllListeners();
+        if(food.GetComponent<Food>().level > 0)
+            f_level_text.text = "Level Up!";
+        else
+            f_level_text.text = "Unlock!";
 
         //Description
         f_desc.text = food.ToString().Replace(" (UnityEngine.GameObject)", "");
@@ -398,6 +406,8 @@ public class MenuManagement : MonoBehaviour
                 f_ingredient1.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
             else
                 f_ingredient1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().quatity == 0)
+                canLevel = false;
             f_ingredient1.SetActive(true);
         }
         catch
@@ -411,6 +421,8 @@ public class MenuManagement : MonoBehaviour
                 f_ingredient2.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
             else
                 f_ingredient2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            if (food.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().quatity == 0)
+                canLevel = false;
             f_ingredient2.SetActive(true);
         }
         catch
@@ -424,6 +436,8 @@ public class MenuManagement : MonoBehaviour
                 f_ingredient3.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
             else
                 f_ingredient3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            if (food.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().quatity == 0)
+                canLevel = false;
             f_ingredient3.SetActive(true);
         }
         catch
@@ -437,6 +451,8 @@ public class MenuManagement : MonoBehaviour
                 f_ingredient4.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
             else
                 f_ingredient4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().quatity == 0)
+                canLevel = false;
             f_ingredient4.SetActive(true);
         }
         catch
@@ -444,7 +460,23 @@ public class MenuManagement : MonoBehaviour
             f_ingredient4.SetActive(false);
         }
 
+        //Level Up Button Continued...
+        if(canLevel)
+        {
+            f_level_button.onClick.AddListener(() => ShowLevelConfirmation());
+            f_level_button.interactable = true;
+        }
+        else
+        {
+            f_level_button.interactable = false;
+            Debug.Log("Disabled Button");
+        }
         foodSelection.SetActive(true);
+    }
+
+    public void ShowLevelConfirmation()
+    {
+
     }
 
     public void LoadIngredients(int index)
@@ -490,73 +522,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 0)
         {
             food1 =  GetComponent<FoodVariables>().Appetizers[index + 0];
-            m_button1.onClick.RemoveAllListeners();
-            m_button1.onClick.AddListener(() => ShowFood(food1));
-            m_text1.text = food1.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food1.GetComponent<Food>().level > 0)
-                m_text1.text += "\nLevel " + food1.GetComponent<Food>().level;
-            else
-                m_text1.text += "\n<Unlock>";
-
-            //Food
-            if (food1.GetComponent<Food>().menuSprite != null)
-                m_image1.GetComponent<Image>().sprite = food1.GetComponent<Food>().menuSprite;
-            else
-                m_image1.GetComponent<Image>().sprite = defaultFoodSprite;
-            
-            //Ingredients
-            try
-            {
-                if(food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient1_1.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient1_2.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient1_3.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient1_4.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_4.SetActive(false);
-            }
-
+            LoadMenu1(food1);
             m_scroll1.SetActive(true);
         }
         else
@@ -566,73 +532,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 1)
         {
             food2 = GetComponent<FoodVariables>().Appetizers[index + 1];
-            m_button2.onClick.RemoveAllListeners();
-            m_button2.onClick.AddListener(() => ShowFood(food2));
-            m_text2.text = food2.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food2.GetComponent<Food>().level > 0)
-                m_text2.text += "\nLevel " + food2.GetComponent<Food>().level;
-            else
-                m_text2.text += "\n<Unlock>";
-
-            //Food
-            if (food2.GetComponent<Food>().menuSprite != null)
-                m_image2.GetComponent<Image>().sprite = food2.GetComponent<Food>().menuSprite;
-            else
-                m_image2.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient2_1.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient2_2.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient2_3.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient2_4.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_4.SetActive(false);
-            }
-
+            LoadMenu2(food2);
             m_scroll2.SetActive(true);
         }
         else
@@ -642,73 +542,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 2)
         {
             food3 = GetComponent<FoodVariables>().Appetizers[index + 2];
-            m_button3.onClick.RemoveAllListeners();
-            m_button3.onClick.AddListener(() => ShowFood(food3));
-            m_text3.text = food3.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food3.GetComponent<Food>().level > 0)
-                m_text3.text += "\nLevel " + food3.GetComponent<Food>().level;
-            else
-                m_text3.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image3.GetComponent<Image>().sprite = food3.GetComponent<Food>().menuSprite;
-            else
-                m_image3.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient3_1.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient3_2.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient3_3.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient3_4.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_4.SetActive(false);
-            }
-
+            LoadMenu3(food3);
             m_scroll3.SetActive(true);
         }
         else
@@ -718,73 +552,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 3)
         {
             food4 = GetComponent<FoodVariables>().Appetizers[index + 3];
-            m_button4.onClick.RemoveAllListeners();
-            m_button4.onClick.AddListener(() => ShowFood(food4));
-            m_text4.text = food4.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food4.GetComponent<Food>().level > 0)
-                m_text4.text += "\nLevel " + food4.GetComponent<Food>().level;
-            else
-                m_text4.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image4.GetComponent<Image>().sprite = food4.GetComponent<Food>().menuSprite;
-            else
-                m_image4.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient4_1.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient4_2.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient4_3.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient4_4.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_4.SetActive(false);
-            }
-
+            LoadMenu1(food4);
             m_scroll4.SetActive(true);
         }
         else
@@ -801,73 +569,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Entrees.Length > index + 0)
         {
             food1 = GetComponent<FoodVariables>().Entrees[index + 0];
-            m_button1.onClick.RemoveAllListeners();
-            m_button1.onClick.AddListener(() => ShowFood(food1));
-            m_text1.text = food1.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food1.GetComponent<Food>().level > 0)
-                m_text1.text += "\nLevel " + food1.GetComponent<Food>().level;
-            else
-                m_text1.text += "\n<Unlock>";
-
-            //Food
-            if (food1.GetComponent<Food>().menuSprite != null)
-                m_image1.GetComponent<Image>().sprite = food1.GetComponent<Food>().menuSprite;
-            else
-                m_image1.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient1_1.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient1_2.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient1_3.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient1_4.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_4.SetActive(false);
-            }
-
+            LoadMenu1(food1);
             m_scroll1.SetActive(true);
         }
         else
@@ -877,73 +579,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Entrees.Length > index + 1)
         {
             food2 = GetComponent<FoodVariables>().Entrees[index + 1];
-            m_button2.onClick.RemoveAllListeners();
-            m_button2.onClick.AddListener(() => ShowFood(food2));
-            m_text2.text = food2.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food2.GetComponent<Food>().level > 0)
-                m_text2.text += "\nLevel " + food2.GetComponent<Food>().level;
-            else
-                m_text2.text += "\n<Unlock>";
-
-            //Food
-            if (food2.GetComponent<Food>().menuSprite != null)
-                m_image2.GetComponent<Image>().sprite = food2.GetComponent<Food>().menuSprite;
-            else
-                m_image2.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient2_1.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient2_2.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient2_3.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient2_4.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_4.SetActive(false);
-            }
-
+            LoadMenu2(food2);
             m_scroll2.SetActive(true);
         }
         else
@@ -953,73 +589,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Entrees.Length > index + 2)
         {
             food3 = GetComponent<FoodVariables>().Entrees[index + 2];
-            m_button3.onClick.RemoveAllListeners();
-            m_button3.onClick.AddListener(() => ShowFood(food3));
-            m_text3.text = food3.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food3.GetComponent<Food>().level > 0)
-                m_text3.text += "\nLevel " + food3.GetComponent<Food>().level;
-            else
-                m_text3.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image3.GetComponent<Image>().sprite = food3.GetComponent<Food>().menuSprite;
-            else
-                m_image3.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient3_1.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient3_2.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient3_3.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient3_4.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_4.SetActive(false);
-            }
-
+            LoadMenu3(food3);
             m_scroll3.SetActive(true);
         }
         else
@@ -1029,73 +599,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Entrees.Length > index + 3)
         {
             food4 = GetComponent<FoodVariables>().Entrees[index + 3];
-            m_button4.onClick.RemoveAllListeners();
-            m_button4.onClick.AddListener(() => ShowFood(food4));
-            m_text4.text = food4.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food4.GetComponent<Food>().level > 0)
-                m_text4.text += "\nLevel " + food4.GetComponent<Food>().level;
-            else
-                m_text4.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image4.GetComponent<Image>().sprite = food4.GetComponent<Food>().menuSprite;
-            else
-                m_image4.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient4_1.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient4_2.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient4_3.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient4_4.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_4.SetActive(false);
-            }
-
+            LoadMenu4(food4);
             m_scroll4.SetActive(true);
         }
         else
@@ -1112,73 +616,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Desserts.Length > index + 0)
         {
             food1 = GetComponent<FoodVariables>().Desserts[index + 0];
-            m_button1.onClick.RemoveAllListeners();
-            m_button1.onClick.AddListener(() => ShowFood(food1));
-            m_text1.text = food1.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food1.GetComponent<Food>().level > 0)
-                m_text1.text += "\nLevel " + food1.GetComponent<Food>().level;
-            else
-                m_text1.text += "\n<Unlock>";
-
-            //Food
-            if (food1.GetComponent<Food>().menuSprite != null)
-                m_image1.GetComponent<Image>().sprite = food1.GetComponent<Food>().menuSprite;
-            else
-                m_image1.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient1_1.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient1_2.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient1_3.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient1_4.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient1_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient1_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient1_4.SetActive(false);
-            }
-
+            LoadMenu1(food1);
             m_scroll1.SetActive(true);
         }
         else
@@ -1188,73 +626,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Desserts.Length > index + 1)
         {
             food2 = GetComponent<FoodVariables>().Desserts[index + 1];
-            m_button2.onClick.RemoveAllListeners();
-            m_button2.onClick.AddListener(() => ShowFood(food2));
-            m_text2.text = food2.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food2.GetComponent<Food>().level > 0)
-                m_text2.text += "\nLevel " + food2.GetComponent<Food>().level;
-            else
-                m_text2.text += "\n<Unlock>";
-
-            //Food
-            if (food2.GetComponent<Food>().menuSprite != null)
-                m_image2.GetComponent<Image>().sprite = food2.GetComponent<Food>().menuSprite;
-            else
-                m_image2.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient2_1.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient2_2.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient2_3.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient2_4.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient2_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient2_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient2_4.SetActive(false);
-            }
-
+            LoadMenu2(food2);
             m_scroll2.SetActive(true);
         }
         else
@@ -1264,73 +636,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Desserts.Length > index + 2)
         {
             food3 = GetComponent<FoodVariables>().Desserts[index + 2];
-            m_button3.onClick.RemoveAllListeners();
-            m_button3.onClick.AddListener(() => ShowFood(food3));
-            m_text3.text = food3.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food3.GetComponent<Food>().level > 0)
-                m_text3.text += "\nLevel " + food3.GetComponent<Food>().level;
-            else
-                m_text3.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image3.GetComponent<Image>().sprite = food3.GetComponent<Food>().menuSprite;
-            else
-                m_image3.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient3_1.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient3_2.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient3_3.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient3_4.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient3_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient3_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient3_4.SetActive(false);
-            }
-
+            LoadMenu3(food3);
             m_scroll3.SetActive(true);
         }
         else
@@ -1340,73 +646,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Desserts.Length > index + 3)
         {
             food4 = GetComponent<FoodVariables>().Desserts[index + 3];
-            m_button4.onClick.RemoveAllListeners();
-            m_button4.onClick.AddListener(() => ShowFood(food4));
-            m_text4.text = food4.ToString().Replace(" (UnityEngine.GameObject)", "");
-            if (food4.GetComponent<Food>().level > 0)
-                m_text4.text += "\nLevel " + food4.GetComponent<Food>().level;
-            else
-                m_text4.text += "\n<Unlock>";
-
-            //Food
-            if (food3.GetComponent<Food>().menuSprite != null)
-                m_image4.GetComponent<Image>().sprite = food4.GetComponent<Food>().menuSprite;
-            else
-                m_image4.GetComponent<Image>().sprite = defaultFoodSprite;
-
-            //Ingredients
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
-                    ingredient4_1.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_1.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_1.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_1.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
-                    ingredient4_2.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_2.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_2.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_2.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
-                    ingredient4_3.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_3.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_3.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_3.SetActive(false);
-            }
-
-            try
-            {
-                if (food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
-                    ingredient4_4.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
-                else
-                    ingredient4_4.GetComponent<Image>().sprite = defaultIngredientSprite;
-                ingredient4_4.SetActive(true);
-            }
-            catch
-            {
-                ingredient4_4.SetActive(false);
-            }
-
+            LoadMenu4(food4);
             m_scroll4.SetActive(true);
         }
         else
@@ -1642,6 +882,286 @@ public class MenuManagement : MonoBehaviour
                 menuScrollIndex -= 4;
                 LoadDesserts(menuScrollIndex);
             }
+        }
+    }
+
+    private void LoadMenu1(GameObject food1)
+    {
+        m_button1.onClick.RemoveAllListeners();
+        m_button1.onClick.AddListener(() => ShowFood(food1));
+        m_text1.text = food1.ToString().Replace(" (UnityEngine.GameObject)", "");
+        if (food1.GetComponent<Food>().level > 0)
+            m_text1.text += "\nLevel " + food1.GetComponent<Food>().level;
+        else
+            m_text1.text += "\n<Unlock>";
+
+        //Food
+        if (food1.GetComponent<Food>().menuSprite != null)
+            m_image1.GetComponent<Image>().sprite = food1.GetComponent<Food>().menuSprite;
+        else
+            m_image1.GetComponent<Image>().sprite = defaultFoodSprite;
+
+        //Ingredients
+        try
+        {
+            if (food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
+                ingredient1_1.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
+            else
+                ingredient1_1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient1_1.SetActive(true);
+        }
+        catch
+        {
+            ingredient1_1.SetActive(false);
+        }
+
+        try
+        {
+            if (food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
+                ingredient1_2.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
+            else
+                ingredient1_2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient1_2.SetActive(true);
+        }
+        catch
+        {
+            ingredient1_2.SetActive(false);
+        }
+
+        try
+        {
+            if (food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
+                ingredient1_3.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
+            else
+                ingredient1_3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient1_3.SetActive(true);
+        }
+        catch
+        {
+            ingredient1_3.SetActive(false);
+        }
+
+        try
+        {
+            if (food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
+                ingredient1_4.GetComponent<Image>().sprite = food1.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
+            else
+                ingredient1_4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient1_4.SetActive(true);
+        }
+        catch
+        {
+            ingredient1_4.SetActive(false);
+        }
+    }
+
+    private void LoadMenu2(GameObject food2)
+    {
+        m_button2.onClick.RemoveAllListeners();
+        m_button2.onClick.AddListener(() => ShowFood(food2));
+        m_text2.text = food2.ToString().Replace(" (UnityEngine.GameObject)", "");
+        if (food2.GetComponent<Food>().level > 0)
+            m_text2.text += "\nLevel " + food2.GetComponent<Food>().level;
+        else
+            m_text2.text += "\n<Unlock>";
+
+        //Food
+        if (food2.GetComponent<Food>().menuSprite != null)
+            m_image2.GetComponent<Image>().sprite = food2.GetComponent<Food>().menuSprite;
+        else
+            m_image2.GetComponent<Image>().sprite = defaultFoodSprite;
+
+        //Ingredients
+        try
+        {
+            if (food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
+                ingredient2_1.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
+            else
+                ingredient2_1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient2_1.SetActive(true);
+        }
+        catch
+        {
+            ingredient2_1.SetActive(false);
+        }
+
+        try
+        {
+            if (food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
+                ingredient2_2.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
+            else
+                ingredient2_2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient2_2.SetActive(true);
+        }
+        catch
+        {
+            ingredient2_2.SetActive(false);
+        }
+
+        try
+        {
+            if (food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
+                ingredient2_3.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
+            else
+                ingredient2_3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient2_3.SetActive(true);
+        }
+        catch
+        {
+            ingredient2_3.SetActive(false);
+        }
+
+        try
+        {
+            if (food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
+                ingredient2_4.GetComponent<Image>().sprite = food2.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
+            else
+                ingredient2_4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient2_4.SetActive(true);
+        }
+        catch
+        {
+            ingredient2_4.SetActive(false);
+        }
+    }
+
+    private void LoadMenu3(GameObject food3)
+    {
+        m_button3.onClick.RemoveAllListeners();
+        m_button3.onClick.AddListener(() => ShowFood(food3));
+        m_text3.text = food3.ToString().Replace(" (UnityEngine.GameObject)", "");
+        if (food3.GetComponent<Food>().level > 0)
+            m_text3.text += "\nLevel " + food3.GetComponent<Food>().level;
+        else
+            m_text3.text += "\n<Unlock>";
+
+        //Food
+        if (food3.GetComponent<Food>().menuSprite != null)
+            m_image3.GetComponent<Image>().sprite = food3.GetComponent<Food>().menuSprite;
+        else
+            m_image3.GetComponent<Image>().sprite = defaultFoodSprite;
+
+        //Ingredients
+        try
+        {
+            if (food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
+                ingredient3_1.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
+            else
+                ingredient3_1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient3_1.SetActive(true);
+        }
+        catch
+        {
+            ingredient3_1.SetActive(false);
+        }
+
+        try
+        {
+            if (food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
+                ingredient3_2.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
+            else
+                ingredient3_2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient3_2.SetActive(true);
+        }
+        catch
+        {
+            ingredient3_2.SetActive(false);
+        }
+
+        try
+        {
+            if (food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
+                ingredient3_3.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
+            else
+                ingredient3_3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient3_3.SetActive(true);
+        }
+        catch
+        {
+            ingredient3_3.SetActive(false);
+        }
+
+        try
+        {
+            if (food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
+                ingredient3_4.GetComponent<Image>().sprite = food3.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
+            else
+                ingredient3_4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient3_4.SetActive(true);
+        }
+        catch
+        {
+            ingredient3_4.SetActive(false);
+        }
+    }
+
+    private void LoadMenu4(GameObject food4)
+    {
+        m_button4.onClick.RemoveAllListeners();
+        m_button4.onClick.AddListener(() => ShowFood(food4));
+        m_text4.text = food4.ToString().Replace(" (UnityEngine.GameObject)", "");
+        if (food4.GetComponent<Food>().level > 0)
+            m_text4.text += "\nLevel " + food4.GetComponent<Food>().level;
+        else
+            m_text4.text += "\n<Unlock>";
+
+        //Food
+        if (food4.GetComponent<Food>().menuSprite != null)
+            m_image4.GetComponent<Image>().sprite = food4.GetComponent<Food>().menuSprite;
+        else
+            m_image4.GetComponent<Image>().sprite = defaultFoodSprite;
+
+        //Ingredients
+        try
+        {
+            if (food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image != null)
+                ingredient4_1.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().image;
+            else
+                ingredient4_1.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient4_1.SetActive(true);
+        }
+        catch
+        {
+            ingredient4_1.SetActive(false);
+        }
+
+        try
+        {
+            if (food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image != null)
+                ingredient4_2.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().image;
+            else
+                ingredient4_2.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient4_2.SetActive(true);
+        }
+        catch
+        {
+            ingredient4_2.SetActive(false);
+        }
+
+        try
+        {
+            if (food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image != null)
+                ingredient4_3.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().image;
+            else
+                ingredient4_3.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient4_3.SetActive(true);
+        }
+        catch
+        {
+            ingredient4_3.SetActive(false);
+        }
+
+        try
+        {
+            if (food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image != null)
+                ingredient4_4.GetComponent<Image>().sprite = food4.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
+            else
+                ingredient4_4.GetComponent<Image>().sprite = defaultIngredientSprite;
+            ingredient4_4.SetActive(true);
+        }
+        catch
+        {
+            ingredient4_4.SetActive(false);
         }
     }
 

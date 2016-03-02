@@ -34,6 +34,17 @@ public class FoodVariables : MonoBehaviour
         AllSelectedRecipes.Remove(food);
     }
 
+    public ArrayList MyIngredients ()
+    {
+        ArrayList myReturn = new ArrayList();
+        for(int i = 0; i < Ingredients.Length; i++)
+        {
+            if(Ingredients[i].GetComponent<Ingredient>().quatity > 0)
+                myReturn.Add(Ingredients[i]);
+        }
+        return myReturn;
+    }
+
     public ArrayList GetAppetizers()
     {
         return SelectedAppetizers;
