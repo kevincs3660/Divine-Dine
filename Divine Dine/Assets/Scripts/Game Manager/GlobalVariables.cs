@@ -18,6 +18,11 @@ public class GlobalVariables : MonoBehaviour {
 
     void Awake ()
     {
+        Startup();
+    }
+
+    public void Startup()
+    {
         AddMoney(0);
         CalculateLevel();
         AddExperience(0);
