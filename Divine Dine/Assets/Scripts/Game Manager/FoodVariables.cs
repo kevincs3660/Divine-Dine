@@ -12,6 +12,27 @@ public class FoodVariables : MonoBehaviour
     private ArrayList SelectedDesserts;
     private ArrayList AllSelectedRecipes;
 
+    void Awake()
+    {
+        //Reset All Variables
+        for (int i = 0; i < Ingredients.Length; i++)
+        {
+            Ingredients[i].GetComponent<Ingredient>().quatity = 0;
+        }
+        for (int i = 0; i < Appetizers.Length; i++)
+        {
+            Appetizers[i].GetComponent<Food>().level = 0;
+        }
+        for (int i = 0; i < Entrees.Length; i++)
+        {
+            Entrees[i].GetComponent<Food>().level = 0;
+        }
+        for (int i = 0; i < Desserts.Length; i++)
+        {
+            Desserts[i].GetComponent<Food>().level = 0;
+        }
+    }
+
     public void SelectFood(GameObject food)
     {
         if (food.GetComponent<Food>().type == "Appetizer")

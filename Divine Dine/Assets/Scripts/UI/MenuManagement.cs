@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class MenuManagement : MonoBehaviour
 {
     public GameObject mainCanvas;
+    public Color faded;
+
+    private string Message = "";
 
     //All Menus
     private GameObject mainMenu;
@@ -13,6 +17,7 @@ public class MenuManagement : MonoBehaviour
     private GameObject marketScroll;
     private GameObject foodSelection;
     private GameObject ingredientScroll;
+    private GameObject middleBar;
 
     //Main Menu
     private GameObject main1;
@@ -102,10 +107,14 @@ public class MenuManagement : MonoBehaviour
     private GameObject f_ingredient4;
     private Button f_level_button;
     private Button f_select_button;
-    private Button f_health_button;
+    private Button f_price_button;
+    private Button f_yes_button;
+    private Button f_no_button;
     private Text f_level_text;
     private Text f_select_text;
     private Text f_health_text;
+    private GameObject f_button_panel1;
+    private GameObject f_button_panel2;
 
     //Programming Objects
     private int shopScrollIndex;
@@ -127,6 +136,7 @@ public class MenuManagement : MonoBehaviour
         marketScroll = mainCanvas.transform.GetChild(3).gameObject;
         foodSelection = mainCanvas.transform.GetChild(4).gameObject;
         ingredientScroll = mainCanvas.transform.GetChild(5).gameObject;
+        middleBar = mainCanvas.transform.GetChild(6).gameObject;
 
         //Main Menu
         main1 = mainMenu.transform.GetChild(0).gameObject;
@@ -216,10 +226,14 @@ public class MenuManagement : MonoBehaviour
         f_ingredient4 = foodSelection.transform.GetChild(3).GetChild(3).gameObject;
         f_level_button = foodSelection.transform.GetChild(4).GetChild(0).GetComponent<Button>();
         f_select_button = foodSelection.transform.GetChild(4).GetChild(1).GetComponent<Button>();
-        f_health_button = foodSelection.transform.GetChild(4).GetChild(2).GetComponent<Button>();
+        f_price_button = foodSelection.transform.GetChild(4).GetChild(2).GetComponent<Button>();
+        f_yes_button = foodSelection.transform.GetChild(5).GetChild(0).GetComponent<Button>();
+        f_no_button = foodSelection.transform.GetChild(5).GetChild(1).GetComponent<Button>();
         f_level_text = foodSelection.transform.GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>();
         f_select_text = foodSelection.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>();
         f_health_text = foodSelection.transform.GetChild(4).GetChild(2).GetChild(0).GetComponent<Text>();
+        f_button_panel1 = foodSelection.transform.GetChild(4).gameObject;
+        f_button_panel2 = foodSelection.transform.GetChild(5).gameObject;
 
     defaultFoodSprite = m_image1.GetComponent<Image>().sprite;
         defaultIngredientSprite = ingredient1_1.GetComponent<Image>().sprite;
@@ -369,6 +383,12 @@ public class MenuManagement : MonoBehaviour
         menuScroll.SetActive(false);
         bool canLevel = true;
 
+        //Yes and No Buttons
+        f_yes_button.onClick.RemoveAllListeners();
+        f_yes_button.onClick.AddListener(() => ConfirmLevel(food));
+        f_no_button.onClick.RemoveAllListeners();
+        f_no_button.onClick.AddListener(() => DeclineLevel());
+
         //Back Button
         f_close.onClick.RemoveAllListeners();
         f_close.onClick.AddListener(() => CloseFoodSelection());
@@ -379,12 +399,22 @@ public class MenuManagement : MonoBehaviour
         else if (MenuType == "Desserts")
             f_close.onClick.AddListener(() => LoadDesserts(menuScrollIndex));
 
-        //Level Up Button
+        //Buttons
         f_level_button.onClick.RemoveAllListeners();
         if(food.GetComponent<Food>().level > 0)
-            f_level_text.text = "Level Up!";
+        {
+            f_level_text.text = "Level Up";
+            f_select_button.interactable = true;
+            f_select_button.onClick.AddListener(() => SelectToggle());
+            f_price_button.interactable = true;
+            f_price_button.onClick.AddListener(() => ShowPricingOptions());
+        }
         else
-            f_level_text.text = "Unlock!";
+        {
+            f_level_text.text = "Unlock";
+            f_select_button.interactable = false;
+            f_price_button.interactable = false;
+        }
 
         //Description
         f_desc.text = food.ToString().Replace(" (UnityEngine.GameObject)", "");
@@ -407,7 +437,14 @@ public class MenuManagement : MonoBehaviour
             else
                 f_ingredient1.GetComponent<Image>().sprite = defaultIngredientSprite;
             if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().quatity == 0)
+            {
                 canLevel = false;
+                f_ingredient1.GetComponent<Image>().color = faded;
+            }
+            else
+            {
+                f_ingredient1.GetComponent<Image>().color = Color.white;
+            }
             f_ingredient1.SetActive(true);
         }
         catch
@@ -422,7 +459,14 @@ public class MenuManagement : MonoBehaviour
             else
                 f_ingredient2.GetComponent<Image>().sprite = defaultIngredientSprite;
             if (food.GetComponent<Food>().recipe[1].GetComponent<Ingredient>().quatity == 0)
+            {
                 canLevel = false;
+                f_ingredient2.GetComponent<Image>().color = faded;
+            }
+            else
+            {
+                f_ingredient2.GetComponent<Image>().color = Color.white;
+            }
             f_ingredient2.SetActive(true);
         }
         catch
@@ -437,7 +481,14 @@ public class MenuManagement : MonoBehaviour
             else
                 f_ingredient3.GetComponent<Image>().sprite = defaultIngredientSprite;
             if (food.GetComponent<Food>().recipe[2].GetComponent<Ingredient>().quatity == 0)
+            {
                 canLevel = false;
+                f_ingredient3.GetComponent<Image>().color = faded;
+            }
+            else
+            {
+                f_ingredient3.GetComponent<Image>().color = Color.white;
+            }
             f_ingredient3.SetActive(true);
         }
         catch
@@ -452,7 +503,14 @@ public class MenuManagement : MonoBehaviour
             else
                 f_ingredient4.GetComponent<Image>().sprite = defaultIngredientSprite;
             if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().quatity == 0)
+            {
                 canLevel = false;
+                f_ingredient4.GetComponent<Image>().color = faded;
+            }
+            else
+            {
+                f_ingredient4.GetComponent<Image>().color = Color.white;
+            }
             f_ingredient4.SetActive(true);
         }
         catch
@@ -469,12 +527,40 @@ public class MenuManagement : MonoBehaviour
         else
         {
             f_level_button.interactable = false;
-            Debug.Log("Disabled Button");
         }
         foodSelection.SetActive(true);
     }
 
     public void ShowLevelConfirmation()
+    {
+        f_button_panel1.SetActive(false);
+        f_button_panel2.SetActive(true);
+    }
+
+    public void ConfirmLevel(GameObject food)
+    {
+        food.GetComponent<Food>().level++;
+        f_button_panel1.SetActive(true);
+        f_button_panel2.SetActive(false);
+        for(int i = 0; i < food.GetComponent<Food>().recipe.Length; i++)
+        {
+            food.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().quatity--;
+        }
+        ShowFood(food);
+    }
+
+    public void DeclineLevel()
+    {
+        f_button_panel1.SetActive(true);
+        f_button_panel2.SetActive(false);
+    }
+
+    public void ShowPricingOptions()
+    {
+
+    }
+
+    public void SelectToggle()
     {
 
     }
@@ -552,7 +638,7 @@ public class MenuManagement : MonoBehaviour
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 3)
         {
             food4 = GetComponent<FoodVariables>().Appetizers[index + 3];
-            LoadMenu1(food4);
+            LoadMenu4(food4);
             m_scroll4.SetActive(true);
         }
         else
@@ -1173,6 +1259,7 @@ public class MenuManagement : MonoBehaviour
         marketScroll.SetActive(false);
         foodSelection.SetActive(false);
         ingredientScroll.SetActive(false);
+        middleBar.SetActive(false);
     }
 
     private void ClearButtonsMainMenu()
@@ -1220,5 +1307,20 @@ public class MenuManagement : MonoBehaviour
     public void CloseFoodSelection()
     {
         foodSelection.SetActive(false);
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 200, 30), Message);
+    }
+
+    void OnMouseEnter()
+    {
+        Message = "Here I am.";
+    }
+
+    void OnMouseExit()
+    {
+        Message = "";
     }
 }
