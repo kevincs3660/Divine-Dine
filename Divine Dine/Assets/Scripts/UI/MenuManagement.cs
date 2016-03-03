@@ -568,38 +568,7 @@ public class MenuManagement : MonoBehaviour
     public void LoadIngredients(int index)
     {
         MenuType = "Ingredients";
-        if(GetComponent<FoodVariables>().Ingredients.Length > index + 0)
-        {
-            
-        }
-        else
-        {
 
-        }
-        if (GetComponent<FoodVariables>().Ingredients.Length > index + 1)
-        {
-
-        }
-        else
-        {
-
-        }
-        if (GetComponent<FoodVariables>().Ingredients.Length > index + 2)
-        {
-
-        }
-        else
-        {
-
-        }
-        if (GetComponent<FoodVariables>().Ingredients.Length > index + 3)
-        {
-
-        }
-        else
-        {
-
-        }
     }
 
     public void LoadAppetizers(int index)
@@ -901,15 +870,7 @@ public class MenuManagement : MonoBehaviour
 
     public void MenuScrollNext()
     {
-        if(MenuType == "Ingredients")
-        {
-            if(GetComponent<FoodVariables>().Ingredients.Length > menuScrollIndex + 4)
-            {
-                menuScrollIndex += 4;
-                LoadIngredients(menuScrollIndex);
-            }
-        }
-        else if(MenuType == "Appetizers")
+        if(MenuType == "Appetizers")
         {
             if (GetComponent<FoodVariables>().Appetizers.Length > menuScrollIndex + 4)
             {

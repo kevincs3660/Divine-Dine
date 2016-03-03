@@ -3,33 +3,41 @@ using System.Collections;
 
 public class FoodVariables : MonoBehaviour
 {
-    public GameObject[] Ingredients;
     public GameObject[] Appetizers;
     public GameObject[] Entrees;
     public GameObject[] Desserts;
-    private ArrayList SelectedAppetizers;
-    private ArrayList SelectedEntrees;
-    private ArrayList SelectedDesserts;
-    private ArrayList AllSelectedRecipes;
+    private ArrayList SelectedAppetizers = new ArrayList();
+    private ArrayList SelectedEntrees = new ArrayList();
+    private ArrayList SelectedDesserts = new ArrayList();
+    private ArrayList AllSelectedRecipes = new ArrayList();
+    private ArrayList AllIngredients = new ArrayList();
 
     void Awake()
     {
         //Reset All Variables
-        for (int i = 0; i < Ingredients.Length; i++)
-        {
-            Ingredients[i].GetComponent<Ingredient>().quatity = 0;
-        }
         for (int i = 0; i < Appetizers.Length; i++)
         {
             Appetizers[i].GetComponent<Food>().level = 0;
+            ExtractIngredients(Appetizers[i]);
         }
         for (int i = 0; i < Entrees.Length; i++)
         {
             Entrees[i].GetComponent<Food>().level = 0;
+            ExtractIngredients(Entrees[i]);
         }
         for (int i = 0; i < Desserts.Length; i++)
         {
             Desserts[i].GetComponent<Food>().level = 0;
+            ExtractIngredients(Desserts[i]);
+        }
+
+        IEnumerator list = AllIngredients.GetEnumerator();
+        list.Reset();
+        for (int i = 0; i < AllIngredients.Count; i++)
+        {
+            list.MoveNext();
+            GameObject temp = (GameObject)list.Current;
+            temp.GetComponent<Ingredient>().quatity = 0;
         }
     }
 
@@ -58,10 +66,14 @@ public class FoodVariables : MonoBehaviour
     public ArrayList MyIngredients ()
     {
         ArrayList myReturn = new ArrayList();
-        for(int i = 0; i < Ingredients.Length; i++)
+        IEnumerator list = AllIngredients.GetEnumerator();
+        list.Reset();
+        for (int i = 0; i < AllIngredients.Count; i++)
         {
-            if(Ingredients[i].GetComponent<Ingredient>().quatity > 0)
-                myReturn.Add(Ingredients[i]);
+            list.MoveNext();
+            GameObject temp = (GameObject)list.Current;
+            if (temp.GetComponent<Ingredient>().quatity > 0)
+                myReturn.Add(temp);
         }
         return myReturn;
     }
@@ -84,5 +96,16 @@ public class FoodVariables : MonoBehaviour
     public ArrayList GetAllSelectedRecipes()
     {
         return AllSelectedRecipes;
+    }
+
+    private void ExtractIngredients(GameObject food)
+    {
+        for(int i = 0; i < food.GetComponent<Food>().recipe.Length; i++)
+        {
+            if (!AllIngredients.Contains(food.GetComponent<Food>().recipe[i]))
+            {
+                AllIngredients.Add(food.GetComponent<Food>().recipe[i]);
+            }
+        }
     }
 }
