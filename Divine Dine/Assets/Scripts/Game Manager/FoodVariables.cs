@@ -98,6 +98,18 @@ public class FoodVariables : MonoBehaviour
         return AllSelectedRecipes;
     }
 
+    public void OneOfEverything()
+    {
+        IEnumerator list = AllIngredients.GetEnumerator();
+        list.Reset();
+        for (int i = 0; i < AllIngredients.Count; i++)
+        {
+            list.MoveNext();
+            GameObject temp = (GameObject)list.Current;
+            temp.GetComponent<Ingredient>().quatity++;
+        }
+    }
+
     private void ExtractIngredients(GameObject food)
     {
         for(int i = 0; i < food.GetComponent<Food>().recipe.Length; i++)

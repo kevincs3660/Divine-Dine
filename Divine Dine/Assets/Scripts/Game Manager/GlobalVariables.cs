@@ -34,7 +34,7 @@ public class GlobalVariables : MonoBehaviour {
         nextLevelXP = 250;
         baseXP  = 0;
 
-        while (experience > nextLevelXP)
+        while (experience >= nextLevelXP)
         {
             baseXP = nextLevelXP;
             nextLevelXP = nextLevelXP*2;
@@ -51,6 +51,12 @@ public class GlobalVariables : MonoBehaviour {
         return (current / roof);
     }
 
+    public void AdvanceToNextLevel()
+    {
+        int roof = nextLevelXP - baseXP;
+        AddExperience(roof);
+    }
+
     public void AddMoney(int amount)
     {
         money += amount;
@@ -60,7 +66,7 @@ public class GlobalVariables : MonoBehaviour {
     public void AddExperience(int amount)
     {
         experience += amount;
-        if(experience > nextLevelXP)
+        if(experience >= nextLevelXP)
         {
             //Level Up
             CalculateLevel();

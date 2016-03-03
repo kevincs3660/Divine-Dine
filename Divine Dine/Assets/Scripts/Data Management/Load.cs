@@ -16,7 +16,7 @@ public class Load : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.P))
+		if (Input.GetKeyDown(KeyCode.F2))
 			doLoad ();
 	}
 

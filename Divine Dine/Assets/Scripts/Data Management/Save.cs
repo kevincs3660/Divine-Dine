@@ -16,7 +16,7 @@ public class Save : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.O))
+		if (Input.GetKeyDown(KeyCode.F1))
 			doSave ();
 	}
 

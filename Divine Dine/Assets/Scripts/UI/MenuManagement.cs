@@ -6,6 +6,7 @@ using System.Collections;
 public class MenuManagement : MonoBehaviour
 {
     public GameObject mainCanvas;
+    public GameObject gameCamera;
     public Color faded;
 
     private string Message = "";
@@ -116,6 +117,13 @@ public class MenuManagement : MonoBehaviour
     private GameObject f_button_panel1;
     private GameObject f_button_panel2;
 
+    //Ingredient Scroll
+
+    //Middle Bar
+    private GameObject cheatBox;
+    private Text cheatText;
+    private Text cameraText;
+
     //Programming Objects
     private int shopScrollIndex;
     private int menuScrollIndex;
@@ -128,7 +136,7 @@ public class MenuManagement : MonoBehaviour
     private GameObject food3;
     private GameObject food4;
 
-    void Awake()
+    void Start()
     {
         mainMenu = mainCanvas.transform.GetChild(0).gameObject;
         shopScroll = mainCanvas.transform.GetChild(1).gameObject;
@@ -235,6 +243,13 @@ public class MenuManagement : MonoBehaviour
         f_button_panel1 = foodSelection.transform.GetChild(4).gameObject;
         f_button_panel2 = foodSelection.transform.GetChild(5).gameObject;
 
+        //Ingredient Scroll
+
+        //Middle Bar
+        cheatBox = middleBar.transform.GetChild(0).gameObject;
+        cheatText = middleBar.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+        cameraText = middleBar.transform.GetChild(2).GetChild(0).GetComponent<Text>();
+
     defaultFoodSprite = m_image1.GetComponent<Image>().sprite;
         defaultIngredientSprite = ingredient1_1.GetComponent<Image>().sprite;
         ShowMainMenu();
@@ -259,6 +274,7 @@ public class MenuManagement : MonoBehaviour
         mainButton4.onClick.AddListener(() => ShowMarket());
         mainButton5.onClick.AddListener(() => ShowTrophies());
 
+        middleBar.SetActive(true);
         mainMenu.SetActive(true);
     }
 
@@ -1209,6 +1225,31 @@ public class MenuManagement : MonoBehaviour
         catch
         {
             ingredient4_4.SetActive(false);
+        }
+    }
+
+    public void ToggleCheatBox(bool value)
+    {
+        cheatText.text = "";
+        cheatBox.SetActive(value);
+    }
+
+    public string GetCheat()
+    {
+        return cheatText.text;
+    }
+
+    public void ToggleCamera()
+    {
+        if(cameraText.text == "Unlock Camera")
+        {
+            cameraText.text = "Lock Camera";
+            gameCamera.GetComponent<GodCam>().enabled = true;
+        }
+        else
+        {
+            cameraText.text = "Unlock Camera";
+            gameCamera.GetComponent<GodCam>().enabled = false;
         }
     }
 
