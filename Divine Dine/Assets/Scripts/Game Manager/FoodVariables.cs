@@ -6,11 +6,25 @@ public class FoodVariables : MonoBehaviour
     public GameObject[] Appetizers;
     public GameObject[] Entrees;
     public GameObject[] Desserts;
+    public int marketLevel = 0;
+    public int baseSaleItems = 4;
+    public int baseMarketItems = 4;
+    public int baseRareItems = 4;
+    public float saleMultiplier = 3;
+    public float marketMultiplier = 2;
+    public float rareMultiplier = 1;
     private ArrayList SelectedAppetizers = new ArrayList();
     private ArrayList SelectedEntrees = new ArrayList();
     private ArrayList SelectedDesserts = new ArrayList();
     private ArrayList AllSelectedRecipes = new ArrayList();
     private ArrayList AllIngredients = new ArrayList();
+    private ArrayList MarketList = new ArrayList();
+    private ArrayList SaleItems = new ArrayList();
+    private ArrayList MarketItems = new ArrayList();
+    private ArrayList RareItems = new ArrayList();
+    private int actualSaleItems;
+    private int actualMarketItems;
+    private int actualRareItems;
 
     void Awake()
     {
@@ -98,6 +112,50 @@ public class FoodVariables : MonoBehaviour
         return AllSelectedRecipes;
     }
 
+    
+    public ArrayList GetSaleItems()
+    {
+        return SaleItems;
+    }
+
+    public ArrayList GetMarketItems()
+    {
+        return MarketItems;
+    }
+
+    public ArrayList GetRareItems()
+    {
+        return RareItems;
+    }
+
+    public void CalculateMarket()
+    {
+        int remainder = MarketList.Count;
+        actualSaleItems = baseSaleItems + (int)(marketLevel / saleMultiplier);
+        actualMarketItems = baseMarketItems + (int)(marketLevel / marketMultiplier);
+        actualRareItems = baseMarketItems + (int)(marketLevel / rareMultiplier);
+
+        actualSaleItems = Mathf.Min(remainder, actualSaleItems);
+        remainder -= actualSaleItems;
+        actualMarketItems = Mathf.Min(remainder, actualMarketItems);
+        remainder -= actualMarketItems;
+        actualRareItems = Mathf.Min(remainder, actualRareItems);
+        remainder -= actualRareItems;
+
+        for(int i = 0; i < actualSaleItems; i++)
+        {
+
+        }
+        for(int i = 0; i < actualMarketItems; i++)
+        {
+
+        }
+        for(int i = 0; i < actualRareItems; i++)
+        {
+
+        }
+    }
+
     public void OneOfEverything()
     {
         IEnumerator list = AllIngredients.GetEnumerator();
@@ -117,6 +175,10 @@ public class FoodVariables : MonoBehaviour
             if (!AllIngredients.Contains(food.GetComponent<Food>().recipe[i]))
             {
                 AllIngredients.Add(food.GetComponent<Food>().recipe[i]);
+                for(int j = 0; j < food.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().rarity; j++)
+                {
+                    MarketList.Add(food.GetComponent<Food>().recipe[i]);
+                }
             }
         }
     }

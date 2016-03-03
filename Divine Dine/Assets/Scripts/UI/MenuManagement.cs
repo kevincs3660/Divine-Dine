@@ -97,6 +97,22 @@ public class MenuManagement : MonoBehaviour
     private Text m_text4;
 
     //Market Menu
+    private GameObject k_panel1;
+    private GameObject k_panel2;
+    private GameObject k_panel3;
+    private GameObject k_panel4;
+    private GameObject k_image1;
+    private GameObject k_image2;
+    private GameObject k_image3;
+    private GameObject k_image4;
+    private Button k_button1;
+    private Button k_button2;
+    private Button k_button3;
+    private Button k_button4;
+    private Text k_text1;
+    private Text k_text2;
+    private Text k_text3;
+    private Text k_text4;
 
     //Food Selection
     private Button f_close;
@@ -223,6 +239,22 @@ public class MenuManagement : MonoBehaviour
         m_text4 = m_scroll4.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>();
 
         //Market Menu
+        k_panel1 = marketScroll.transform.GetChild(3).gameObject;
+        k_panel2 = marketScroll.transform.GetChild(4).gameObject;
+        k_panel3 = marketScroll.transform.GetChild(5).gameObject;
+        k_panel4 = marketScroll.transform.GetChild(6).gameObject;
+        k_image1 = k_panel1.transform.GetChild(0).gameObject;
+        k_image2 = k_panel2.transform.GetChild(0).gameObject;
+        k_image3 = k_panel3.transform.GetChild(0).gameObject;
+        k_image4 = k_panel4.transform.GetChild(0).gameObject;
+        k_button1 = k_panel1.transform.GetChild(1).GetComponent<Button>();
+        k_button2 = k_panel2.transform.GetChild(1).GetComponent<Button>();
+        k_button3 = k_panel3.transform.GetChild(1).GetComponent<Button>();
+        k_button4 = k_panel4.transform.GetChild(1).GetComponent<Button>();
+        k_text1 = k_panel1.transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        k_text2 = k_panel2.transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        k_text3 = k_panel3.transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        k_text4 = k_panel4.transform.GetChild(1).GetChild(0).GetComponent<Text>();
 
         //Food Selection
         f_close = foodSelection.transform.GetChild(0).gameObject.GetComponent<Button>();
@@ -334,7 +366,21 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowMarket()
     {
-        //ClearAll();
+        ClearAll();
+        MenuType = "Market Menu";
+        ResetAllPanelsMainMenu();
+        mainText1.text = "Back";
+        mainText2.text = "All Items";
+        mainText3.text = "Sale Itmes";
+        mainText4.text = "Special Order";
+        mainText5.text = "Market Stats";
+
+        ClearButtonsMainMenu();
+        mainButton1.onClick.AddListener(() => ShowMainMenu());
+        mainButton2.onClick.AddListener(() => ShowAllMarket());
+        mainButton3.onClick.AddListener(() => ShowSaleMarket());
+        mainButton4.onClick.AddListener(() => ShowSaleMarket());
+        mainButton5.onClick.AddListener(() => ShowMarketStats());
     }
 
     public void ShowTrophies()
@@ -342,9 +388,24 @@ public class MenuManagement : MonoBehaviour
         //ClearAll();
     }
 
-    public void ShowMarketMenu()
+    public void ShowAllMarket()
     {
-        //ClearAll();
+
+    }
+
+    public void ShowSaleMarket()
+    {
+
+    }
+
+    public void ShowSepcialMarket()
+    {
+
+    }
+
+    public void ShowMarketStats()
+    {
+
     }
 
     public void ShowItemStore()
