@@ -19,9 +19,9 @@ public class FoodVariables : MonoBehaviour
     private ArrayList AllSelectedRecipes = new ArrayList();
     private ArrayList AllIngredients = new ArrayList();
     private ArrayList MarketList = new ArrayList();
-    private ArrayList SaleItems = new ArrayList();
-    private ArrayList MarketItems = new ArrayList();
-    private ArrayList RareItems = new ArrayList();
+    private ArrayList SaleItems;
+    private ArrayList MarketItems;
+    private ArrayList RareItems;
     private int actualSaleItems;
     private int actualMarketItems;
     private int actualRareItems;
@@ -45,12 +45,10 @@ public class FoodVariables : MonoBehaviour
             ExtractIngredients(Desserts[i]);
         }
 
-        IEnumerator list = AllIngredients.GetEnumerator();
-        list.Reset();
+
         for (int i = 0; i < AllIngredients.Count; i++)
         {
-            list.MoveNext();
-            GameObject temp = (GameObject)list.Current;
+            GameObject temp = (GameObject)AllIngredients[i];
             temp.GetComponent<Ingredient>().quatity = 0;
         }
     }
@@ -80,12 +78,9 @@ public class FoodVariables : MonoBehaviour
     public ArrayList MyIngredients ()
     {
         ArrayList myReturn = new ArrayList();
-        IEnumerator list = AllIngredients.GetEnumerator();
-        list.Reset();
         for (int i = 0; i < AllIngredients.Count; i++)
         {
-            list.MoveNext();
-            GameObject temp = (GameObject)list.Current;
+            GameObject temp = (GameObject)AllIngredients[i];
             if (temp.GetComponent<Ingredient>().quatity > 0)
                 myReturn.Add(temp);
         }
@@ -112,7 +107,11 @@ public class FoodVariables : MonoBehaviour
         return AllSelectedRecipes;
     }
 
-    
+    public ArrayList GetMarketList()
+    {
+        return MarketList;
+    }
+  
     public ArrayList GetSaleItems()
     {
         return SaleItems;
@@ -130,6 +129,10 @@ public class FoodVariables : MonoBehaviour
 
     public void CalculateMarket()
     {
+        SaleItems = new ArrayList();
+        MarketItems = new ArrayList();
+        RareItems = new ArrayList();
+
         int remainder = MarketList.Count;
         actualSaleItems = baseSaleItems + (int)(marketLevel / saleMultiplier);
         actualMarketItems = baseMarketItems + (int)(marketLevel / marketMultiplier);
@@ -144,26 +147,23 @@ public class FoodVariables : MonoBehaviour
 
         for(int i = 0; i < actualSaleItems; i++)
         {
-
+            SaleItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
         }
         for(int i = 0; i < actualMarketItems; i++)
         {
-
+            MarketItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
         }
         for(int i = 0; i < actualRareItems; i++)
         {
-
+            RareItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
         }
     }
 
     public void OneOfEverything()
     {
-        IEnumerator list = AllIngredients.GetEnumerator();
-        list.Reset();
         for (int i = 0; i < AllIngredients.Count; i++)
         {
-            list.MoveNext();
-            GameObject temp = (GameObject)list.Current;
+            GameObject temp = (GameObject)AllIngredients[i];
             temp.GetComponent<Ingredient>().quatity++;
         }
     }

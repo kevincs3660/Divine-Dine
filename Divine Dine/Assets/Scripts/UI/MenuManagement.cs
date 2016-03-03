@@ -152,6 +152,10 @@ public class MenuManagement : MonoBehaviour
     private GameObject food3;
     private GameObject food4;
 
+    ArrayList saleItems;
+    ArrayList marketItems;
+    ArrayList rareItems;
+
     void Start()
     {
         mainMenu = mainCanvas.transform.GetChild(0).gameObject;
@@ -367,7 +371,12 @@ public class MenuManagement : MonoBehaviour
     public void ShowMarket()
     {
         ClearAll();
-        MenuType = "Market Menu";
+
+        GetComponent<FoodVariables>().CalculateMarket();
+        saleItems = GetComponent<FoodVariables>().GetSaleItems();
+        marketItems = GetComponent<FoodVariables>().GetMarketItems();
+        rareItems = GetComponent<FoodVariables>().GetRareItems();
+
         ResetAllPanelsMainMenu();
         mainText1.text = "Back";
         mainText2.text = "All Items";
@@ -381,6 +390,8 @@ public class MenuManagement : MonoBehaviour
         mainButton3.onClick.AddListener(() => ShowSaleMarket());
         mainButton4.onClick.AddListener(() => ShowSaleMarket());
         mainButton5.onClick.AddListener(() => ShowMarketStats());
+
+        mainMenu.SetActive(true);
     }
 
     public void ShowTrophies()
@@ -390,12 +401,21 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowAllMarket()
     {
+        MenuType = "Market All";
 
+        menuScrollIndex = 0;
+        LoadMarket(menuScrollIndex);
+        marketScroll.SetActive(true);
     }
 
     public void ShowSaleMarket()
     {
+        Debug.Log("ShowSaleItems");
+        MenuType = "Market Sale";
 
+        menuScrollIndex = 0;
+        LoadSaleMarket(menuScrollIndex);
+        marketScroll.SetActive(true);
     }
 
     public void ShowSepcialMarket()
@@ -453,6 +473,11 @@ public class MenuManagement : MonoBehaviour
         LoadWallpaper(shopScrollIndex);
 
         shopScroll.SetActive(true);
+    }
+
+    public void ShowIngredient(GameObject ingredient)
+    {
+
     }
 
     public void ShowFood(GameObject food)
@@ -640,6 +665,185 @@ public class MenuManagement : MonoBehaviour
     public void SelectToggle()
     {
 
+    }
+
+    public void LoadMarket(int index)
+    {
+        GameObject ingredient;
+
+        int saleIndex = 0;
+        int marketIndex = 0;
+        int rareIndex = 0;
+
+        if (saleItems.Count > index + saleIndex)
+        {
+            ingredient = (GameObject)saleItems[index + saleIndex];
+            LoadMarket(ingredient, k_image1, k_button1, k_text1);
+            k_panel1.SetActive(true);
+            saleIndex++;
+        }
+        else
+        {
+            if(marketItems.Count > ((index-saleItems.Count) + marketIndex))
+            {
+                ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
+                LoadMarket(ingredient, k_image1, k_button1, k_text1);
+                k_panel1.SetActive(true);
+                marketIndex++;
+            }
+            else
+            {
+                if(rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
+                {
+                    ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
+                    LoadMarket(ingredient, k_image1, k_button1, k_text1);
+                    k_panel1.SetActive(true);
+                    rareIndex++;
+                }
+                else
+                {
+                    k_panel1.SetActive(false);
+                }
+            }
+        }
+        if (saleItems.Count > index + saleIndex)
+        {
+            ingredient = (GameObject)saleItems[index + saleIndex];
+            LoadMarket(ingredient, k_image2, k_button2, k_text2);
+            k_panel2.SetActive(true);
+            saleIndex++;
+        }
+        else
+        {
+            if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
+            {
+                ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
+                LoadMarket(ingredient, k_image2, k_button2, k_text2);
+                k_panel2.SetActive(true);
+                marketIndex++;
+            }
+            else
+            {
+                if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
+                {
+                    ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
+                    LoadMarket(ingredient, k_image2, k_button2, k_text2);
+                    k_panel2.SetActive(true);
+                    rareIndex++;
+                }
+                else
+                {
+                    k_panel2.SetActive(false);
+                }
+            }
+        }
+        if (saleItems.Count > index + saleIndex)
+        {
+            ingredient = (GameObject)saleItems[index + saleIndex];
+            LoadMarket(ingredient, k_image3, k_button3, k_text3);
+            k_panel3.SetActive(true);
+            saleIndex++;
+        }
+        else
+        {
+            if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
+            {
+                ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
+                LoadMarket(ingredient, k_image3, k_button3, k_text3);
+                k_panel3.SetActive(true);
+                marketIndex++;
+            }
+            else
+            {
+                if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
+                {
+                    ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
+                    LoadMarket(ingredient, k_image3, k_button3, k_text3);
+                    k_panel3.SetActive(true);
+                    rareIndex++;
+                }
+                else
+                {
+                    k_panel3.SetActive(false);
+                }
+            }
+        }
+        if (saleItems.Count > index + saleIndex)
+        {
+            ingredient = (GameObject)saleItems[index + saleIndex];
+            LoadMarket(ingredient, k_image4, k_button4, k_text4);
+            k_panel4.SetActive(true);
+            saleIndex++;
+        }
+        else
+        {
+            if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
+            {
+                ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
+                LoadMarket(ingredient, k_image4, k_button4, k_text4);
+                k_panel4.SetActive(true);
+                marketIndex++;
+            }
+            else
+            {
+                if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
+                {
+                    ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
+                    LoadMarket(ingredient, k_image4, k_button4, k_text4);
+                    k_panel4.SetActive(true);
+                    rareIndex++;
+                }
+                else
+                {
+                    k_panel4.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public void LoadSaleMarket(int index)
+    {
+        GameObject ingredient;
+        if (saleItems.Count > index + 0)
+        {
+            ingredient = (GameObject)saleItems[index + 0];
+            LoadMarket(ingredient, k_image1, k_button1, k_text1);
+            k_panel1.SetActive(true);
+        }
+        else
+        {
+            k_panel1.SetActive(false);
+        }
+        if (saleItems.Count > index + 1)
+        {
+            ingredient = (GameObject)saleItems[index + 1];
+            LoadMarket(ingredient, k_image2, k_button2, k_text2);
+            k_panel2.SetActive(true);
+        }
+        else
+        {
+            k_panel2.SetActive(false);
+        }
+        if (saleItems.Count > index + 2)
+        {
+            ingredient = (GameObject)saleItems[index + 2];
+            LoadMarket(ingredient, k_image3, k_button3, k_text3);
+            k_panel3.SetActive(true);
+        }
+        else
+        {
+            k_panel3.SetActive(false);
+        }
+        if (saleItems.Count > index + 3)
+        {
+            ingredient = (GameObject)saleItems[index + 3];
+            LoadMarket(ingredient, k_image4, k_button4, k_text4);
+            k_panel4.SetActive(true);
+        }
+        else
+        {
+            k_panel4.SetActive(false);
+        }
     }
 
     public void LoadIngredients(int index)
@@ -971,6 +1175,22 @@ public class MenuManagement : MonoBehaviour
                 LoadDesserts(menuScrollIndex);
             }
         }
+        else if (MenuType == "Market All")
+        {
+            if (GetComponent<FoodVariables>().GetMarketList().Count > menuScrollIndex + 4)
+            {
+                menuScrollIndex += 4;
+                LoadMarket(menuScrollIndex);
+            }
+        }
+        else if (MenuType == "Market Sale")
+        {
+            if(saleItems.Count > menuScrollIndex +4)
+            {
+                menuScrollIndex += 4;
+                LoadSaleMarket(menuScrollIndex);
+            }
+        }
     }
 
     public void MenuScrollBack()
@@ -1007,7 +1227,39 @@ public class MenuManagement : MonoBehaviour
                 LoadDesserts(menuScrollIndex);
             }
         }
+        else if (MenuType == "Market All")
+        {
+            if (menuScrollIndex - 4 >= 0)
+            {
+                menuScrollIndex -= 4;
+                LoadMarket(menuScrollIndex);
+            }
+        }
+        else if (MenuType == "Market Sale")
+        {
+            if (menuScrollIndex - 4 >= 0)
+            {
+                menuScrollIndex -= 4;
+                LoadSaleMarket(menuScrollIndex);
+            }
+        }
     }
+
+    private void LoadMarket(GameObject ingredient, GameObject k_image, Button k_button, Text k_text)
+    {
+        if (ingredient.GetComponent<Ingredient>().image != null)
+            k_image.GetComponent<Image>().sprite = ingredient.GetComponent<Ingredient>().image;
+        else
+            k_image.GetComponent<Image>().sprite = defaultIngredientSprite;
+
+        k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+        k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+
+        k_button.onClick.RemoveAllListeners();
+        k_button.onClick.AddListener(() => ShowIngredient(ingredient));
+
+    }
+
 
     private void LoadMenu1(GameObject food1)
     {
