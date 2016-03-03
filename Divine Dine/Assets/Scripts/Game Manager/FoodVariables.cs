@@ -19,6 +19,7 @@ public class FoodVariables : MonoBehaviour
     private ArrayList AllSelectedRecipes = new ArrayList();
     private ArrayList AllIngredients = new ArrayList();
     private ArrayList MarketList = new ArrayList();
+    private ArrayList UnstockedItems = new ArrayList();
     private ArrayList SaleItems;
     private ArrayList MarketItems;
     private ArrayList RareItems;
@@ -111,6 +112,11 @@ public class FoodVariables : MonoBehaviour
     {
         return MarketList;
     }
+
+    public ArrayList GetAllIngredients()
+    {
+        return AllIngredients;
+    }
   
     public ArrayList GetSaleItems()
     {
@@ -125,6 +131,11 @@ public class FoodVariables : MonoBehaviour
     public ArrayList GetRareItems()
     {
         return RareItems;
+    }
+
+    public ArrayList GetUnstockedItems()
+    {
+        return UnstockedItems;
     }
 
     public void CalculateMarket()
@@ -147,15 +158,36 @@ public class FoodVariables : MonoBehaviour
 
         for(int i = 0; i < actualSaleItems; i++)
         {
-            SaleItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
+            var ingredient = MarketList[Random.Range(0, MarketList.Count)];
+            if (!SaleItems.Contains(ingredient))
+            {
+                SaleItems.Add(ingredient);
+                UnstockedItems.Remove(ingredient);
+            }
+            else
+                i--;
         }
         for(int i = 0; i < actualMarketItems; i++)
         {
-            MarketItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
+            var ingredient = MarketList[Random.Range(0, MarketList.Count)];
+            if (!SaleItems.Contains(ingredient))
+            {
+                MarketItems.Add(ingredient);
+                UnstockedItems.Remove(ingredient);
+            }
+            else
+                i--;
         }
         for(int i = 0; i < actualRareItems; i++)
         {
-            RareItems.Add(MarketList[Random.Range(0, MarketList.Count)]);
+            var ingredient = MarketList[Random.Range(0, MarketList.Count)];
+            if (!SaleItems.Contains(ingredient))
+            {
+                RareItems.Add(ingredient);
+                UnstockedItems.Remove(ingredient);
+            }
+            else
+                i--;
         }
     }
 
@@ -175,7 +207,8 @@ public class FoodVariables : MonoBehaviour
             if (!AllIngredients.Contains(food.GetComponent<Food>().recipe[i]))
             {
                 AllIngredients.Add(food.GetComponent<Food>().recipe[i]);
-                for(int j = 0; j < food.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().rarity; j++)
+                UnstockedItems.Add(food.GetComponent<Food>().recipe[i]);
+                for (int j = 0; j < food.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().rarity; j++)
                 {
                     MarketList.Add(food.GetComponent<Food>().recipe[i]);
                 }

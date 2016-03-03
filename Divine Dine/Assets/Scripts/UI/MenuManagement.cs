@@ -155,6 +155,7 @@ public class MenuManagement : MonoBehaviour
     ArrayList saleItems;
     ArrayList marketItems;
     ArrayList rareItems;
+    ArrayList unstockedItems;
 
     void Start()
     {
@@ -376,6 +377,7 @@ public class MenuManagement : MonoBehaviour
         saleItems = GetComponent<FoodVariables>().GetSaleItems();
         marketItems = GetComponent<FoodVariables>().GetMarketItems();
         rareItems = GetComponent<FoodVariables>().GetRareItems();
+        unstockedItems = GetComponent<FoodVariables>().GetUnstockedItems();
 
         ResetAllPanelsMainMenu();
         mainText1.text = "Back";
@@ -410,7 +412,6 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowSaleMarket()
     {
-        Debug.Log("ShowSaleItems");
         MenuType = "Market Sale";
 
         menuScrollIndex = 0;
@@ -674,11 +675,12 @@ public class MenuManagement : MonoBehaviour
         int saleIndex = 0;
         int marketIndex = 0;
         int rareIndex = 0;
+        int unstockedIndex = 0;
 
         if (saleItems.Count > index + saleIndex)
         {
             ingredient = (GameObject)saleItems[index + saleIndex];
-            LoadMarket(ingredient, k_image1, k_button1, k_text1);
+            LoadMarket(ingredient, k_image1, k_button1, k_text1, 0);
             k_panel1.SetActive(true);
             saleIndex++;
         }
@@ -687,7 +689,7 @@ public class MenuManagement : MonoBehaviour
             if(marketItems.Count > ((index-saleItems.Count) + marketIndex))
             {
                 ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
-                LoadMarket(ingredient, k_image1, k_button1, k_text1);
+                LoadMarket(ingredient, k_image1, k_button1, k_text1, 1);
                 k_panel1.SetActive(true);
                 marketIndex++;
             }
@@ -696,20 +698,30 @@ public class MenuManagement : MonoBehaviour
                 if(rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
                 {
                     ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
-                    LoadMarket(ingredient, k_image1, k_button1, k_text1);
+                    LoadMarket(ingredient, k_image1, k_button1, k_text1, 2);
                     k_panel1.SetActive(true);
                     rareIndex++;
                 }
                 else
                 {
-                    k_panel1.SetActive(false);
+                    if(unstockedItems.Count > ((index - saleItems.Count - marketItems.Count- rareItems.Count) + unstockedIndex))
+                    {
+                        ingredient = (GameObject)unstockedItems[(index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex];
+                        LoadMarket(ingredient, k_image1, k_button1, k_text1, 3);
+                        k_panel1.SetActive(true);
+                        unstockedIndex++;
+                    }
+                    else
+                    {
+                        k_panel1.SetActive(false);
+                    }
                 }
             }
         }
         if (saleItems.Count > index + saleIndex)
         {
             ingredient = (GameObject)saleItems[index + saleIndex];
-            LoadMarket(ingredient, k_image2, k_button2, k_text2);
+            LoadMarket(ingredient, k_image2, k_button2, k_text2, 0);
             k_panel2.SetActive(true);
             saleIndex++;
         }
@@ -718,7 +730,7 @@ public class MenuManagement : MonoBehaviour
             if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
             {
                 ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
-                LoadMarket(ingredient, k_image2, k_button2, k_text2);
+                LoadMarket(ingredient, k_image2, k_button2, k_text2, 1);
                 k_panel2.SetActive(true);
                 marketIndex++;
             }
@@ -727,20 +739,30 @@ public class MenuManagement : MonoBehaviour
                 if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
                 {
                     ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
-                    LoadMarket(ingredient, k_image2, k_button2, k_text2);
+                    LoadMarket(ingredient, k_image2, k_button2, k_text2, 2);
                     k_panel2.SetActive(true);
                     rareIndex++;
                 }
                 else
                 {
-                    k_panel2.SetActive(false);
+                    if (unstockedItems.Count > ((index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex))
+                    {
+                        ingredient = (GameObject)unstockedItems[(index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex];
+                        LoadMarket(ingredient, k_image2, k_button2, k_text2, 3);
+                        k_panel2.SetActive(true);
+                        unstockedIndex++;
+                    }
+                    else
+                    {
+                        k_panel2.SetActive(false);
+                    }
                 }
             }
         }
         if (saleItems.Count > index + saleIndex)
         {
             ingredient = (GameObject)saleItems[index + saleIndex];
-            LoadMarket(ingredient, k_image3, k_button3, k_text3);
+            LoadMarket(ingredient, k_image3, k_button3, k_text3, 0);
             k_panel3.SetActive(true);
             saleIndex++;
         }
@@ -749,7 +771,7 @@ public class MenuManagement : MonoBehaviour
             if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
             {
                 ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
-                LoadMarket(ingredient, k_image3, k_button3, k_text3);
+                LoadMarket(ingredient, k_image3, k_button3, k_text3, 1);
                 k_panel3.SetActive(true);
                 marketIndex++;
             }
@@ -758,20 +780,30 @@ public class MenuManagement : MonoBehaviour
                 if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
                 {
                     ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
-                    LoadMarket(ingredient, k_image3, k_button3, k_text3);
+                    LoadMarket(ingredient, k_image3, k_button3, k_text3, 2);
                     k_panel3.SetActive(true);
                     rareIndex++;
                 }
                 else
                 {
-                    k_panel3.SetActive(false);
+                    if (unstockedItems.Count > ((index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex))
+                    {
+                        ingredient = (GameObject)unstockedItems[(index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex];
+                        LoadMarket(ingredient, k_image3, k_button3, k_text3, 3);
+                        k_panel3.SetActive(true);
+                        unstockedIndex++;
+                    }
+                    else
+                    {
+                        k_panel3.SetActive(false);
+                    }
                 }
             }
         }
         if (saleItems.Count > index + saleIndex)
         {
             ingredient = (GameObject)saleItems[index + saleIndex];
-            LoadMarket(ingredient, k_image4, k_button4, k_text4);
+            LoadMarket(ingredient, k_image4, k_button4, k_text4, 0);
             k_panel4.SetActive(true);
             saleIndex++;
         }
@@ -780,7 +812,7 @@ public class MenuManagement : MonoBehaviour
             if (marketItems.Count > ((index - saleItems.Count) + marketIndex))
             {
                 ingredient = (GameObject)marketItems[(index - saleItems.Count) + marketIndex];
-                LoadMarket(ingredient, k_image4, k_button4, k_text4);
+                LoadMarket(ingredient, k_image4, k_button4, k_text4, 1);
                 k_panel4.SetActive(true);
                 marketIndex++;
             }
@@ -789,13 +821,23 @@ public class MenuManagement : MonoBehaviour
                 if (rareItems.Count > ((index - saleItems.Count - marketItems.Count) + rareIndex))
                 {
                     ingredient = (GameObject)rareItems[(index - saleItems.Count - marketItems.Count) + rareIndex];
-                    LoadMarket(ingredient, k_image4, k_button4, k_text4);
+                    LoadMarket(ingredient, k_image4, k_button4, k_text4, 2);
                     k_panel4.SetActive(true);
                     rareIndex++;
                 }
                 else
                 {
-                    k_panel4.SetActive(false);
+                    if (unstockedItems.Count > ((index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex))
+                    {
+                        ingredient = (GameObject)unstockedItems[(index - saleItems.Count - marketItems.Count - rareItems.Count) + unstockedIndex];
+                        LoadMarket(ingredient, k_image4, k_button4, k_text4, 3);
+                        k_panel4.SetActive(true);
+                        unstockedIndex++;
+                    }
+                    else
+                    {
+                        k_panel4.SetActive(false);
+                    }
                 }
             }
         }
@@ -807,7 +849,7 @@ public class MenuManagement : MonoBehaviour
         if (saleItems.Count > index + 0)
         {
             ingredient = (GameObject)saleItems[index + 0];
-            LoadMarket(ingredient, k_image1, k_button1, k_text1);
+            LoadMarket(ingredient, k_image1, k_button1, k_text1, 0);
             k_panel1.SetActive(true);
         }
         else
@@ -817,7 +859,7 @@ public class MenuManagement : MonoBehaviour
         if (saleItems.Count > index + 1)
         {
             ingredient = (GameObject)saleItems[index + 1];
-            LoadMarket(ingredient, k_image2, k_button2, k_text2);
+            LoadMarket(ingredient, k_image2, k_button2, k_text2, 0);
             k_panel2.SetActive(true);
         }
         else
@@ -827,7 +869,7 @@ public class MenuManagement : MonoBehaviour
         if (saleItems.Count > index + 2)
         {
             ingredient = (GameObject)saleItems[index + 2];
-            LoadMarket(ingredient, k_image3, k_button3, k_text3);
+            LoadMarket(ingredient, k_image3, k_button3, k_text3, 0);
             k_panel3.SetActive(true);
         }
         else
@@ -837,7 +879,7 @@ public class MenuManagement : MonoBehaviour
         if (saleItems.Count > index + 3)
         {
             ingredient = (GameObject)saleItems[index + 3];
-            LoadMarket(ingredient, k_image4, k_button4, k_text4);
+            LoadMarket(ingredient, k_image4, k_button4, k_text4, 0);
             k_panel4.SetActive(true);
         }
         else
@@ -1177,7 +1219,7 @@ public class MenuManagement : MonoBehaviour
         }
         else if (MenuType == "Market All")
         {
-            if (GetComponent<FoodVariables>().GetMarketList().Count > menuScrollIndex + 4)
+            if (GetComponent<FoodVariables>().GetAllIngredients().Count > menuScrollIndex + 4)
             {
                 menuScrollIndex += 4;
                 LoadMarket(menuScrollIndex);
@@ -1245,18 +1287,48 @@ public class MenuManagement : MonoBehaviour
         }
     }
 
-    private void LoadMarket(GameObject ingredient, GameObject k_image, Button k_button, Text k_text)
+    private void LoadMarket(GameObject ingredient, GameObject k_image, Button k_button, Text k_text, int flag)
     {
         if (ingredient.GetComponent<Ingredient>().image != null)
             k_image.GetComponent<Image>().sprite = ingredient.GetComponent<Ingredient>().image;
         else
             k_image.GetComponent<Image>().sprite = defaultIngredientSprite;
-
-        k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
-        k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+        k_image.GetComponent<Image>().color = Color.white;
 
         k_button.onClick.RemoveAllListeners();
         k_button.onClick.AddListener(() => ShowIngredient(ingredient));
+        k_button.interactable = true;
+
+        if (flag == 0)
+        {
+            //Sale Items
+            k_text.color = Color.green;
+            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+            k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+        }
+        else if(flag == 1)
+        {
+            //Market Items
+            k_text.color = Color.black;
+            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+            k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+        }
+        else if (flag == 2)
+        {
+            //Rare Items
+            k_text.color = Color.red;
+            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+            k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+        }
+        else
+        {
+            //Out of Stock Items
+            k_text.color = Color.black;
+            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+            k_text.text += "\nOut of Stock";
+            k_image.GetComponent<Image>().color = faded;
+            k_button.interactable = false;
+        }
 
     }
 
