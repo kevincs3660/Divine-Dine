@@ -15,6 +15,7 @@ public class WaiterAI : MonoBehaviour {
 	private GameObject currentStove;
 	private bool orderTaken = false;
 	private bool orderPickedUp = false;
+	private bool waitingForStove = false;
 
 	public enum waiterStates
 	{
@@ -43,12 +44,18 @@ public class WaiterAI : MonoBehaviour {
 		}
 
 		if (state == waiterStates.TAKING_ORDER && currentCustomer != null)
-			if(Vector3.Distance (currentCustomer.transform.position, agent.nextPosition) <= 0.3f) 
+			if(Vector3.Distance (currentCustomer.transform.position, agent.nextPosition) <= 1f) 
 			{
-				currentFood = currentCustomer.giveOrder();
+				if(!waitingForStove)
+					currentFood = currentCustomer.giveOrder();
 				currentStove = findFreeStove();
-				if(currentStove != null)
+				if(currentStove == null)
 				{
+					waitingForStove = true;
+				}
+				else
+				{
+					waitingForStove = false;
 					agent.SetDestination(currentStove.gameObject.transform.position);
 					//currentCustomer = null;
 					state = waiterStates.ORDER_TO_STOVE;
@@ -56,8 +63,9 @@ public class WaiterAI : MonoBehaviour {
 			}
 
 		if(state == waiterStates.ORDER_TO_STOVE && currentStove != null)
-			if(Vector3.Distance(currentStove.transform.position, agent.nextPosition) <= 0.4f)
+			if(Vector3.Distance(currentStove.transform.position, agent.nextPosition) <= 1f)
 			{
+				Debug.Log("Got to stove");
 				currentStove.GetComponent<StoveScript>().acceptFood(currentFood);
 				currentStove = null;
 				currentFood = null;
@@ -66,20 +74,22 @@ public class WaiterAI : MonoBehaviour {
 			}
 
 		if (state == waiterStates.PICKING_UP_ORDER && currentStove != null)
-			if(Vector3.Distance (currentStove.transform.position, agent.nextPosition) <= 0.3f) 
+			if(Vector3.Distance (currentStove.transform.position, agent.nextPosition) <= 1f) 
 			{
+				Debug.Log("AT THE FUCKING STOVE");
 				currentFood = currentStove.GetComponent<StoveScript>().giveFood();
-				currentCustomer = currentFood.customer.GetComponent<CustomerAI>();
+				currentCustomer = currentFood.customer.gameObject.GetComponent<CustomerAI>();
 				agent.SetDestination(currentCustomer.transform.position);
 				state = waiterStates.DELIVERING_ORDER;
 				//deliverFood();
 			}
 
 		if(state == waiterStates.DELIVERING_ORDER && currentCustomer != null)
-			if(Vector3.Distance(currentCustomer.transform.position, agent.nextPosition) <= 0.3f)
+			if(Vector3.Distance(currentCustomer.transform.position, agent.nextPosition) <= 1f)
 			{
 				currentCustomer.acceptFood();
 				state = waiterStates.NOTHING;
+				//agent.SetDestination(new Vector3(0,0,0));
 				currentCustomer = null;
 			}
 	}
@@ -95,15 +105,20 @@ public class WaiterAI : MonoBehaviour {
 	private void checkForCustomer()
 	{
 		customers = GameObject.FindGameObjectsWithTag("Customer");
-		for(int i = 0; i < customers.Length; i++)
-		{
-			if(customers[i].gameObject.GetComponent<CustomerAI>().state == CustomerAI.customerStates.WAITING)
-			{
-				state = waiterStates.TAKING_ORDER;
-				takeCustomerOrder(customers[i]);
-				break;
-			}
 
+		if (customers != null) {
+			for (int i = 0; i < customers.Length; i++) {
+				//Debug.Log (customers.Length);
+				CustomerAI cust = customers [i].gameObject.GetComponent<CustomerAI> ();
+				if (cust != null)
+				if(cust.state == CustomerAI.customerStates.WAITING && cust.hasWaiter == false) {
+					Debug.Log("Found customer waiting");
+					state = waiterStates.TAKING_ORDER;
+					cust.hasWaiter = true;
+					takeCustomerOrder (customers [i]);
+					break;
+				}
+			}
 		}
 	}
 
@@ -117,23 +132,28 @@ public class WaiterAI : MonoBehaviour {
 		for(int j = 0; j < stovesTag.Length; j++)
 		{
 			//Debug.Log( chairsTag[j].gameObject.transform.position);
-			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FOOD_READY)
-			{
-				stoves.Add(stovesTag[j]);
-			}
+			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null)
+				if(stovesTag[j].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FOOD_READY && stovesTag[j].gameObject.GetComponent<StoveScript>().hasWaiter == false)
+				{
+					Debug.Log("FOUND READY FOOD");
+					stoves.Add(stovesTag[j]);
+					stoves[0].gameObject.GetComponent<StoveScript>().hasWaiter = true;
+					pickUpFood(stoves[0]);
+				}
 		}
 		
-		if(stoves.Count != 0)
+		/*if(stoves.Count != 0)
 		{
 			pickUpFood(stoves[0]);
 			//Instantiate(this);
 			//StartCoroutine(cooking());
-		}
+		}*/
 
 	}
 
 	private void pickUpFood(GameObject stove)
 	{
+		Debug.Log ("PICKING UP FOOD");
 		state = waiterStates.PICKING_UP_ORDER;
 		currentStove = stove;
 		agent.SetDestination (stove.gameObject.transform.position);
@@ -173,13 +193,16 @@ public class WaiterAI : MonoBehaviour {
 		for(int j = 0; j < stovesTag.Length; j++)
 		{
 			//Debug.Log( chairsTag[j].gameObject.transform.position);
-			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FREE)
-			{
-				stoves.Add(stovesTag[j]);
-			}
+			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null)
+				if(stovesTag[j].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FREE)
+				{
+					Debug.Log("Found stove yo");
+					stoves.Add(stovesTag[j]);
+					return stoves[0];
+				}
 		}
-		// just return first stove in list for now
-		return stoves[0];
+		// just return first stove in list for now)
+		return null;
 		
 	}
 }

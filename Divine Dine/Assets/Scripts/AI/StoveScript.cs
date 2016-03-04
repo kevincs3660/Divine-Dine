@@ -6,6 +6,7 @@ public class StoveScript : MonoBehaviour {
 	private FoodScript currentFood;
 	public int cookTime = 10;
 	private bool foodGiven = false;
+	public bool hasWaiter = false;
 	public enum stoveStates
 	{
 		FREE = 0,
@@ -29,6 +30,7 @@ public class StoveScript : MonoBehaviour {
 
 	public void acceptFood(FoodScript food)
 	{
+		Debug.Log ("STOVE GOT FOOD");
 		currentFood = food;
 		StartCoroutine(cookFood());
 	}
@@ -45,6 +47,7 @@ public class StoveScript : MonoBehaviour {
 			yield return null;
 		}
 
+		Debug.Log ("FINISHED COOKING");
 		state = stoveStates.FOOD_READY;
 	}
 
@@ -56,6 +59,7 @@ public class StoveScript : MonoBehaviour {
 
 	public void foodPickedUp()
 	{
+		hasWaiter = false;
 		state = stoveStates.FREE;
 		currentFood = null;
 		foodGiven = false;

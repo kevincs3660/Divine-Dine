@@ -26,19 +26,21 @@ public class CustomerAI : MonoBehaviour {
 	//private bool imLeaving = false;
 	private bool left = false;
 	private bool ordered = false;
-	private FoodScript food;
+	public GameObject food;
 	//private bool eatingNow = false;
 	//public bool waitingForFood = false;
 	//private bool orderingNow = false;
 	//private bool goingToOrder = false;
+	public bool hasWaiter = false;
 	
 	public enum customerStates
 	{
 		WALKING = 0,
 		FOUND_CHAIR = 1,
 		WAITING = 2,
-		EATING = 3,
-		LEAVING = 4
+		WAITING_FOR_FOOD = 3,
+		EATING = 4,
+		LEAVING = 5
 	};
 	public customerStates state = customerStates.WALKING;
 	
@@ -76,7 +78,7 @@ public class CustomerAI : MonoBehaviour {
 		
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null)
 		{
-			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.3f) 
+			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.6f) 
 			{
 				//Debug.Log("Sitting in ma chair");
 				//StartCoroutine(eatFood());
@@ -102,6 +104,7 @@ public class CustomerAI : MonoBehaviour {
 	private void order()
 	{
 		state = customerStates.WAITING;
+
 		//StartCoroutine (eatFood ());
 
 	}
@@ -143,7 +146,9 @@ public class CustomerAI : MonoBehaviour {
 
 	public FoodScript giveOrder()
 	{
-		return food;
+		state = customerStates.WAITING_FOR_FOOD;
+		FoodScript order = new FoodScript (food, this.gameObject);
+		return order;
 	}
 	
 	private void findChair()
