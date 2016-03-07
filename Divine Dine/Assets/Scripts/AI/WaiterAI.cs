@@ -116,7 +116,7 @@ public class WaiterAI : MonoBehaviour {
 		List<GameObject> stoves = new List<GameObject>();
 
 		for(int j = 0; j < stovesTag.Length; j++) {
-			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null)
+			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null) {
 				if(stovesTag[j].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FOOD_READY && stovesTag[j].gameObject.GetComponent<StoveScript>().hasWaiter == false) {
 					
 					//Debug.Log("FOUND READY FOOD");
@@ -129,6 +129,7 @@ public class WaiterAI : MonoBehaviour {
 					return;
 					//pickUpFood(stoves[0]);
 				}
+			}
 		}
 	}
 
@@ -175,22 +176,22 @@ public class WaiterAI : MonoBehaviour {
 			stoveOrderCount = stoves[0].gameObject.GetComponent<StoveScript>().getOrderCount();
 			bestStove = stoves[0];
 			if(stoves[0].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FREE) {
-				Debug.Log("returning from first free check. Stove is: " + stoves[0]);
+				//Debug.Log("returning from first free check. Stove is: " + stoves[0]);
 				return stoves[0];
 			}
 			foreach(GameObject stove in stoves) {
 				if(stove.gameObject.GetComponent<StoveScript>().getOrderCount() <= stoveOrderCount) {
 					stoveOrderCount = stove.gameObject.GetComponent<StoveScript>().getOrderCount();
 					if(stove.gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FREE) {
-						Debug.Log("returning from second free check. Stove is: " + stoves[0]);
+						//Debug.Log("returning from second free check. Stove is: " + stoves[0]);
 						return stove;
 					}
-					Debug.Log("Just set bestStove to something");
+					//Debug.Log("Just set bestStove to something");
 					bestStove = stove;
 				}
 			}
 		}
-		Debug.Log("returning from the end. Stove is : " + bestStove);
+		//Debug.Log("returning from the end. Stove is : " + bestStove);
 		return bestStove;
 	}
 }
