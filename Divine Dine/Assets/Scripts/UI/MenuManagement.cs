@@ -1305,7 +1305,7 @@ public class MenuManagement : MonoBehaviour
             //Sale Items
             k_text.color = Color.green;
             k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
-            k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+            k_text.text += "\nSale : $" + ingredient.GetComponent<Ingredient>().GetSalePrice();
         }
         else if(flag == 1)
         {
@@ -1319,7 +1319,7 @@ public class MenuManagement : MonoBehaviour
             //Rare Items
             k_text.color = Color.red;
             k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
-            k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+            k_text.text += "\nRare : $" + ingredient.GetComponent<Ingredient>().GetRarePrice();
         }
         else
         {
