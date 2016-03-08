@@ -6,6 +6,8 @@ public class FoodVariables : MonoBehaviour
     public GameObject[] Appetizers;
     public GameObject[] Entrees;
     public GameObject[] Desserts;
+    public GameObject starterAppetizer;
+    public GameObject starterEntree;
     public int marketLevel = 0;
     public int baseSaleItems = 4;
     public int baseMarketItems = 4;
@@ -52,6 +54,13 @@ public class FoodVariables : MonoBehaviour
             GameObject temp = (GameObject)AllIngredients[i];
             temp.GetComponent<Ingredient>().quatity = 0;
         }
+
+        //Starter Dishes
+        starterAppetizer.GetComponent<Food>().level = 1;
+        starterEntree.GetComponent<Food>().level = 1;
+        AllSelectedRecipes.Add(starterAppetizer);
+        AllSelectedRecipes.Add(starterEntree);
+
     }
 
     public void SelectFood(GameObject food)

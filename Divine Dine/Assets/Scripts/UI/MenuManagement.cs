@@ -97,6 +97,7 @@ public class MenuManagement : MonoBehaviour
     private Text m_text4;
 
     //Market Menu
+    private Text k_title;
     private GameObject k_panel1;
     private GameObject k_panel2;
     private GameObject k_panel3;
@@ -240,6 +241,7 @@ public class MenuManagement : MonoBehaviour
         m_text4 = m_scroll4.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>();
 
         //Market Menu
+        k_title = marketScroll.transform.GetChild(0).GetComponent<Text>();
         k_panel1 = marketScroll.transform.GetChild(3).gameObject;
         k_panel2 = marketScroll.transform.GetChild(4).gameObject;
         k_panel3 = marketScroll.transform.GetChild(5).gameObject;
@@ -370,6 +372,8 @@ public class MenuManagement : MonoBehaviour
     {
         ClearAll();
 
+        k_title.text = "THE MARKET";
+
         GetComponent<FoodVariables>().CalculateMarket();
         saleItems = GetComponent<FoodVariables>().GetSaleItems();
         marketItems = GetComponent<FoodVariables>().GetMarketItems();
@@ -387,7 +391,7 @@ public class MenuManagement : MonoBehaviour
         mainButton1.onClick.AddListener(() => ShowMainMenu());
         mainButton2.onClick.AddListener(() => LoadIngredients(0));
         mainButton3.onClick.AddListener(() => ShowAllMarket());
-        mainButton4.onClick.AddListener(() => ShowSaleMarket());
+        mainButton4.onClick.AddListener(() => ShowSepcialMarket());
         mainButton5.onClick.AddListener(() => ShowMarketStats());
 
         mainMenu.SetActive(true);
@@ -404,15 +408,6 @@ public class MenuManagement : MonoBehaviour
 
         menuScrollIndex = 0;
         LoadMarket(menuScrollIndex);
-        marketScroll.SetActive(true);
-    }
-
-    public void ShowSaleMarket()
-    {
-        MenuType = "Market Sale";
-
-        menuScrollIndex = 0;
-        LoadSaleMarket(menuScrollIndex);
         marketScroll.SetActive(true);
     }
 
@@ -573,10 +568,24 @@ public class MenuManagement : MonoBehaviour
         if(food.GetComponent<Food>().level > 0)
         {
             f_level_text.text = "Level Up";
-            f_select_button.interactable = true;
-            f_select_button.onClick.AddListener(() => SelectToggle());
             f_price_button.interactable = true;
+            f_price_button.onClick.RemoveAllListeners();
             f_price_button.onClick.AddListener(() => ShowPricingOptions());
+
+            //Select Button
+            f_select_button.onClick.RemoveAllListeners();
+            if(GetComponent<FoodVariables>().GetAllSelectedRecipes().Contains(food))
+            {
+                //Already Selected
+                f_select_text.text = "Unselect";
+                f_select_button.onClick.AddListener(() => SelectToggle(true, food));
+            }
+            else
+            {
+                //Can Be Selected
+                f_select_text.text = "Select";
+                f_select_button.onClick.AddListener(() => SelectToggle(false, food));
+            }
         }
         else
         {
@@ -731,9 +740,21 @@ public class MenuManagement : MonoBehaviour
     }
 
     //This is on the "Show Food Menu" the button to select a dish
-    public void SelectToggle()
+    public void SelectToggle(bool selected, GameObject food)
     {
-
+        f_select_button.onClick.RemoveAllListeners();
+        if(selected)
+        {
+            GetComponent<FoodVariables>().GetAllSelectedRecipes().Remove(food);
+            f_select_text.text = "Select";
+            f_select_button.onClick.AddListener(() => SelectToggle(false, food));
+        }
+        else
+        {
+            GetComponent<FoodVariables>().GetAllSelectedRecipes().Add(food);
+            f_select_text.text = "Unselect";
+            f_select_button.onClick.AddListener(() => SelectToggle(true, food));
+        }
     }
 
     public void LoadMarket(int index)
@@ -1414,7 +1435,6 @@ public class MenuManagement : MonoBehaviour
 
     }
 
-
     private void LoadMenu(GameObject food, Button m_button, Text m_text, GameObject m_image, GameObject i1, GameObject i2, GameObject i3, GameObject i4)
     {
         m_button.onClick.RemoveAllListeners();
@@ -1500,7 +1520,6 @@ public class MenuManagement : MonoBehaviour
             i4.SetActive(false);
         }
     }
-
     
     public void ToggleCheatBox(bool value)
     {
