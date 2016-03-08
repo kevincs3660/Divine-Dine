@@ -117,7 +117,8 @@ public class MenuManagement : MonoBehaviour
     //Food Selection
     private Button f_close;
     private Text f_desc;
-    private Sprite f_image;
+    private GameObject f_food_image;
+    private GameObject f_ingredient_image;
     private GameObject f_ingredient1;
     private GameObject f_ingredient2;
     private GameObject f_ingredient3;
@@ -259,21 +260,22 @@ public class MenuManagement : MonoBehaviour
         //Food Selection
         f_close = foodSelection.transform.GetChild(0).gameObject.GetComponent<Button>();
         f_desc = foodSelection.transform.GetChild(1).GetChild(0).GetComponent<Text>();
-        f_image = foodSelection.transform.GetChild(2).GetComponent<Image>().sprite;
-        f_ingredient1 = foodSelection.transform.GetChild(3).GetChild(0).gameObject;
-        f_ingredient2 = foodSelection.transform.GetChild(3).GetChild(1).gameObject;
-        f_ingredient3 = foodSelection.transform.GetChild(3).GetChild(2).gameObject;
-        f_ingredient4 = foodSelection.transform.GetChild(3).GetChild(3).gameObject;
-        f_level_button = foodSelection.transform.GetChild(4).GetChild(0).GetComponent<Button>();
-        f_select_button = foodSelection.transform.GetChild(4).GetChild(1).GetComponent<Button>();
-        f_price_button = foodSelection.transform.GetChild(4).GetChild(2).GetComponent<Button>();
-        f_yes_button = foodSelection.transform.GetChild(5).GetChild(0).GetComponent<Button>();
-        f_no_button = foodSelection.transform.GetChild(5).GetChild(1).GetComponent<Button>();
-        f_level_text = foodSelection.transform.GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>();
-        f_select_text = foodSelection.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>();
-        f_health_text = foodSelection.transform.GetChild(4).GetChild(2).GetChild(0).GetComponent<Text>();
-        f_button_panel1 = foodSelection.transform.GetChild(4).gameObject;
-        f_button_panel2 = foodSelection.transform.GetChild(5).gameObject;
+        f_food_image = foodSelection.transform.GetChild(2).gameObject;
+        f_ingredient_image = foodSelection.transform.GetChild(3).gameObject;
+        f_ingredient1 = foodSelection.transform.GetChild(4).GetChild(0).gameObject;
+        f_ingredient2 = foodSelection.transform.GetChild(4).GetChild(1).gameObject;
+        f_ingredient3 = foodSelection.transform.GetChild(4).GetChild(2).gameObject;
+        f_ingredient4 = foodSelection.transform.GetChild(4).GetChild(3).gameObject;
+        f_level_button = foodSelection.transform.GetChild(5).GetChild(0).GetComponent<Button>();
+        f_select_button = foodSelection.transform.GetChild(5).GetChild(1).GetComponent<Button>();
+        f_price_button = foodSelection.transform.GetChild(5).GetChild(2).GetComponent<Button>();
+        f_yes_button = foodSelection.transform.GetChild(6).GetChild(0).GetComponent<Button>();
+        f_no_button = foodSelection.transform.GetChild(6).GetChild(1).GetComponent<Button>();
+        f_level_text = foodSelection.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<Text>();
+        f_select_text = foodSelection.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Text>();
+        f_health_text = foodSelection.transform.GetChild(5).GetChild(2).GetChild(0).GetComponent<Text>();
+        f_button_panel1 = foodSelection.transform.GetChild(5).gameObject;
+        f_button_panel2 = foodSelection.transform.GetChild(6).gameObject;
 
         //Ingredient Scroll
 
@@ -376,15 +378,15 @@ public class MenuManagement : MonoBehaviour
 
         ResetAllPanelsMainMenu();
         mainText1.text = "Back";
-        mainText2.text = "All Items";
-        mainText3.text = "Sale Itmes";
+        mainText2.text = "My Ingredients";
+        mainText3.text = "All Ingredients";
         mainText4.text = "Special Order";
         mainText5.text = "Market Stats";
 
         ClearButtonsMainMenu();
         mainButton1.onClick.AddListener(() => ShowMainMenu());
-        mainButton2.onClick.AddListener(() => ShowAllMarket());
-        mainButton3.onClick.AddListener(() => ShowSaleMarket());
+        mainButton2.onClick.AddListener(() => LoadIngredients(0));
+        mainButton3.onClick.AddListener(() => ShowAllMarket());
         mainButton4.onClick.AddListener(() => ShowSaleMarket());
         mainButton5.onClick.AddListener(() => ShowMarketStats());
 
@@ -471,19 +473,88 @@ public class MenuManagement : MonoBehaviour
         shopScroll.SetActive(true);
     }
 
-    public void ShowIngredient(GameObject ingredient)
+    public void ShowIngredient(GameObject ingredient, int flag)
     {
+        marketScroll.SetActive(false);
+        f_button_panel1.SetActive(false);
+        f_button_panel2.SetActive(true);
 
+        f_food_image.SetActive(false);
+        f_ingredient_image.SetActive(true);
+
+        //Back Button
+        f_close.onClick.RemoveAllListeners();
+        f_close.onClick.AddListener(() => LoadMarket(menuScrollIndex));
+        f_close.onClick.AddListener(() => CloseFoodSelection());
+
+
+        //Description
+        f_desc.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+
+        //Food Image
+        if (ingredient.GetComponent<Ingredient>().image != null)
+            f_ingredient_image.GetComponent<Image>().sprite = ingredient.GetComponent<Ingredient>().image;
+        else
+            f_ingredient_image.GetComponent<Image>().sprite = defaultFoodSprite;
+
+        foodSelection.SetActive(true);
+
+        //Ingredient Images
+        f_ingredient1.SetActive(false);
+        f_ingredient2.SetActive(false);
+        f_ingredient3.SetActive(false);
+        f_ingredient4.SetActive(false);
+
+        //Yes and No Buttons
+        f_yes_button.interactable = true;
+        f_yes_button.onClick.RemoveAllListeners();
+        f_yes_button.onClick.AddListener(() => ingredient.GetComponent<Ingredient>().quatity++);
+        f_yes_button.onClick.AddListener(() => LoadMarket(menuScrollIndex));
+        f_yes_button.onClick.AddListener(() => CloseFoodSelection());
+
+        f_no_button.interactable = true;
+        f_no_button.onClick.RemoveAllListeners();
+        f_no_button.onClick.AddListener(() => LoadMarket(menuScrollIndex));
+        f_no_button.onClick.AddListener(() => CloseFoodSelection());
+
+        if (flag == 0)
+        {
+            if (GetComponent<GlobalVariables>().money >= ingredient.GetComponent<Ingredient>().GetSalePrice())
+                f_yes_button.onClick.AddListener(() => GetComponent<GlobalVariables>().AddMoney(-(ingredient.GetComponent<Ingredient>().GetSalePrice())));
+            else
+                f_yes_button.interactable = false;
+            f_desc.text += "\nSale Price : $" + ingredient.GetComponent<Ingredient>().GetSalePrice();
+        }
+        else if (flag == 1)
+        {
+            if (GetComponent<GlobalVariables>().money >= ingredient.GetComponent<Ingredient>().marketPrice)
+                f_yes_button.onClick.AddListener(() => GetComponent<GlobalVariables>().AddMoney(-(ingredient.GetComponent<Ingredient>().marketPrice)));
+            else
+                f_yes_button.interactable = false;
+            f_desc.text += "\nMarket Price : $" + ingredient.GetComponent<Ingredient>().marketPrice;
+        }
+        else
+        {
+            if (GetComponent<GlobalVariables>().money >= ingredient.GetComponent<Ingredient>().GetRarePrice())
+                f_yes_button.onClick.AddListener(() => GetComponent<GlobalVariables>().AddMoney(-(ingredient.GetComponent<Ingredient>().GetRarePrice())));
+            else
+                f_yes_button.interactable = false;
+            f_desc.text += "\nRarity Price : $" + ingredient.GetComponent<Ingredient>().GetRarePrice();
+        }
     }
 
     public void ShowFood(GameObject food)
     {
         menuScroll.SetActive(false);
         bool canLevel = true;
+        f_food_image.SetActive(true);
+        f_ingredient_image.SetActive(false);
 
         //Yes and No Buttons
+        f_yes_button.interactable = true;
         f_yes_button.onClick.RemoveAllListeners();
         f_yes_button.onClick.AddListener(() => ConfirmLevel(food));
+        f_no_button.interactable = true;
         f_no_button.onClick.RemoveAllListeners();
         f_no_button.onClick.AddListener(() => DeclineLevel());
 
@@ -523,9 +594,9 @@ public class MenuManagement : MonoBehaviour
 
         //Food Image
         if (food.GetComponent<Food>().menuSprite != null)
-            f_image = food.GetComponent<Food>().menuSprite;
+            f_food_image.GetComponent<Image>().sprite = food.GetComponent<Food>().menuSprite;
         else
-            f_image = defaultFoodSprite;
+            f_food_image.GetComponent<Image>().sprite = defaultFoodSprite;
 
         //Ingredient Images
         try
@@ -653,11 +724,13 @@ public class MenuManagement : MonoBehaviour
         f_button_panel2.SetActive(false);
     }
 
+    //This is on the "Show Food Menu" the button to change health options
     public void ShowPricingOptions()
     {
 
     }
 
+    //This is on the "Show Food Menu" the button to select a dish
     public void SelectToggle()
     {
 
@@ -836,6 +909,7 @@ public class MenuManagement : MonoBehaviour
                 }
             }
         }
+        marketScroll.SetActive(true);
     }
 
     public void LoadSaleMarket(int index)
@@ -1296,8 +1370,6 @@ public class MenuManagement : MonoBehaviour
             k_image.GetComponent<Image>().sprite = defaultIngredientSprite;
         k_image.GetComponent<Image>().color = Color.white;
 
-        k_button.onClick.RemoveAllListeners();
-        k_button.onClick.AddListener(() => ShowIngredient(ingredient));
         k_button.interactable = true;
 
         if (flag == 0)
@@ -1306,6 +1378,9 @@ public class MenuManagement : MonoBehaviour
             k_text.color = Color.green;
             k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\nSale : $" + ingredient.GetComponent<Ingredient>().GetSalePrice();
+
+            k_button.onClick.RemoveAllListeners();
+            k_button.onClick.AddListener(() => ShowIngredient(ingredient, 0));
         }
         else if(flag == 1)
         {
@@ -1313,6 +1388,9 @@ public class MenuManagement : MonoBehaviour
             k_text.color = Color.black;
             k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
+
+            k_button.onClick.RemoveAllListeners();
+            k_button.onClick.AddListener(() => ShowIngredient(ingredient, 1));
         }
         else if (flag == 2)
         {
@@ -1320,6 +1398,9 @@ public class MenuManagement : MonoBehaviour
             k_text.color = Color.red;
             k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\nRare : $" + ingredient.GetComponent<Ingredient>().GetRarePrice();
+
+            k_button.onClick.RemoveAllListeners();
+            k_button.onClick.AddListener(() => ShowIngredient(ingredient, 2));
         }
         else
         {
@@ -1504,18 +1585,4 @@ public class MenuManagement : MonoBehaviour
         foodSelection.SetActive(false);
     }
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 200, 30), Message);
-    }
-
-    void OnMouseEnter()
-    {
-        Message = "Here I am.";
-    }
-
-    void OnMouseExit()
-    {
-        Message = "";
-    }
 }
