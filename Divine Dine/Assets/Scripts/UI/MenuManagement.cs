@@ -544,6 +544,8 @@ public class MenuManagement : MonoBehaviour
         bool canLevel = true;
         f_food_image.SetActive(true);
         f_ingredient_image.SetActive(false);
+        f_button_panel1.SetActive(true);
+        f_button_panel2.SetActive(false);
 
         //Yes and No Buttons
         f_yes_button.interactable = true;
@@ -680,7 +682,7 @@ public class MenuManagement : MonoBehaviour
                 f_ingredient4.GetComponent<Image>().sprite = food.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().image;
             else
                 f_ingredient4.GetComponent<Image>().sprite = defaultIngredientSprite;
-            if (food.GetComponent<Food>().recipe[0].GetComponent<Ingredient>().quatity == 0)
+            if (food.GetComponent<Food>().recipe[3].GetComponent<Ingredient>().quatity == 0)
             {
                 canLevel = false;
                 f_ingredient4.GetComponent<Image>().color = faded;
