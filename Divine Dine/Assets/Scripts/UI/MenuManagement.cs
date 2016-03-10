@@ -153,6 +153,7 @@ public class MenuManagement : MonoBehaviour
     ArrayList marketItems;
     ArrayList rareItems;
     ArrayList unstockedItems;
+    ArrayList myIngredients;
 
     void Start()
     {
@@ -371,8 +372,6 @@ public class MenuManagement : MonoBehaviour
     public void ShowMarket()
     {
         ClearAll();
-
-        k_title.text = "THE MARKET";
 
         GetComponent<FoodVariables>().CalculateMarket();
         saleItems = GetComponent<FoodVariables>().GetSaleItems();
@@ -762,6 +761,7 @@ public class MenuManagement : MonoBehaviour
     public void LoadMarket(int index)
     {
         GameObject ingredient;
+        k_title.text = "THE MARKET";
 
         int saleIndex = 0;
         int marketIndex = 0;
@@ -983,7 +983,52 @@ public class MenuManagement : MonoBehaviour
     public void LoadIngredients(int index)
     {
         MenuType = "Ingredients";
+        k_title.text = "YOUR INGREDIENTS";
+        myIngredients = GetComponent<FoodVariables>().GetMyIngredients();
+        GameObject ingredient;
 
+        if (myIngredients.Count > index + 0)
+        {
+            ingredient = (GameObject)myIngredients[index + 0];
+            LoadMarket(ingredient, k_image1, k_button1, k_text1, 4);
+            k_panel1.SetActive(true);
+        }
+        else
+        {
+            k_panel1.SetActive(false);
+        }
+        if (myIngredients.Count > index + 1)
+        {
+            ingredient = (GameObject)myIngredients[index + 1];
+            LoadMarket(ingredient, k_image2, k_button2, k_text2, 4);
+            k_panel2.SetActive(true);
+        }
+        else
+        {
+            k_panel2.SetActive(false);
+        }
+        if (myIngredients.Count > index + 2)
+        {
+            ingredient = (GameObject)myIngredients[index + 2];
+            LoadMarket(ingredient, k_image3, k_button3, k_text3, 4);
+            k_panel3.SetActive(true);
+        }
+        else
+        {
+            k_panel3.SetActive(false);
+        }
+        if (myIngredients.Count > index + 3)
+        {
+            ingredient = (GameObject)myIngredients[index + 3];
+            LoadMarket(ingredient, k_image4, k_button4, k_text4, 4);
+            k_panel4.SetActive(true);
+        }
+        else
+        {
+            k_panel4.SetActive(false);
+        }
+        marketScroll.SetActive(true);
+        menuScroll.SetActive(false);
     }
 
     public void LoadAppetizers(int index)
@@ -1031,7 +1076,7 @@ public class MenuManagement : MonoBehaviour
         {
             m_scroll4.SetActive(false);
         }
-
+        marketScroll.SetActive(false);
         menuScroll.SetActive(true);
     }
 
@@ -1080,7 +1125,7 @@ public class MenuManagement : MonoBehaviour
         {
             m_scroll4.SetActive(false);
         }
-
+        marketScroll.SetActive(false);
         menuScroll.SetActive(true);
     }
 
@@ -1129,7 +1174,7 @@ public class MenuManagement : MonoBehaviour
         {
             m_scroll4.SetActive(false);
         }
-
+        marketScroll.SetActive(false);
         menuScroll.SetActive(true);
     }
 
@@ -1331,6 +1376,14 @@ public class MenuManagement : MonoBehaviour
                 LoadSaleMarket(menuScrollIndex);
             }
         }
+        else if (MenuType == "Ingredients")
+        {
+            if (myIngredients.Count > menuScrollIndex + 4)
+            {
+                menuScrollIndex += 4;
+                LoadIngredients(menuScrollIndex);
+            }
+        }
     }
 
     public void MenuScrollBack()
@@ -1393,46 +1446,48 @@ public class MenuManagement : MonoBehaviour
             k_image.GetComponent<Image>().sprite = defaultIngredientSprite;
         k_image.GetComponent<Image>().color = Color.white;
 
+        k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
+
         k_button.interactable = true;
+        k_button.onClick.RemoveAllListeners();
 
         if (flag == 0)
         {
             //Sale Items
             k_text.color = Color.green;
-            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\nSale : $" + ingredient.GetComponent<Ingredient>().GetSalePrice();
 
-            k_button.onClick.RemoveAllListeners();
             k_button.onClick.AddListener(() => ShowIngredient(ingredient, 0));
         }
-        else if(flag == 1)
+        else if (flag == 1)
         {
             //Market Items
             k_text.color = Color.black;
-            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\n$" + ingredient.GetComponent<Ingredient>().marketPrice;
 
-            k_button.onClick.RemoveAllListeners();
             k_button.onClick.AddListener(() => ShowIngredient(ingredient, 1));
         }
         else if (flag == 2)
         {
             //Rare Items
             k_text.color = Color.red;
-            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\nRare : $" + ingredient.GetComponent<Ingredient>().GetRarePrice();
 
-            k_button.onClick.RemoveAllListeners();
             k_button.onClick.AddListener(() => ShowIngredient(ingredient, 2));
         }
-        else
+        else if (flag == 3)
         {
             //Out of Stock Items
             k_text.color = Color.black;
-            k_text.text = ingredient.ToString().Replace(" (UnityEngine.GameObject)", "");
             k_text.text += "\nOut of Stock";
             k_image.GetComponent<Image>().color = faded;
             k_button.interactable = false;
+        }
+        else if (flag == 4)
+        {
+            //Load Ingredients Only
+            k_text.text += "\n" + ingredient.GetComponent<Ingredient>().quatity + " in stock";
+
         }
 
     }

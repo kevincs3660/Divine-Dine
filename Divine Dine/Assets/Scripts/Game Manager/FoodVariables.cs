@@ -191,6 +191,20 @@ public class FoodVariables : MonoBehaviour
         }
     }
 
+    public ArrayList GetMyIngredients()
+    {
+        ArrayList myReturn = new ArrayList();
+        for(int i = 0; i < AllIngredients.Count; i++)
+        {
+            GameObject ingredient = (GameObject)AllIngredients[i];
+            if(ingredient.GetComponent<Ingredient>().quatity > 0)
+            {
+                myReturn.Add(ingredient);
+            }
+        }
+        return myReturn;
+    }
+
     public ArrayList GetAppetizers()
     {
         return SelectedAppetizers;
