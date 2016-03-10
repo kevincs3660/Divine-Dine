@@ -8,6 +8,7 @@ public class FoodVariables : MonoBehaviour
     public GameObject[] Desserts;
     public GameObject starterAppetizer;
     public GameObject starterEntree;
+    public GameObject defaultModel;
     public int marketLevel = 0;
     public int baseSaleItems = 4;
     public int baseMarketItems = 4;
@@ -36,16 +37,28 @@ public class FoodVariables : MonoBehaviour
         {
             Appetizers[i].GetComponent<Food>().level = 0;
             ExtractIngredients(Appetizers[i]);
+            if(Appetizers[i].GetComponent<Food>().model == null)
+            {
+                Appetizers[i].GetComponent<Food>().model = defaultModel;
+            }
         }
         for (int i = 0; i < Entrees.Length; i++)
         {
             Entrees[i].GetComponent<Food>().level = 0;
             ExtractIngredients(Entrees[i]);
+            if (Entrees[i].GetComponent<Food>().model == null)
+            {
+                Entrees[i].GetComponent<Food>().model = defaultModel;
+            }
         }
         for (int i = 0; i < Desserts.Length; i++)
         {
             Desserts[i].GetComponent<Food>().level = 0;
             ExtractIngredients(Desserts[i]);
+            if (Desserts[i].GetComponent<Food>().model == null)
+            {
+                Desserts[i].GetComponent<Food>().model = defaultModel;
+            }
         }
 
 
