@@ -82,8 +82,11 @@ public class CustomerAI : MonoBehaviour {
 	
 	private void order() {
 		menu = GameObject.Find("Game Manager").GetComponent<FoodVariables>().GetAllSelectedRecipes();
+		foreach(Object it in menu)
+			Debug.Log(it.ToString());
 		int foodSelected = Random.Range(0,menu.Count);
-		//food = menu[foodSelected];
+		food = (GameObject)menu[foodSelected];
+
 		//Random r1 = new Random();
 		//int itemSelected = r1.Next(0, menu.Count);
 		state = customerStates.WAITING;
