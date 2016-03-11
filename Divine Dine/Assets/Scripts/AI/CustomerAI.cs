@@ -13,7 +13,7 @@ public class CustomerAI : MonoBehaviour {
 	private GameObject nearestChair;
 	private GameObject table; 
 	public int eatTime = 10;
-	private GameObject[] menu;
+	private ArrayList menu;
 	private bool arrived = false;
 	private bool left = false;
 	private bool ordered = false;
@@ -81,6 +81,11 @@ public class CustomerAI : MonoBehaviour {
 	
 	
 	private void order() {
+		menu = GameObject.Find("Game Manager").GetComponent<FoodVariables>().GetAllSelectedRecipes();
+		int foodSelected = Random.Range(0,menu.Count);
+		//food = menu[foodSelected];
+		//Random r1 = new Random();
+		//int itemSelected = r1.Next(0, menu.Count);
 		state = customerStates.WAITING;
 
 		//StartCoroutine (eatFood ());
@@ -93,8 +98,6 @@ public class CustomerAI : MonoBehaviour {
 	
 	private IEnumerator eatFood() {
 		state = customerStates.EATING;
-		//eatingNow = true;
-		//Debug.Log ("eating ma food now");
 		float timer = 0;
 		
 		while (timer < eatTime) {
@@ -102,8 +105,6 @@ public class CustomerAI : MonoBehaviour {
 			
 			yield return null;
 		}
-		//Debug.Log ("Done eating ma food");
-		//finishedEating = true;
 		leaving ();
 	}
 	

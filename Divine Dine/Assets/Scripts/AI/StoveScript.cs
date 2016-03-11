@@ -58,6 +58,7 @@ public class StoveScript : MonoBehaviour {
 
 		//Debug.Log ("FINISHED COOKING");
 		state = stoveStates.FOOD_READY;
+		Instantiate(currentFood.recipe, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 	}
 
 	public int getOrderCount() {
