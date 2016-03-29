@@ -77,8 +77,8 @@ public class FoodVariables : MonoBehaviour
         //Starter Dishes
         starterAppetizer.GetComponent<Food>().level = 1;
         starterEntree.GetComponent<Food>().level = 1;
-        AllSelectedRecipes.Add(starterAppetizer);
-        AllSelectedRecipes.Add(starterEntree);
+        SelectFood(starterAppetizer);
+        RemoveSelectedFood(starterEntree);
 
     }
 
