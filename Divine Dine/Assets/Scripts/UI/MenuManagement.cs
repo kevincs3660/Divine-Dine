@@ -575,6 +575,7 @@ public class MenuManagement : MonoBehaviour
 
             //Select Button
             f_select_button.onClick.RemoveAllListeners();
+            f_select_button.interactable = true;
             if(GetComponent<FoodVariables>().GetAllSelectedRecipes().Contains(food))
             {
                 //Already Selected
