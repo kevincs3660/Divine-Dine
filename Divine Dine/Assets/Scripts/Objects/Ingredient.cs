@@ -4,9 +4,9 @@ using System.Collections;
 public class Ingredient : MonoBehaviour
 {
     public Sprite image;
-    public int quatity;
-    public int rarity;
-    public int marketPrice;
+    public int quatity;         //How many the player owns
+    public int rarity;          //How likely it is to appear in the market
+    public int marketPrice;     //Base price item sells for in market
 
     public int GetSalePrice()
     {

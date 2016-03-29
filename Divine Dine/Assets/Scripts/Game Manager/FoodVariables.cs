@@ -29,6 +29,12 @@ public class FoodVariables : MonoBehaviour
     private int actualSaleItems;
     private int actualMarketItems;
     private int actualRareItems;
+    private int marketXP = 0;
+    private int marketScaler = 25;
+    private int marketThreshold = 25;
+    private int marketTarget = 25;
+    private float saleIP = 0.05f;       //Food price calculation based on ingredient cost
+    private float saleLP = 0.1f;        //Food price calculation based on dish level
 
     void Awake()
     {
@@ -167,6 +173,30 @@ public class FoodVariables : MonoBehaviour
         }
     }
 
+    public void AddMarketPoint(int n)
+    {
+        marketXP += n;
+        checkMarketLevel();
+    }
+
+    public void calculatePrice(Food food)
+    {
+        float cost = 0f;
+        foreach(GameObject r in food.recipe)
+        {
+            cost += r.GetComponent<Ingredient>().marketPrice * saleIP;
+        }
+        cost *= (food.level * saleLP);
+        if(food.isHealthy)
+        {
+            food.sellPrice = (int)(cost/2);
+        }
+        else
+        {
+            food.sellPrice = (int)cost;
+        }
+    }
+
     public void OneOfEverything()
     {
         for (int i = 0; i < AllIngredients.Count; i++)
@@ -188,6 +218,16 @@ public class FoodVariables : MonoBehaviour
                     MarketList.Add(food.GetComponent<Food>().recipe[i]);
                 }
             }
+        }
+    }
+
+    private void checkMarketLevel()
+    {
+        while(marketTarget <= marketXP)
+        {
+            marketLevel++;
+            marketTarget += marketThreshold;
+            marketThreshold += marketScaler;
         }
     }
 
@@ -253,5 +293,10 @@ public class FoodVariables : MonoBehaviour
     public ArrayList GetUnstockedItems()
     {
         return UnstockedItems;
+    }
+
+    public int GetMarketLevel()
+    {
+        return (marketLevel + 1);
     }
 }

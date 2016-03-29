@@ -720,6 +720,7 @@ public class MenuManagement : MonoBehaviour
     public void ConfirmLevel(GameObject food)
     {
         food.GetComponent<Food>().level++;
+        GetComponent<FoodVariables>().calculatePrice(food.GetComponent<Food>());
         f_button_panel1.SetActive(true);
         f_button_panel2.SetActive(false);
         for(int i = 0; i < food.GetComponent<Food>().recipe.Length; i++)

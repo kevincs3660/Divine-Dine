@@ -9,6 +9,6 @@ public class Food : MonoBehaviour
     public string cookbook;
     public string type;
     public int level;
-    public int basePrice;
     public int sellPrice;
+    public bool isHealthy = false;
 }
