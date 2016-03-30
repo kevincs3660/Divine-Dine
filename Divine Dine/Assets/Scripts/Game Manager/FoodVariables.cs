@@ -78,29 +78,51 @@ public class FoodVariables : MonoBehaviour
         starterAppetizer.GetComponent<Food>().level = 1;
         starterEntree.GetComponent<Food>().level = 1;
         SelectFood(starterAppetizer);
-        RemoveSelectedFood(starterEntree);
+        SelectFood(starterEntree);
 
     }
 
     public void SelectFood(GameObject food)
     {
         if (food.GetComponent<Food>().type == "Appetizer")
+        {
             SelectedAppetizers.Add(food);
+            Debug.Log("Select food: " + food.ToString());
+        }
         else if (food.GetComponent<Food>().type == "Entree")
+        {
             SelectedEntrees.Add(food);
+            Debug.Log("Select food: " + food.ToString());
+        }
         else if (food.GetComponent<Food>().type == "Dessert")
+        {
             SelectedDesserts.Add(food);
+            Debug.Log("Select food: " + food.ToString());
+        }
+        else
+            Debug.Log("Labeled Incorrectly");
         AllSelectedRecipes.Add(food);
     }
 
     public void RemoveSelectedFood(GameObject food)
     {
         if (food.GetComponent<Food>().type == "Appetizer")
+        {
             SelectedAppetizers.Remove(food);
+            Debug.Log("Remove food: " + food.ToString());
+        }
         else if (food.GetComponent<Food>().type == "Entree")
+        {
             SelectedEntrees.Remove(food);
+            Debug.Log("Remove food: " + food.ToString());
+        }
         else if (food.GetComponent<Food>().type == "Dessert")
+        {
             SelectedDesserts.Remove(food);
+            Debug.Log("Remove food: " + food.ToString());
+        }
+        else
+            Debug.Log("Labeled Incorrectly");
         AllSelectedRecipes.Remove(food);
     }
 

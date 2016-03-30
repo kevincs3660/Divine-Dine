@@ -584,9 +584,8 @@ public class MenuManagement : MonoBehaviour
             if(GetComponent<FoodVariables>().GetAllSelectedRecipes().Contains(food))
             {
                 //Already Selected
-                f_select_text.text = "Unselect";
-                f_select_button.onClick.AddListener(() => SelectToggle(true, food));
-                if(food.GetComponent<Food>().type == "Appetizer")
+                SelectToggle(true, food);
+                if (food.GetComponent<Food>().type == "Appetizer")
                 {
                     if(GetComponent<FoodVariables>().GetAppetizers().Count == 1)
                     {
@@ -606,8 +605,7 @@ public class MenuManagement : MonoBehaviour
             else
             {
                 //Can Be Selected
-                f_select_text.text = "Select";
-                f_select_button.onClick.AddListener(() => SelectToggle(false, food));
+                SelectToggle(false, food);
             }
         }
         else
@@ -805,15 +803,17 @@ public class MenuManagement : MonoBehaviour
         f_select_button.onClick.RemoveAllListeners();
         if(selected)
         {
-            f_select_text.text = "Select";
+            //Currently selected
+            f_select_text.text = "Unselect";
             f_select_button.onClick.AddListener(() => SelectToggle(false, food));
-            f_select_button.onClick.AddListener(() => GetComponent<FoodVariables>().SelectFood(food));
+            f_select_button.onClick.AddListener(() => GetComponent<FoodVariables>().RemoveSelectedFood(food));
         }
         else
         {
-            f_select_text.text = "Unselect";
+            //Not currently selected
+            f_select_text.text = "Select";
             f_select_button.onClick.AddListener(() => SelectToggle(true, food));
-            f_select_button.onClick.AddListener(() => GetComponent<FoodVariables>().RemoveSelectedFood(food));
+            f_select_button.onClick.AddListener(() => GetComponent<FoodVariables>().SelectFood(food));
         }
     }
 
