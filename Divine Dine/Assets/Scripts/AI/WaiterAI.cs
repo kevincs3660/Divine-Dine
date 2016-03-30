@@ -99,13 +99,14 @@ public class WaiterAI : MonoBehaviour {
 			for (int i = 0; i < customers.Length; i++) {
 				//Debug.Log (customers.Length);
 				CustomerAI cust = customers [i].gameObject.GetComponent<CustomerAI> ();
-				if (cust != null)
-				if(cust.state == CustomerAI.customerStates.WAITING && cust.hasWaiter == false) {
-					//Debug.Log("Found customer waiting");
-					state = waiterStates.TAKING_ORDER;
-					cust.hasWaiter = true;
-					takeCustomerOrder (customers [i]);
-					break;
+				if (cust != null) {
+					if(cust.state == CustomerAI.customerStates.WAITING && cust.hasWaiter == false) {
+						//Debug.Log("Found customer waiting");
+						state = waiterStates.TAKING_ORDER;
+						cust.hasWaiter = true;
+						takeCustomerOrder (customers [i]);
+						break;
+					}
 				}
 			}
 		}
