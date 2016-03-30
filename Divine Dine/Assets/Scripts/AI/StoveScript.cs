@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -58,7 +59,8 @@ public class StoveScript : MonoBehaviour {
 
 		//Debug.Log ("FINISHED COOKING");
 		state = stoveStates.FOOD_READY;
-		Instantiate(currentFood.recipe, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+		//Instantiate(GameObject.Find("TomatoSoup"), new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+		Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 	}
 
 	public int getOrderCount() {
