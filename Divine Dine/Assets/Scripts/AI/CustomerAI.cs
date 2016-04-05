@@ -11,6 +11,7 @@ public class CustomerAI : MonoBehaviour {
 	private GameObject entrance;
 	private GameObject despawnPoint;
 	private GameObject nearestChair;
+	private GameObject nearestTable;
 	private GameObject table; 
 	public int eatTime = 10;
 	private ArrayList menu;
@@ -26,7 +27,9 @@ public class CustomerAI : MonoBehaviour {
 		WAITING = 2,
 		WAITING_FOR_FOOD = 3,
 		EATING = 4,
-		LEAVING = 5
+		LEAVING = 5,
+		WAITING_FOR_TABLE = 6,
+		FOUND_TABLE = 7
 	};
 	public customerStates state = customerStates.WALKING;
 	
@@ -51,15 +54,33 @@ public class CustomerAI : MonoBehaviour {
 		
 		if (arrived && state == customerStates.WALKING) {
 			//Debug.Log("Finding me dat chair");
-			findChair();
+			if(!findTable()) {
+				findChair();
+			}
+
 		}
 		
 		if (state == customerStates.LEAVING && Vector3.Distance (despawnPoint.transform.position, agent.nextPosition) <= 0.3f) {
 			Destroy(this.gameObject);
 		}
-		
+
+		if (state == customerStates.WAITING_FOR_TABLE) {
+			findTable();
+		}
+
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null) {
 			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.6f) {
+				//Debug.Log("Sitting in ma chair");
+				//StartCoroutine(eatFood());
+				//if(ordered == false) {
+				//	order ();
+				//}
+				state = customerStates.WAITING_FOR_TABLE;
+			}
+		}
+		
+		if (state == customerStates.FOUND_TABLE && nearestTable != null) {
+			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.6f) {
 				//Debug.Log("Sitting in ma chair");
 				//StartCoroutine(eatFood());
 				if(ordered == false) {
@@ -113,10 +134,13 @@ public class CustomerAI : MonoBehaviour {
 	
 	private void leaving() {
 		//Debug.Log ("Imma leave now");
-		PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
-		NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
-		chair.taken = false;
-		chairCarve.carving = false;
+		//PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
+		//NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
+		PlaceableObject chair = nearestTable.gameObject.GetComponent<TableScript>().getChair().GetComponent<PlaceableObject> ();
+		NavMeshObstacle chairCarve = nearestTable.gameObject.GetComponent<TableScript>().getChair().GetComponent<NavMeshObstacle>();
+		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
+		//chair.taken = false;
+		//chairCarve.carving = false;
 		agent.SetDestination (entrance.transform.position);
 		state = customerStates.LEAVING;
 	}
@@ -128,39 +152,41 @@ public class CustomerAI : MonoBehaviour {
 	}
 	
 	private void findChair() {
-		GameObject[] chairsTag = GameObject.FindGameObjectsWithTag("Chair");
-		List<GameObject> chairs = new List<GameObject>();
+		GameObject[] chairsTag = GameObject.FindGameObjectsWithTag ("Chair");
+		List<GameObject> chairs = new List<GameObject> ();
 
-		for(int j = 0; j < chairsTag.Length; j++) {
+		for (int j = 0; j < chairsTag.Length; j++) {
 			//Debug.Log( chairsTag[j].gameObject.transform.position);
-			if(chairsTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && chairsTag[j].gameObject.GetComponent<PlaceableObject>().taken == false) {
-				chairs.Add(chairsTag[j]);
+			if (chairsTag [j].gameObject.GetComponent<PlaceableObject> ().isPreview == false && chairsTag [j].gameObject.GetComponent<PlaceableObject> ().taken == false) {
+				chairs.Add (chairsTag [j]);
 			}
 		}
 		
-		if(chairs.Count != 0) {
+		if (chairs.Count != 0) {
 			float distance = 0;
-			distance = Vector3.Distance(this.gameObject.transform.position, chairs[0].gameObject.transform.position);
-			nearestChair = chairs[0];
+			distance = Vector3.Distance (this.gameObject.transform.position, chairs [0].gameObject.transform.position);
+			nearestChair = chairs [0];
 			
-			if(chairs.Count > 1) {
-				for(int i = 1; i < chairs.Count; i++) {
-					if(distance > Vector3.Distance(this.gameObject.transform.position, chairs[i].gameObject.transform.position)) {
-						distance = Vector3.Distance(this.gameObject.transform.position, chairs[i].gameObject.transform.position);
-						nearestChair = chairs[i];
+			if (chairs.Count > 1) {
+				for (int i = 1; i < chairs.Count; i++) {
+					if (distance > Vector3.Distance (this.gameObject.transform.position, chairs [i].gameObject.transform.position)) {
+						distance = Vector3.Distance (this.gameObject.transform.position, chairs [i].gameObject.transform.position);
+						nearestChair = chairs [i];
 					}
 				}
 			}
 			   
-			if(agent.CalculatePath(nearestChair.gameObject.transform.position, path)) {
-				if(path.status != NavMeshPathStatus.PathPartial) {
-					NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
-					PlaceableObject chair = nearestChair.GetComponent<PlaceableObject>();
-					if(chair.taken == false) {
-						agent.SetDestination(nearestChair.gameObject.transform.position);
+			if (agent.CalculatePath (nearestChair.gameObject.transform.position, path)) {
+				if (path.status != NavMeshPathStatus.PathPartial) {
+					NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle> ();
+					PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
+					if (chair.taken == false) {
+						agent.SetDestination (nearestChair.gameObject.transform.position);
 						chair.taken = true;
 						chairCarve.carving = true;
 						state = customerStates.FOUND_CHAIR;
+						Debug.Log("FOUND A CHAIR YO");
+						//return true;
 					}
 				}
 			}
@@ -174,13 +200,82 @@ public class CustomerAI : MonoBehaviour {
 					}
 				}
 			} */
-		}
-		else {
+		} else {
 			//Debug.Log("Hmm this place seems busy. Imma just go home");
+			//return false;
 			agent.SetDestination(despawnPoint.transform.position);
 			state = customerStates.LEAVING;
 		}
 	}
+
+	private bool findTable() {
+		GameObject[] tablesTag = GameObject.FindGameObjectsWithTag("Table");
+		List<GameObject> tables = new List<GameObject>();
+
+		for(int j = 0; j < tablesTag.Length; j++) {
+			//Debug.Log( chairsTag[j].gameObject.transform.position);
+			if(tablesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && tablesTag[j].gameObject.GetComponent<TableScript>().state == TableScript.tableStates.FREE && tablesTag[j].gameObject.GetComponent<TableScript>().hasChair == true) {
+				tables.Add(tablesTag[j]);
+			}
+		}
+		
+		if(tables.Count != 0) {
+			float distance = 0;
+			distance = Vector3.Distance(this.gameObject.transform.position, tables[0].gameObject.transform.position);
+			nearestTable = tables[0];
+			
+			if(tables.Count > 1) {
+				for(int i = 1; i < tables.Count; i++) {
+					if(distance > Vector3.Distance(this.gameObject.transform.position, tables[i].gameObject.transform.position)) {
+						distance = Vector3.Distance(this.gameObject.transform.position, tables[i].gameObject.transform.position);
+						nearestTable = tables[i];
+					}
+				}
+			}
+
+			if(nearestTable.gameObject.GetComponent<TableScript>().getChair() != null)
+			{
+				GameObject tablesChair = nearestTable.gameObject.GetComponent<TableScript>().getChair();
+				if(agent.CalculatePath(tablesChair.gameObject.transform.position, path)) {
+					if(path.status != NavMeshPathStatus.PathPartial) {
+						NavMeshObstacle chairCarve = tablesChair.GetComponent<NavMeshObstacle>();
+						//PlaceableObject table = nearestTable.GetComponent<PlaceableObject>();
+						PlaceableObject chair = tablesChair.GetComponent<PlaceableObject>();
+						if(nearestTable.gameObject.GetComponent<TableScript>().state == TableScript.tableStates.FREE) {
+							agent.SetDestination(nearestTable.gameObject.GetComponent<TableScript>().getChair().gameObject.transform.position);
+							chair.taken = true;
+							//table.taken = true;
+							nearestTable.gameObject.GetComponent<TableScript>().state = TableScript.tableStates.USED;
+							chairCarve.carving = true;
+							//chairCarve.carving = true;
+							state = customerStates.FOUND_TABLE;
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+			/*
+			if (!agent.pathPending && pathComplete == false) {
+				if (agent.remainingDistance <= agent.stoppingDistance) {
+					if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
+						// Done
+						pathComplete = true;
+						agent.Stop();
+					}
+				}
+			} */
+		}
+		else {
+			//Debug.Log("Hmm this place seems busy. Imma just go home");
+			return false;
+			//agent.SetDestination(despawnPoint.transform.position);
+			//state = customerStates.LEAVING;
+		}
+	}
+
+		
 
 
 }
