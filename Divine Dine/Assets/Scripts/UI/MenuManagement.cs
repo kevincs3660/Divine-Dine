@@ -496,6 +496,7 @@ public class MenuManagement : MonoBehaviour
         homeText.text = "Back";
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(() => ShowStoreMenu());
+        homeButton.onClick.AddListener(() => GetComponent<PlaceMaterial>().Disable());
 
         shopScrollIndex = 0;
         LoadFlooring(shopScrollIndex);

@@ -64,4 +64,15 @@ public class PlaceMaterial : MonoBehaviour
         if (!(textures[selectedPrefab].GetComponent<PlaceableMaterial>().cashValue <= GetComponent<GlobalVariables>().money))
             active = false;
     }
+
+    public void Disable()
+    {
+        Debug.Log("disable");
+        active = false;
+        if (previewFloor != null)
+        {
+            Debug.Log("change back");
+            previewFloor.GetComponent<Renderer>().material.mainTexture = oldTexture;
+        }
+    }
 }

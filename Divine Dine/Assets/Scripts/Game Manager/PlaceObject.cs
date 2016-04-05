@@ -18,6 +18,7 @@ public class PlaceObject : MonoBehaviour {
     private Vector3 previewFloor = Vector3.zero;           //Position of floorspace that the preview is ontop of
     private Vector3 placedFloor = Vector3.zero;            //Position of floorspace that the placed object is ontop of
     private Vector3 facingFloor = Vector3.zero;            //Position of floorspace that the placed object should face during rotation
+    private Vector3 frozenPosition = Vector3.zero;
 
 	void Update ()
     {
@@ -65,7 +66,7 @@ public class PlaceObject : MonoBehaviour {
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100))
+        if (Physics.Raycast(ray, out hit, 200))
         {
             if (hit.transform.tag == "Floor" && !hit.transform.GetComponent<FloorBehavior>().IsUsed())
             {
@@ -77,7 +78,9 @@ public class PlaceObject : MonoBehaviour {
 
                 //Create object in scene
                 placedObject = Instantiate(placeablePrefabs[selectedPrefab],
-                    new Vector3(hit.transform.position.x, hit.transform.position.y + prefabSpaceOffset, hit.transform.position.z),
+                    new Vector3(hit.transform.position.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset0,
+                    hit.transform.position.y + prefabSpaceOffset + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().yOffset,
+                    hit.transform.position.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset0),
                     placeablePrefabs[selectedPrefab].transform.rotation) as GameObject;
 
                 //Update floor behavior
@@ -86,6 +89,7 @@ public class PlaceObject : MonoBehaviour {
 
                 //Allow the player to rotate the object
                 canRotate = true;
+                frozenPosition = placedObject.transform.position;
 
                 //Keep creating objects if they hold control
                 if (!Input.GetKey(KeyCode.LeftControl))
@@ -114,7 +118,9 @@ public class PlaceObject : MonoBehaviour {
 
                 //Create object in scene
                 previewObject = Instantiate(placeablePrefabs[selectedPrefab],
-                    new Vector3(hit.transform.position.x, hit.transform.position.y + prefabSpaceOffset, hit.transform.position.z),
+                    new Vector3(hit.transform.position.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset0,
+                    hit.transform.position.y + prefabSpaceOffset + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().yOffset,
+                    hit.transform.position.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset0),
                     placeablePrefabs[selectedPrefab].transform.rotation) as GameObject;
 
                 previewFloor = hit.transform.position;
@@ -128,27 +134,54 @@ public class PlaceObject : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100))
         {
-            facingFloor = hit.transform.position;
+            if(facingFloor != hit.transform.position)
+            {
+                facingFloor = hit.transform.position;
 
-            if (facingFloor.x - placedFloor.x < 0)
-            {
-                placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset+ 90, 0));
-                floorRef.GetComponent<FloorBehavior>().SetRotation(90f);
-            }
-            else if (facingFloor.x - placedFloor.x > 0)
-            {
-                placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 270, 0));
-                floorRef.GetComponent<FloorBehavior>().SetRotation(270f);
-            }
-            else if (facingFloor.z - placedFloor.z < 0)
-            {
-                placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset, 0));
-                floorRef.GetComponent<FloorBehavior>().SetRotation(0f);
-            }
-            else if (facingFloor.z - placedFloor.z > 0)
-            {
-                placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 180, 0));
-                floorRef.GetComponent<FloorBehavior>().SetRotation(180f);
+                if (facingFloor.x - placedFloor.x < 0)
+                {
+                    //Debug.Log("90");
+                    placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 90, 0));
+                    floorRef.GetComponent<FloorBehavior>().SetRotation(90f);
+
+                    placedObject.transform.position =
+                        new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset90,
+                        frozenPosition.y,
+                        frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset90);
+                }
+                else if (facingFloor.x - placedFloor.x > 0)
+                {
+                    //Debug.Log("270");
+                    placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 270, 0));
+                    floorRef.GetComponent<FloorBehavior>().SetRotation(270f);
+
+                    placedObject.transform.position =
+                        new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset270,
+                        frozenPosition.y,
+                        frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset270);
+                }
+                else if (facingFloor.z - placedFloor.z < 0)
+                {
+                    //Debug.Log("0");
+                    placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset, 0));
+                    floorRef.GetComponent<FloorBehavior>().SetRotation(0f);
+
+                    placedObject.transform.position =
+                        new Vector3(frozenPosition.x,
+                        frozenPosition.y,
+                        frozenPosition.z);
+                }
+                else if (facingFloor.z - placedFloor.z > 0)
+                {
+                    //Debug.Log("180");
+                    placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 180, 0));
+                    floorRef.GetComponent<FloorBehavior>().SetRotation(180f);
+
+                    placedObject.transform.position =
+                        new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset180,
+                        frozenPosition.y,
+                        frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset180);
+                }
             }
         }
         if (Input.GetMouseButtonUp(0))
