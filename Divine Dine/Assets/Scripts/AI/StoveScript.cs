@@ -8,6 +8,7 @@ public class StoveScript : MonoBehaviour {
 	private FoodScript currentFood;
 	public int cookTime = 10;
 	private bool foodGiven = false;
+	private GameObject foodModel;
 	public bool hasWaiter = false;
 	public Queue<FoodScript> foodQueue;
 	public int foodCount;
@@ -60,7 +61,7 @@ public class StoveScript : MonoBehaviour {
 		//Debug.Log ("FINISHED COOKING");
 		state = stoveStates.FOOD_READY;
 		//Instantiate(GameObject.Find("TomatoSoup"), new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
-		Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+		foodModel = (GameObject)Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 	}
 
 	public int getOrderCount() {
@@ -74,6 +75,7 @@ public class StoveScript : MonoBehaviour {
 
 	public void foodPickedUp() {
 		hasWaiter = false;
+		Destroy (foodModel);
 		state = stoveStates.FREE;
 		currentFood = null;
 		foodGiven = false;

@@ -65,7 +65,12 @@ public class CustomerAI : MonoBehaviour {
 		}
 
 		if (state == customerStates.WAITING_FOR_TABLE) {
-			findTable();
+			if(findTable()) {
+				NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle> ();
+				PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
+				chair.taken = false;
+				chairCarve.carving = false;
+			}
 		}
 
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null) {
@@ -123,12 +128,16 @@ public class CustomerAI : MonoBehaviour {
 	private IEnumerator eatFood() {
 		state = customerStates.EATING;
 		float timer = 0;
+
+		Vector3 tableTop = new Vector3 (nearestTable.transform.position.x, nearestTable.transform.position.y + 1f, nearestTable.transform.position.z);
+		GameObject foodModel = (GameObject)Instantiate (food.gameObject.GetComponent<Food> ().model, tableTop, Quaternion.identity);
 		
 		while (timer < eatTime) {
 			timer += Time.deltaTime;
 			
 			yield return null;
 		}
+		Destroy (foodModel);
 		leaving ();
 	}
 	
@@ -138,9 +147,15 @@ public class CustomerAI : MonoBehaviour {
 		//NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle>();
 		PlaceableObject chair = nearestTable.gameObject.GetComponent<TableScript>().getChair().GetComponent<PlaceableObject> ();
 		NavMeshObstacle chairCarve = nearestTable.gameObject.GetComponent<TableScript>().getChair().GetComponent<NavMeshObstacle>();
+		chairCarve.carving = false;
 		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
+
+		GameObject manager = GameObject.Find ("Game Manager");
+		//manager.gameObject.GetComponent<GlobalVariables> ().money += 10;
+		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (10);
+		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
 		//chair.taken = false;
-		//chairCarve.carving = false;
+	
 		agent.SetDestination (entrance.transform.position);
 		state = customerStates.LEAVING;
 	}
@@ -218,7 +233,7 @@ public class CustomerAI : MonoBehaviour {
 				tables.Add(tablesTag[j]);
 			}
 		}
-		
+		//Debug.Log ("Got here");
 		if(tables.Count != 0) {
 			float distance = 0;
 			distance = Vector3.Distance(this.gameObject.transform.position, tables[0].gameObject.transform.position);

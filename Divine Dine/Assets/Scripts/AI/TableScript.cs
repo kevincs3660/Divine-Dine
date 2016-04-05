@@ -21,10 +21,12 @@ public class TableScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!hasChair)
-			checkForChair ();
-		if (hasChair)
-			checkChairIsNear ();
+		if (!this.gameObject.GetComponent<PlaceableObject> ().isPreview) {
+			if (!hasChair)
+				checkForChair ();
+			if (hasChair)
+				checkChairIsNear ();
+		}
 	
 	}
 
@@ -32,50 +34,55 @@ public class TableScript : MonoBehaviour {
 	{
 		//Debug.Log ("Checking for thing");
 		RaycastHit hit;
-		if (Physics.Raycast (this.transform.position, new Vector3 (-1f, 0, 0), out hit, 1f)) {
+		Vector3 rayPosition = new Vector3 (this.transform.position.x, this.transform.position.y +0.5f, this.transform.position.z);
+		if (Physics.Raycast (rayPosition, new Vector3 (-1f, 0, 0), out hit, 1f)) {
 			if(hit.collider.gameObject.tag == "Chair") {
-				chair = hit.collider.gameObject;
-				chair.GetComponent<PlaceableObject>().taken = true;
-				hasChair = true;
-				Debug.Log ("HIT THE SHIT1");
+				if(!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview) {
+					chair = hit.collider.gameObject;
+					chair.GetComponent<PlaceableObject>().taken = true;
+					hasChair = true;
+					Debug.Log ("HIT THE SHIT1");
+				}
 			}
 		}
-		else if (Physics.Raycast (this.transform.position, new Vector3 (1f, 0, 0), out hit, 1f)) {
+		else if (Physics.Raycast (rayPosition, new Vector3 (1f, 0, 0), out hit, 1f)) {
 			if(hit.collider.gameObject.tag == "Chair") {
-				chair = hit.collider.gameObject;
-				chair.GetComponent<PlaceableObject>().taken = true;
-				hasChair = true;
-				Debug.Log ("HIT THE SHIT2");
+				if(!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview) {
+					chair = hit.collider.gameObject;
+					chair.GetComponent<PlaceableObject>().taken = true;
+					hasChair = true;
+					Debug.Log ("HIT THE SHIT2");
+				}
 			}
 		}
-		else if (Physics.Raycast (this.transform.position, new Vector3 (0, 0, 1f), out hit, 1f)) {
+		else if (Physics.Raycast (rayPosition, new Vector3 (0, 0, 1f), out hit, 1f)) {
 			if(hit.collider.gameObject.tag == "Chair") {
-				chair = hit.collider.gameObject;
-				chair.GetComponent<PlaceableObject>().taken = true;
-				hasChair = true;
-				Debug.Log ("HIT THE SHIT3");
+				if(!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview) {
+					chair = hit.collider.gameObject;
+					chair.GetComponent<PlaceableObject>().taken = true;
+					hasChair = true;
+					Debug.Log ("HIT THE SHIT3");
+				}
 			}
 		}
-		else if (Physics.Raycast (this.transform.position, new Vector3 (0, 0, -1f), out hit, 1f)) {
+		else if (Physics.Raycast (rayPosition, new Vector3 (0, 0, -1f), out hit, 1f)) {
 			if(hit.collider.gameObject.tag == "Chair") {
-				chair = hit.collider.gameObject;
-				chair.GetComponent<PlaceableObject>().taken = true;
-				hasChair = true;
-				Debug.Log ("HIT THE SHIT4");
+				if(!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview) {
+					chair = hit.collider.gameObject;
+					chair.GetComponent<PlaceableObject>().taken = true;
+					hasChair = true;
+					Debug.Log ("HIT THE SHIT4");
+				}
 			}
 		}
-
-		//if (Physics.Raycast (this.transform.position, new Vector3(-1f,0,0), 1f, LayerMask.NameToLayer("Default"))) {
-		//	Debug.Log("HIT THE SHIT");
-		//}
 	}
 
 	private void checkChairIsNear()
 	{
 		if (hasChair) {
 			float distance = Vector3.Distance(this.gameObject.transform.position, chair.transform.position);
-			if(distance > 1f) {
-				Debug.Log("Removing Chair");
+			if(distance > 1.2f) {
+				Debug.Log("Removing Chair because at distance: " + distance);
 				chair.gameObject.GetComponent<PlaceableObject>().taken = false;
 				chair = null;
 				hasChair = false;

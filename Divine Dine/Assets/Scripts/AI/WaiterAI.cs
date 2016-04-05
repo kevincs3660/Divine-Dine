@@ -43,7 +43,7 @@ public class WaiterAI : MonoBehaviour {
 		if (state == waiterStates.TAKING_ORDER && currentCustomer != null)
 			if(Vector3.Distance (currentCustomer.transform.position, agent.nextPosition) <= 1f) {
 				currentStove = findFreeStove();
-				
+				//Debug.Log("Inside here");
 				if(currentStove == null) {
 					Debug.Log("CURRENT STOVE IS NULL");
 					state = waiterStates.NOTHING;
@@ -51,7 +51,9 @@ public class WaiterAI : MonoBehaviour {
 					currentCustomer = null;
 				}
 				else {
+					//Debug.Log("Found a stove. Moving there now");
 					currentFood = currentCustomer.giveOrder();
+					//Debug.Log("Got the order");
 					agent.SetDestination(currentStove.gameObject.transform.position);
 					//currentCustomer = null;
 					state = waiterStates.ORDER_TO_STOVE;
@@ -61,6 +63,7 @@ public class WaiterAI : MonoBehaviour {
 		if(state == waiterStates.ORDER_TO_STOVE && currentStove != null)
 			if(Vector3.Distance(currentStove.transform.position, agent.nextPosition) <= 1.2f) {
 				//Debug.Log("Got to stove");
+				agent.ResetPath();
 				currentStove.GetComponent<StoveScript>().acceptFood(currentFood);
 				currentStove = null;
 				currentFood = null;
@@ -78,7 +81,8 @@ public class WaiterAI : MonoBehaviour {
 			}
 
 		if(state == waiterStates.DELIVERING_ORDER && currentCustomer != null)
-			if(Vector3.Distance(currentCustomer.transform.position, agent.nextPosition) <= 1f) {
+			if(Vector3.Distance(currentCustomer.transform.position, agent.nextPosition) <= 1.5f) {
+				agent.ResetPath();
 				currentCustomer.acceptFood();
 				state = waiterStates.NOTHING;
 				currentCustomer = null;
@@ -173,7 +177,9 @@ public class WaiterAI : MonoBehaviour {
 				stoves.Add(stovesTag[j]);
 			}
 		}
+		//Debug.Log ("Added stove to thing");
 		if (stoves.Count != 0) {
+			//Debug.Log("At least one stove");
 			stoveOrderCount = stoves[0].gameObject.GetComponent<StoveScript>().getOrderCount();
 			bestStove = stoves[0];
 			if(stoves[0].gameObject.GetComponent<StoveScript>().state == StoveScript.stoveStates.FREE) {
