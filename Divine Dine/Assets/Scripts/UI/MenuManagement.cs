@@ -20,6 +20,7 @@ public class MenuManagement : MonoBehaviour
     private GameObject foodSelection;
     private GameObject ingredientScroll;
     private GameObject middleBar;
+    private GameObject management;
 
     //Main Menu
     private GameObject main1;
@@ -137,12 +138,23 @@ public class MenuManagement : MonoBehaviour
     private GameObject f_button_panel2;
     private GameObject f_price_info;
 
-    //Ingredient Scroll
-
     //Middle Bar
     private GameObject cheatBox;
     private Text cheatText;
     private Text cameraText;
+
+    //Management
+    private Button e_close;
+    private Text e_avail_text;
+    private Button e_s_waiters;
+    private Button e_a_waiters;
+    private Button e_s_cooks;
+    private Button e_a_cooks;
+    private Text e_num_waiters;
+    private Text e_num_cooks;
+    private Text e_waiter_money;
+    private Text e_cook_money;
+
 
     //Programming Objects
     private int shopScrollIndex;
@@ -166,6 +178,7 @@ public class MenuManagement : MonoBehaviour
         foodSelection = mainCanvas.transform.GetChild(4).gameObject;
         ingredientScroll = mainCanvas.transform.GetChild(5).gameObject;
         middleBar = mainCanvas.transform.GetChild(6).gameObject;
+        management = mainCanvas.transform.GetChild(7).gameObject;
 
         //Main Menu
         main1 = mainMenu.transform.GetChild(0).gameObject;
@@ -283,14 +296,24 @@ public class MenuManagement : MonoBehaviour
         f_button_panel2 = foodSelection.transform.GetChild(6).gameObject;
         f_price_info = foodSelection.transform.GetChild(7).gameObject;
 
-        //Ingredient Scroll
-
         //Middle Bar
         cheatBox = middleBar.transform.GetChild(0).gameObject;
         cheatText = middleBar.transform.GetChild(0).GetChild(1).GetComponent<Text>();
         cameraText = middleBar.transform.GetChild(2).GetChild(0).GetComponent<Text>();
 
-    defaultFoodSprite = m_image1.GetComponent<Image>().sprite;
+        //Management
+        e_close = management.transform.GetChild(0).GetComponent<Button>();
+        e_avail_text = management.transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        e_s_waiters = management.transform.GetChild(2).GetComponent<Button>();
+        e_a_waiters = management.transform.GetChild(3).GetComponent<Button>();
+        e_s_cooks = management.transform.GetChild(4).GetComponent<Button>();
+        e_a_cooks = management.transform.GetChild(5).GetComponent<Button>();
+        e_num_waiters = management.transform.GetChild(6).GetComponent<Text>();
+        e_num_cooks = management.transform.GetChild(7).GetComponent<Text>();
+        e_waiter_money = management.transform.GetChild(8).GetComponent<Text>();
+        e_cook_money = management.transform.GetChild(9).GetComponent<Text>();
+
+        defaultFoodSprite = m_image1.GetComponent<Image>().sprite;
         defaultIngredientSprite = ingredient1_1.GetComponent<Image>().sprite;
         ShowMainMenu();
     }
@@ -369,7 +392,32 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowManagement()
     {
-        //ClearAll();
+        ClearAll();
+
+        //Close Button
+        e_close.onClick.RemoveAllListeners();
+        e_close.onClick.AddListener(() => ShowMainMenu());
+
+        //Add and Sub Buttons
+        e_a_cooks.onClick.RemoveAllListeners();
+        e_s_cooks.onClick.RemoveAllListeners();
+        e_a_cooks.onClick.AddListener(() => GetComponent<Management>().AddCook());
+        e_s_cooks.onClick.AddListener(() => GetComponent<Management>().SubCook());
+        e_a_cooks.onClick.AddListener(() => LoadManagement());
+        e_s_cooks.onClick.AddListener(() => LoadManagement());
+
+        e_a_waiters.onClick.RemoveAllListeners();
+        e_s_waiters.onClick.RemoveAllListeners();
+        e_a_waiters.onClick.AddListener(() => GetComponent<Management>().AddWaiter());
+        e_s_waiters.onClick.AddListener(() => GetComponent<Management>().SubWaiter());
+        e_a_waiters.onClick.AddListener(() => LoadManagement());
+        e_s_waiters.onClick.AddListener(() => LoadManagement());
+
+
+        LoadManagement();
+
+        mainMenu.SetActive(true);
+        management.SetActive(true);
     }
 
     public void ShowMarket()
@@ -815,6 +863,16 @@ public class MenuManagement : MonoBehaviour
             f_select_button.onClick.AddListener(() => SelectToggle(true, food));
             f_select_button.onClick.AddListener(() => GetComponent<FoodVariables>().SelectFood(food));
         }
+    }
+
+    public void LoadManagement()
+    {
+        GetComponent<Management>().CheckAvail();
+        e_avail_text.text = "Staff Available: " + GetComponent<Management>().GetAvail();
+        e_num_waiters.text = GetComponent<Management>().GetWaiters().ToString();
+        e_num_cooks.text = GetComponent<Management>().GetCooks().ToString();
+        e_waiter_money.text = "Total: $" + GetComponent<Management>().WaiterCost() + "/day";
+        e_cook_money.text = "Total: $" + GetComponent<Management>().CookCost() + "/day";
     }
 
     public void LoadMarket(int index)
@@ -1676,6 +1734,7 @@ public class MenuManagement : MonoBehaviour
         foodSelection.SetActive(false);
         ingredientScroll.SetActive(false);
         middleBar.SetActive(false);
+        management.SetActive(false);
     }
 
     private void ClearButtonsMainMenu()
