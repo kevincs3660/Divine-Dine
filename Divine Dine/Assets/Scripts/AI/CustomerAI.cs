@@ -13,7 +13,7 @@ public class CustomerAI : MonoBehaviour {
 	private GameObject nearestChair;
 	private GameObject nearestTable;
 	private GameObject table; 
-	public int eatTime = 10;
+	public float eatTime = 10f;
 	private ArrayList menu;
 	private bool arrived = false;
 	private bool left = false;
@@ -39,31 +39,37 @@ public class CustomerAI : MonoBehaviour {
 		
 		entrance = GameObject.Find ("Entrance");
 		despawnPoint = GameObject.Find ("CustomerDespawnPoint");
+
 		if (entrance != null) {
 			agent.SetDestination(entrance.transform.position);
 		}
+
+		eatTime = eatTime * GameObject.Find("Game Manager").GetComponent<GlobalVariables>().gameSpeed;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		// When the customer reaches the entrance
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f) {
 			//Debug.Log("THE FUN HAS ARRIVED");
 			arrived = true;
 		}
-		
+
+		// If customer has reached entrance, search for tables first, and then open chairs to wait for a table
 		if (arrived && state == customerStates.WALKING) {
-			//Debug.Log("Finding me dat chair");
 			if(!findTable()) {
 				findChair();
 			}
 
 		}
-		
+
+		// If the customer has reached the despawn point 
 		if (state == customerStates.LEAVING && Vector3.Distance (despawnPoint.transform.position, agent.nextPosition) <= 0.3f) {
 			Destroy(this.gameObject);
 		}
 
+		// If the customer is waiting for a table, keep trying to find a table
 		if (state == customerStates.WAITING_FOR_TABLE) {
 			if(findTable()) {
 				NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle> ();
@@ -73,39 +79,38 @@ public class CustomerAI : MonoBehaviour {
 			}
 		}
 
+		// If the customer has found and reached a chair to wait in, start waiting for a table
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null) {
 			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.6f) {
-				//Debug.Log("Sitting in ma chair");
-				//StartCoroutine(eatFood());
-				//if(ordered == false) {
-				//	order ();
-				//}
 				state = customerStates.WAITING_FOR_TABLE;
 			}
 		}
-		
+
+		// If the customer has reached the table, order the food
 		if (state == customerStates.FOUND_TABLE && nearestTable != null) {
 			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.6f) {
-				//Debug.Log("Sitting in ma chair");
-				//StartCoroutine(eatFood());
 				if(ordered == false) {
 					order ();
 				}
 			}
 		}
-		
+
+		// If the customer is done eating, leave and move to the despawn point
 		if (state == customerStates.LEAVING && Vector3.Distance (entrance.transform.position, agent.nextPosition) <= 0.5f) {
 			agent.SetDestination (despawnPoint.transform.position);
 			left = true;
 		}
-		
+
+		// If the customer has reached the despawn point, die
 		if (left && Vector3.Distance (despawnPoint.transform.position, agent.nextPosition) <= 0.3f) {
 			Destroy (this.gameObject);
 		}
 		
 	}
 	
-	
+	/*
+	 * Customer selects food from current available menu and then waits for a waiter to take their order 
+	 */
 	private void order() {
 		menu = GameObject.Find("Game Manager").GetComponent<FoodVariables>().GetAllSelectedRecipes();
 		foreach(Object it in menu)
@@ -113,18 +118,19 @@ public class CustomerAI : MonoBehaviour {
 		int foodSelected = Random.Range(0,menu.Count);
 		food = (GameObject)menu[foodSelected];
 
-		//Random r1 = new Random();
-		//int itemSelected = r1.Next(0, menu.Count);
 		state = customerStates.WAITING;
-
-		//StartCoroutine (eatFood ());
-
 	}
 
+	/*
+	 * Called by the waiter to indicate they have arrived with the food so the customer can start eating
+	 */
 	public void acceptFood() {
 		StartCoroutine(eatFood());
 	}
-	
+
+	/*
+	 * Creates the food model and then waits for the customer to eat, then makes customer leave to go die
+	 */
 	private IEnumerator eatFood() {
 		state = customerStates.EATING;
 		float timer = 0;
@@ -140,7 +146,10 @@ public class CustomerAI : MonoBehaviour {
 		Destroy (foodModel);
 		leaving ();
 	}
-	
+
+	/*
+	 * Changes state of table and performs other cleanup to prepare for next customer. Adds money and experience
+	 */
 	private void leaving() {
 		//Debug.Log ("Imma leave now");
 		//PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
@@ -151,32 +160,39 @@ public class CustomerAI : MonoBehaviour {
 		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
 
 		GameObject manager = GameObject.Find ("Game Manager");
-		//manager.gameObject.GetComponent<GlobalVariables> ().money += 10;
 		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (10);
 		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
-		//chair.taken = false;
 	
 		agent.SetDestination (entrance.transform.position);
 		state = customerStates.LEAVING;
 	}
 
+	/*
+	 * Allows customer to give order to waiter 
+	 */
 	public FoodScript giveOrder() {
 		state = customerStates.WAITING_FOR_FOOD;
 		FoodScript order = new FoodScript (food, this.gameObject);
 		return order;
 	}
-	
+
+	/*
+	 * Called only after a customer has failed to find an open table. Tries to find an open chair where the customer can wait for a table
+	 */
 	private void findChair() {
+
+		// Gets all chair objects
 		GameObject[] chairsTag = GameObject.FindGameObjectsWithTag ("Chair");
 		List<GameObject> chairs = new List<GameObject> ();
 
+		// Removes those chairs that are previews or already taken
 		for (int j = 0; j < chairsTag.Length; j++) {
-			//Debug.Log( chairsTag[j].gameObject.transform.position);
 			if (chairsTag [j].gameObject.GetComponent<PlaceableObject> ().isPreview == false && chairsTag [j].gameObject.GetComponent<PlaceableObject> ().taken == false) {
 				chairs.Add (chairsTag [j]);
 			}
 		}
-		
+
+		// If any chairs exist, find the nearest chair
 		if (chairs.Count != 0) {
 			float distance = 0;
 			distance = Vector3.Distance (this.gameObject.transform.position, chairs [0].gameObject.transform.position);
@@ -190,7 +206,8 @@ public class CustomerAI : MonoBehaviour {
 					}
 				}
 			}
-			   
+
+			// If chair is reachable, go there 
 			if (agent.CalculatePath (nearestChair.gameObject.transform.position, path)) {
 				if (path.status != NavMeshPathStatus.PathPartial) {
 					NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle> ();
@@ -201,7 +218,6 @@ public class CustomerAI : MonoBehaviour {
 						chairCarve.carving = true;
 						state = customerStates.FOUND_CHAIR;
 						Debug.Log("FOUND A CHAIR YO");
-						//return true;
 					}
 				}
 			}
@@ -216,14 +232,19 @@ public class CustomerAI : MonoBehaviour {
 				}
 			} */
 		} else {
-			//Debug.Log("Hmm this place seems busy. Imma just go home");
-			//return false;
 			agent.SetDestination(despawnPoint.transform.position);
 			state = customerStates.LEAVING;
 		}
 	}
 
+	/*
+	 * Tries to find an open table for the customer. 
+	 * 
+	 * Return: Boolean indicated whether or not an open table was found
+	 */
 	private bool findTable() {
+
+		// Get all tables
 		GameObject[] tablesTag = GameObject.FindGameObjectsWithTag("Table");
 		List<GameObject> tables = new List<GameObject>();
 
@@ -233,7 +254,8 @@ public class CustomerAI : MonoBehaviour {
 				tables.Add(tablesTag[j]);
 			}
 		}
-		//Debug.Log ("Got here");
+
+		// If any tables are left, find the closest one
 		if(tables.Count != 0) {
 			float distance = 0;
 			distance = Vector3.Distance(this.gameObject.transform.position, tables[0].gameObject.transform.position);
@@ -248,15 +270,20 @@ public class CustomerAI : MonoBehaviour {
 				}
 			}
 
+			// If the table has a chair associated with it, go there
 			if(nearestTable.gameObject.GetComponent<TableScript>().getChair() != null)
 			{
 				GameObject tablesChair = nearestTable.gameObject.GetComponent<TableScript>().getChair();
+
 				if(agent.CalculatePath(tablesChair.gameObject.transform.position, path)) {
 					if(path.status != NavMeshPathStatus.PathPartial) {
+
 						NavMeshObstacle chairCarve = tablesChair.GetComponent<NavMeshObstacle>();
 						//PlaceableObject table = nearestTable.GetComponent<PlaceableObject>();
 						PlaceableObject chair = tablesChair.GetComponent<PlaceableObject>();
+
 						if(nearestTable.gameObject.GetComponent<TableScript>().state == TableScript.tableStates.FREE) {
+
 							agent.SetDestination(nearestTable.gameObject.GetComponent<TableScript>().getChair().gameObject.transform.position);
 							chair.taken = true;
 							//table.taken = true;
@@ -271,22 +298,9 @@ public class CustomerAI : MonoBehaviour {
 			}
 
 			return false;
-			/*
-			if (!agent.pathPending && pathComplete == false) {
-				if (agent.remainingDistance <= agent.stoppingDistance) {
-					if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
-						// Done
-						pathComplete = true;
-						agent.Stop();
-					}
-				}
-			} */
 		}
 		else {
-			//Debug.Log("Hmm this place seems busy. Imma just go home");
 			return false;
-			//agent.SetDestination(despawnPoint.transform.position);
-			//state = customerStates.LEAVING;
 		}
 	}
 

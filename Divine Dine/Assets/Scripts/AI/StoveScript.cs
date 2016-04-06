@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class StoveScript : MonoBehaviour {
 
 	private FoodScript currentFood;
-	public int cookTime = 10;
+	public float cookTime = 10;
 	private bool foodGiven = false;
 	private GameObject foodModel;
 	public bool hasWaiter = false;
@@ -23,6 +23,8 @@ public class StoveScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		foodQueue = new Queue<FoodScript> ();
+
+		cookTime = cookTime * GameObject.Find("Game Manager").GetComponent<GlobalVariables>().gameSpeed;
 	
 	}
 	

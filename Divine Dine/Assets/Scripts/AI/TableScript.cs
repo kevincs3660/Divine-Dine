@@ -81,7 +81,7 @@ public class TableScript : MonoBehaviour {
 	{
 		if (hasChair) {
 			float distance = Vector3.Distance(this.gameObject.transform.position, chair.transform.position);
-			if(distance > 1.2f) {
+			if(distance > 1.7f) {
 				Debug.Log("Removing Chair because at distance: " + distance);
 				chair.gameObject.GetComponent<PlaceableObject>().taken = false;
 				chair = null;

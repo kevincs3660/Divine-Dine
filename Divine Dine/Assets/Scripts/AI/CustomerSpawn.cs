@@ -8,7 +8,9 @@ public class CustomerSpawn : MonoBehaviour {
 	public GameObject spawnPoint;
 	//public GameObject entrance;
 	//public GameObject despawnPoint;
-	public GameObject customer;
+	public GameObject customerMale;
+	public GameObject customerFemale;
+	private bool spawnCustomersCheck = true;
 	// Use this for initialization
 	void Start () {
 	
@@ -17,11 +19,25 @@ public class CustomerSpawn : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (coroutineStarted == false) 
+		if (coroutineStarted == false && spawnCustomersCheck) 
 		{
 			StartCoroutine(spawn ());
 		}
 	
+	}
+
+	public void spawnCustomers(bool choice)
+	{
+		spawnCustomersCheck = choice;
+	}
+
+	public bool allCustomersDead()
+	{
+		GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
+		if(customers.Length == 0)
+			return true;
+		else 
+			return false;
 	}
 
 	IEnumerator spawn()
@@ -36,7 +52,14 @@ public class CustomerSpawn : MonoBehaviour {
 			yield return null;
 		}
 
-		Instantiate (customer, spawnPoint.transform.position, Quaternion.identity);
-		coroutineStarted = false;
+		float decision = Random.value;
+		if(spawnCustomersCheck)
+		{
+			if(decision > 0.5f)
+				Instantiate (customerMale, spawnPoint.transform.position, Quaternion.identity);
+			else
+				Instantiate (customerFemale, spawnPoint.transform.position + new Vector3(0,-1,0), Quaternion.identity);
+			coroutineStarted = false;
+		}
 	}
 }
