@@ -20,7 +20,7 @@ public class Load : MonoBehaviour {
 			doLoad ();
 	}
 
-	private void doLoad()
+	public void doLoad()
 	{
 		data = SaveLoad.Load ("SaveData.dd");
 
