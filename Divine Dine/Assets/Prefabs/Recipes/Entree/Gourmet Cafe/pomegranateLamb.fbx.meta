@@ -136,6 +136,11 @@ ModelImporter:
     100256: transform7
     100258: transform8
     100260: transform9
+    100262: group15
+    100264: pCube6
+    100266: pCube6 1
+    100268: transform71
+    100270: transform72
     400000: group
     400002: Lamb1
     400004: Lamb1 1
@@ -267,9 +272,17 @@ ModelImporter:
     400256: transform7
     400258: transform8
     400260: transform9
+    400262: group15
+    400264: pCube6
+    400266: pCube6 1
+    400268: transform71
+    400270: transform72
     2300000: Lamb1
+    2300002: pCube6
     3300000: Lamb1
+    3300002: pCube6
     4300000: Lamb1
+    4300002: pCube6
   materials:
     importMaterials: 1
     materialName: 0

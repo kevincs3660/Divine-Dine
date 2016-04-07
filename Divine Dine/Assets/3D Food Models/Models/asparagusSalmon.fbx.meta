@@ -6,9 +6,13 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: asparagusSalmon
     400000: //RootNode
+    400002: asparagusSalmon
     2300000: //RootNode
+    2300002: asparagusSalmon
     3300000: //RootNode
+    3300002: asparagusSalmon
     4300000: asparagusSalmon
     9500000: //RootNode
   materials:

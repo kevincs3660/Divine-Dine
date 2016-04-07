@@ -6,9 +6,25 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cake
+    100004: Cake 1
+    100006: group
+    100008: group13
+    100010: pCube5
+    100012: transform73
+    100014: transform74
     400000: //RootNode
+    400002: Cake
+    400004: Cake 1
+    400006: group
+    400008: group13
+    400010: pCube5
+    400012: transform73
+    400014: transform74
     2300000: //RootNode
+    2300002: Cake
     3300000: //RootNode
+    3300002: Cake
     4300000: Cake
   materials:
     importMaterials: 1

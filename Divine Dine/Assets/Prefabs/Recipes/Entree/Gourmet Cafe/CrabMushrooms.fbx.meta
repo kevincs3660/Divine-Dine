@@ -6,10 +6,63 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: group
+    100004: group14
+    100006: Mushrooms
+    100008: pCube7
+    100010: pCube7 1
+    100012: polySurface1
+    100014: polySurface2
+    100016: polySurface3
+    100018: polySurface4
+    100020: polySurface5
+    100022: polySurface6
+    100024: polySurface7
+    100026: polySurface8
+    100028: polySurface8 1
+    100030: transform69
+    100032: transform70
+    100034: transform75
+    100036: transform76
+    100038: transform77
+    100040: transform78
+    100042: transform79
+    100044: transform80
+    100046: transform81
+    100048: transform82
+    100050: transform83
     400000: //RootNode
+    400002: group
+    400004: group14
+    400006: Mushrooms
+    400008: pCube7
+    400010: pCube7 1
+    400012: polySurface1
+    400014: polySurface2
+    400016: polySurface3
+    400018: polySurface4
+    400020: polySurface5
+    400022: polySurface6
+    400024: polySurface7
+    400026: polySurface8
+    400028: polySurface8 1
+    400030: transform69
+    400032: transform70
+    400034: transform75
+    400036: transform76
+    400038: transform77
+    400040: transform78
+    400042: transform79
+    400044: transform80
+    400046: transform81
+    400048: transform82
+    400050: transform83
     2300000: //RootNode
+    2300002: polySurface8
     3300000: //RootNode
+    3300002: polySurface8
     4300000: Mushrooms
+    4300002: polySurface8
   materials:
     importMaterials: 1
     materialName: 0

@@ -7,8 +7,22 @@ ModelImporter:
   fileIDToRecycleName:
     100000: //RootNode
     100002: Brushetta7
+    100004: Brushetta7 1
+    100006: group
+    100008: group10
+    100010: group9
+    100012: pCube4
+    100014: transform67
+    100016: transform68
     400000: //RootNode
     400002: Brushetta7
+    400004: Brushetta7 1
+    400006: group
+    400008: group10
+    400010: group9
+    400012: pCube4
+    400014: transform67
+    400016: transform68
     2300000: Brushetta7
     3300000: Brushetta7
     4300000: Brushetta7

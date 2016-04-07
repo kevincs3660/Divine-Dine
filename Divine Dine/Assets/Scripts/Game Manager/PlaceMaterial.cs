@@ -46,9 +46,17 @@ public class PlaceMaterial : MonoBehaviour
 
     private void SetMaterial()
     {
-        previewFloor = null;
-        GetComponent<GlobalVariables>().AddMoney(0 - textures[selectedPrefab].GetComponent<PlaceableMaterial>().cashValue);
-        MoneyCheck();
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+            if(hit.transform.tag == "Floor")
+            {
+                previewFloor = null;
+                GetComponent<GlobalVariables>().AddMoney(0 - textures[selectedPrefab].GetComponent<PlaceableMaterial>().cashValue);
+                MoneyCheck();
+            }
+        }
     }
 
     public void ReadyMaterial(int index)
@@ -67,11 +75,9 @@ public class PlaceMaterial : MonoBehaviour
 
     public void Disable()
     {
-        Debug.Log("disable");
         active = false;
         if (previewFloor != null)
         {
-            Debug.Log("change back");
             previewFloor.GetComponent<Renderer>().material.mainTexture = oldTexture;
         }
     }
