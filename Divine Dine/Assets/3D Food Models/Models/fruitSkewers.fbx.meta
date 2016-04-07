@@ -1,55 +1,16 @@
 fileFormatVersion: 2
-guid: f660790f435141f44a431dad86a8ce86
-timeCreated: 1455813917
+guid: 69fc1185c5d9917439dd5c9298eef804
+timeCreated: 1460039771
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: group
-    100002: Head_01
-    100004: Head_Head
-    100006: hip
-    100008: L_Arm
-    100010: L_Collar
-    100012: L_Hand
-    100014: L_Leg_Bottom
-    100016: L_Leg_Top
-    100018: L_Wrist
-    100020: M1:polySurface1
-    100022: //RootNode
-    100024: Neck_01
-    100026: R_Arm
-    100028: R_Collar
-    100030: R_Hand
-    100032: R_Leg_Bottom
-    100034: R_Leg_Top
-    100036: R_Wrist
-    100038: Spine_01
-    100040: Spine_02
-    400000: group
-    400002: Head_01
-    400004: Head_Head
-    400006: hip
-    400008: L_Arm
-    400010: L_Collar
-    400012: L_Hand
-    400014: L_Leg_Bottom
-    400016: L_Leg_Top
-    400018: L_Wrist
-    400020: M1:polySurface1
-    400022: //RootNode
-    400024: Neck_01
-    400026: R_Arm
-    400028: R_Collar
-    400030: R_Hand
-    400032: R_Leg_Bottom
-    400034: R_Leg_Top
-    400036: R_Wrist
-    400038: Spine_01
-    400040: Spine_02
-    4300000: M1:polySurface1
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: FruitSkewers
     9500000: //RootNode
-    13700000: M1:polySurface1
   materials:
     importMaterials: 1
     materialName: 0

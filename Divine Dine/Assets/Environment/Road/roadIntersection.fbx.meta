@@ -1,55 +1,38 @@
 fileFormatVersion: 2
-guid: f660790f435141f44a431dad86a8ce86
-timeCreated: 1455813917
+guid: 248b7320e58c2974f85826a7167c979c
+timeCreated: 1460039765
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: group
-    100002: Head_01
-    100004: Head_Head
-    100006: hip
-    100008: L_Arm
-    100010: L_Collar
-    100012: L_Hand
-    100014: L_Leg_Bottom
-    100016: L_Leg_Top
-    100018: L_Wrist
-    100020: M1:polySurface1
-    100022: //RootNode
-    100024: Neck_01
-    100026: R_Arm
-    100028: R_Collar
-    100030: R_Hand
-    100032: R_Leg_Bottom
-    100034: R_Leg_Top
-    100036: R_Wrist
-    100038: Spine_01
-    100040: Spine_02
-    400000: group
-    400002: Head_01
-    400004: Head_Head
-    400006: hip
-    400008: L_Arm
-    400010: L_Collar
-    400012: L_Hand
-    400014: L_Leg_Bottom
-    400016: L_Leg_Top
-    400018: L_Wrist
-    400020: M1:polySurface1
-    400022: //RootNode
-    400024: Neck_01
-    400026: R_Arm
-    400028: R_Collar
-    400030: R_Hand
-    400032: R_Leg_Bottom
-    400034: R_Leg_Top
-    400036: R_Wrist
-    400038: Spine_01
-    400040: Spine_02
-    4300000: M1:polySurface1
+    100000: pCube4
+    100002: pCylinder2
+    100004: pCylinder3
+    100006: pCylinder4
+    100008: pCylinder5
+    100010: //RootNode
+    400000: pCube4
+    400002: pCylinder2
+    400004: pCylinder3
+    400006: pCylinder4
+    400008: pCylinder5
+    400010: //RootNode
+    2300000: pCube4
+    2300002: pCylinder2
+    2300004: pCylinder3
+    2300006: pCylinder4
+    2300008: pCylinder5
+    3300000: pCube4
+    3300002: pCylinder2
+    3300004: pCylinder3
+    3300006: pCylinder4
+    3300008: pCylinder5
+    4300000: pCube4
+    4300002: pCylinder2
+    4300004: pCylinder3
+    4300006: pCylinder4
+    4300008: pCylinder5
     9500000: //RootNode
-    13700000: M1:polySurface1
   materials:
     importMaterials: 1
     materialName: 0
