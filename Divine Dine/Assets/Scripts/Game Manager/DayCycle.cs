@@ -89,6 +89,8 @@ public class DayCycle : MonoBehaviour
             ending = false;
 
             GetComponent<CustomerSpawn>().spawnCustomers(true);
+            GetComponent<FoodVariables>().CalculateMarket();
+            GetComponent<Management>().PayEmployees();
         }
     }
 
@@ -101,5 +103,6 @@ public class DayCycle : MonoBehaviour
         {
             Destroy(x);
         }
+        GetComponent<PlayButton>().Reset();
     }
 }

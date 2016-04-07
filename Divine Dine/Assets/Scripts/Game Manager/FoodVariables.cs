@@ -80,6 +80,9 @@ public class FoodVariables : MonoBehaviour
         SelectFood(starterAppetizer);
         SelectFood(starterEntree);
 
+        //First market roll
+        CalculateMarket();
+
     }
 
     public void SelectFood(GameObject food)

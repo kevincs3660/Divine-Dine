@@ -412,7 +412,6 @@ public class MenuManagement : MonoBehaviour
     {
         ClearAll();
 
-        GetComponent<FoodVariables>().CalculateMarket();
         saleItems = GetComponent<FoodVariables>().GetSaleItems();
         marketItems = GetComponent<FoodVariables>().GetMarketItems();
         rareItems = GetComponent<FoodVariables>().GetRareItems();
