@@ -6,9 +6,13 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: cheesePlatter
     400000: //RootNode
+    400002: cheesePlatter
     2300000: //RootNode
+    2300002: cheesePlatter
     3300000: //RootNode
+    3300002: cheesePlatter
     4300000: cheesePlatter
     9500000: //RootNode
   materials:

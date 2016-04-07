@@ -19,6 +19,7 @@ public class MenuManagement : MonoBehaviour
     private GameObject foodSelection;
     private GameObject ingredientScroll;
     private GameObject management;
+    private GameObject dayBar;
 
     //Main Menu
     private GameObject main1;
@@ -171,6 +172,7 @@ public class MenuManagement : MonoBehaviour
         foodSelection = mainCanvas.transform.GetChild(4).gameObject;
         ingredientScroll = mainCanvas.transform.GetChild(5).gameObject;
         management = mainCanvas.transform.GetChild(6).gameObject;
+        dayBar = mainCanvas.transform.GetChild(7).gameObject;
 
         //Main Menu
         main1 = mainMenu.transform.GetChild(0).gameObject;
@@ -769,6 +771,12 @@ public class MenuManagement : MonoBehaviour
     {
         f_button_panel1.SetActive(false);
         f_button_panel2.SetActive(true);
+    }
+
+    public void ShowDayBar()
+    {
+        ClearAll();
+        dayBar.SetActive(true);
     }
 
     public void ConfirmLevel(GameObject food)
@@ -1696,6 +1704,7 @@ public class MenuManagement : MonoBehaviour
         foodSelection.SetActive(false);
         ingredientScroll.SetActive(false);
         management.SetActive(false);
+        dayBar.SetActive(false);
     }
 
     private void ClearButtonsMainMenu()

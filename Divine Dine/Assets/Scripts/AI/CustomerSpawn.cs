@@ -10,7 +10,7 @@ public class CustomerSpawn : MonoBehaviour {
 	//public GameObject despawnPoint;
 	public GameObject customerMale;
 	public GameObject customerFemale;
-	private bool spawnCustomersCheck = true;
+	private bool spawnCustomersCheck = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -29,6 +29,8 @@ public class CustomerSpawn : MonoBehaviour {
 	public void spawnCustomers(bool choice)
 	{
 		spawnCustomersCheck = choice;
+        StopAllCoroutines();
+        coroutineStarted = false;
 	}
 
 	public bool allCustomersDead()
