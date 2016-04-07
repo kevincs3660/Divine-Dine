@@ -31,15 +31,14 @@ public class GlobalVariables : MonoBehaviour {
     public void CalculateLevel()
     {
         currentLevel = 1;
-        nextLevelXP = 250;
+        nextLevelXP = 25;
         baseXP  = 0;
 
         while (experience >= nextLevelXP)
         {
-            baseXP = nextLevelXP;
-            nextLevelXP = nextLevelXP*2;
-            nextLevelXP = (int)(nextLevelXP * 1.1);
             currentLevel++;
+            baseXP = nextLevelXP;
+            nextLevelXP = nextLevelXP+(25*currentLevel);
         }
         levelText.GetComponent<Text>().text = "Level " + currentLevel;
     }

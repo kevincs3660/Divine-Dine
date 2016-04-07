@@ -46,6 +46,10 @@ public class DayCycle : MonoBehaviour
                     {
                         ampm = "PM";
                     }
+                    else if (hour == 13)
+                    {
+                        hour = 1;
+                    }
                     else if (hour == 8)
                     {
                         ending = true;

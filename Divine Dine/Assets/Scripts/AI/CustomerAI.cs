@@ -161,6 +161,7 @@ public class CustomerAI : MonoBehaviour {
 
 		GameObject manager = GameObject.Find ("Game Manager");
 		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (10);
+        manager.gameObject.GetComponent<GlobalVariables>().AddExperience(food.GetComponent<Food>().level);
 		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
 	
 		agent.SetDestination (entrance.transform.position);
