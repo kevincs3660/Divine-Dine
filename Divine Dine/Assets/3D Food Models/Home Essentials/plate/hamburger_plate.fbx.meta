@@ -6,7 +6,17 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: hamburgerFries_plate:Hamburger:pCube4
+    100004: hamburgerFries_plate:pCube4
     400000: //RootNode
+    400002: hamburgerFries_plate:Hamburger:pCube4
+    400004: hamburgerFries_plate:pCube4
+    2300000: hamburgerFries_plate:Hamburger:pCube4
+    2300002: hamburgerFries_plate:pCube4
+    3300000: hamburgerFries_plate:Hamburger:pCube4
+    3300002: hamburgerFries_plate:pCube4
+    4300000: hamburgerFries_plate:pCube4
+    4300002: hamburgerFries_plate:Hamburger:pCube4
   materials:
     importMaterials: 1
     materialName: 0
