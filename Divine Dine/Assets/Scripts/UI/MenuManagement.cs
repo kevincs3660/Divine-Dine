@@ -6,7 +6,6 @@ using System.Collections;
 public class MenuManagement : MonoBehaviour
 {
     public GameObject mainCanvas;
-    public GameObject gameCamera;
     public Color faded;
     public Color selected;
 
@@ -19,7 +18,6 @@ public class MenuManagement : MonoBehaviour
     private GameObject marketScroll;
     private GameObject foodSelection;
     private GameObject ingredientScroll;
-    private GameObject middleBar;
     private GameObject management;
 
     //Main Menu
@@ -138,11 +136,6 @@ public class MenuManagement : MonoBehaviour
     private GameObject f_button_panel2;
     private GameObject f_price_info;
 
-    //Middle Bar
-    private GameObject cheatBox;
-    private Text cheatText;
-    private Text cameraText;
-
     //Management
     private Button e_close;
     private Text e_avail_text;
@@ -177,8 +170,7 @@ public class MenuManagement : MonoBehaviour
         marketScroll = mainCanvas.transform.GetChild(3).gameObject;
         foodSelection = mainCanvas.transform.GetChild(4).gameObject;
         ingredientScroll = mainCanvas.transform.GetChild(5).gameObject;
-        middleBar = mainCanvas.transform.GetChild(6).gameObject;
-        management = mainCanvas.transform.GetChild(7).gameObject;
+        management = mainCanvas.transform.GetChild(6).gameObject;
 
         //Main Menu
         main1 = mainMenu.transform.GetChild(0).gameObject;
@@ -296,11 +288,6 @@ public class MenuManagement : MonoBehaviour
         f_button_panel2 = foodSelection.transform.GetChild(6).gameObject;
         f_price_info = foodSelection.transform.GetChild(7).gameObject;
 
-        //Middle Bar
-        cheatBox = middleBar.transform.GetChild(0).gameObject;
-        cheatText = middleBar.transform.GetChild(0).GetChild(1).GetComponent<Text>();
-        cameraText = middleBar.transform.GetChild(2).GetChild(0).GetComponent<Text>();
-
         //Management
         e_close = management.transform.GetChild(0).GetComponent<Button>();
         e_avail_text = management.transform.GetChild(1).GetChild(0).GetComponent<Text>();
@@ -337,7 +324,6 @@ public class MenuManagement : MonoBehaviour
         mainButton4.onClick.AddListener(() => ShowMarket());
         mainButton5.onClick.AddListener(() => ShowTrophies());
 
-        middleBar.SetActive(true);
         mainMenu.SetActive(true);
     }
 
@@ -1700,31 +1686,6 @@ public class MenuManagement : MonoBehaviour
             i4.SetActive(false);
         }
     }
-    
-    public void ToggleCheatBox(bool value)
-    {
-        cheatText.text = "";
-        cheatBox.SetActive(value);
-    }
-
-    public string GetCheat()
-    {
-        return cheatText.text;
-    }
-
-    public void ToggleCamera()
-    {
-        if(cameraText.text == "Unlock Camera")
-        {
-            cameraText.text = "Lock Camera";
-            gameCamera.GetComponent<GodCam>().enabled = true;
-        }
-        else
-        {
-            cameraText.text = "Unlock Camera";
-            gameCamera.GetComponent<GodCam>().enabled = false;
-        }
-    }
 
     private void ClearAll()
     {
@@ -1734,7 +1695,6 @@ public class MenuManagement : MonoBehaviour
         marketScroll.SetActive(false);
         foodSelection.SetActive(false);
         ingredientScroll.SetActive(false);
-        middleBar.SetActive(false);
         management.SetActive(false);
     }
 

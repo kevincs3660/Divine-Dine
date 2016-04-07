@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Cheats : MonoBehaviour {
 
+    public GameObject cheatBox;
+
+    private Text cheatText;
     private string cheat;
     private bool active = false;
+
+    void Start()
+    {
+        cheatText = cheatBox.transform.GetChild(1).GetComponent<Text>();
+    }
 
 	void Update ()
     {
         if (Input.GetKeyDown(KeyCode.F3))
         {
             active = !active;
-            GetComponent<MenuManagement>().ToggleCheatBox(active);
+            ToggleCheatBox(active);
         }
     }
 
@@ -22,7 +31,7 @@ public class Cheats : MonoBehaviour {
 
     public void CheckCheat()
     {
-        cheat = GetComponent<MenuManagement>().GetCheat();
+        cheat = cheatText.text;
         cheat = cheat.ToUpper();
         if (cheat == "GOLDEN APPLES")
         {
@@ -36,5 +45,11 @@ public class Cheats : MonoBehaviour {
         {
             GetComponent<FoodVariables>().OneOfEverything();
         }
+    }
+
+    public void ToggleCheatBox(bool value)
+    {
+        cheatBox.GetComponent<InputField>().text = "";
+        cheatBox.SetActive(value);
     }
 }
