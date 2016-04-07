@@ -20,7 +20,7 @@ public class Save : MonoBehaviour {
 			doSave ();
 	}
 
-	private void doSave()
+	public void doSave()
 	{
 		tileTextures = new string[382];
 		tileObjects = new string[382];
