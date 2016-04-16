@@ -94,4 +94,15 @@ public class TableScript : MonoBehaviour {
 	{
 		return chair;
 	}
+
+	public void reset()
+	{
+		state = tableStates.FREE;
+		if (hasChair) {
+			NavMeshObstacle mesh = chair.GetComponent<NavMeshObstacle>();
+			PlaceableObject theChair = chair.GetComponent<PlaceableObject>();
+			theChair.taken = true;
+			mesh.carving = true;
+		}
+	}
 }

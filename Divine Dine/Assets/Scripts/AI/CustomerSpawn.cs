@@ -42,6 +42,31 @@ public class CustomerSpawn : MonoBehaviour {
 			return false;
 	}
 
+	public void resetAllScripts()
+	{
+		GameObject[] allChairs = GameObject.FindGameObjectsWithTag ("Chair");
+		GameObject[] allTables = GameObject.FindGameObjectsWithTag ("Table");
+		GameObject[] allStoves = GameObject.FindGameObjectsWithTag ("Stove");
+		GameObject[] allWaiters = GameObject.FindGameObjectsWithTag ("Waiter");
+
+		foreach (GameObject obj in allChairs) {
+			PlaceableObject chair = obj.GetComponent<PlaceableObject>();
+			chair.taken = false;
+		}
+		foreach (GameObject obj in allTables) {
+			TableScript table = obj.GetComponent<TableScript>();
+			table.reset();
+		}
+		foreach (GameObject obj in allStoves) {
+			StoveScript stove = obj.GetComponent<StoveScript>();
+			stove.reset();
+		}
+		foreach (GameObject obj in allWaiters) {
+			WaiterAI waiter = obj.GetComponent<WaiterAI>();
+			waiter.reset();
+		}
+	}
+
 	IEnumerator spawn()
 	{
 		coroutineStarted = true;

@@ -201,4 +201,12 @@ public class WaiterAI : MonoBehaviour {
 		//Debug.Log("returning from the end. Stove is : " + bestStove);
 		return bestStove;
 	}
+
+	public void reset()
+	{
+		state = waiterStates.NOTHING;
+		currentCustomer = null;
+		currentFood = null;
+		currentStove = null;
+	}
 }

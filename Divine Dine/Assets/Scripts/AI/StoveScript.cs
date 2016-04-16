@@ -81,4 +81,14 @@ public class StoveScript : MonoBehaviour {
 		currentFood = null;
 		foodGiven = false;
 	}
+
+	public void reset()
+	{
+		currentFood = null;
+		state = stoveStates.FREE;
+		foodQueue = new Queue<FoodScript> ();
+		hasWaiter = false;
+		foodGiven = false;
+		foodCount = 0;
+	}
 }

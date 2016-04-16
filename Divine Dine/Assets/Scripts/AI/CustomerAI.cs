@@ -274,8 +274,7 @@ public class CustomerAI : MonoBehaviour {
 			}
 
 			// If the table has a chair associated with it, go there
-			if(nearestTable.gameObject.GetComponent<TableScript>().getChair() != null)
-			{
+			if(nearestTable.gameObject.GetComponent<TableScript>().getChair() != null) {
 				GameObject tablesChair = nearestTable.gameObject.GetComponent<TableScript>().getChair();
 
 				if(agent.CalculatePath(tablesChair.gameObject.transform.position, path)) {
@@ -305,9 +304,5 @@ public class CustomerAI : MonoBehaviour {
 		else {
 			return false;
 		}
-	}
-
-		
-
-
+	}		
 }
