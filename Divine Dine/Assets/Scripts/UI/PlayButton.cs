@@ -6,32 +6,41 @@ public class PlayButton : MonoBehaviour
 {
     public GameObject button;
 
-    private bool normal;
+    private int speed;
     private GameObject play;
     private GameObject ff;
+    private GameObject ff3;
 
     void Start ()
     {
-        normal = true;
+        speed = 0;
         play = button.transform.GetChild(0).gameObject;
-        ff = button.transform.GetChild(2).gameObject;
+        ff = button.transform.GetChild(1).gameObject;
+        ff3 = button.transform.GetChild(2).gameObject;
     }
 
     public void Toggle()
     {
-        if(normal)
+        if(speed == 0)
         {
-            Time.timeScale = 2;
+            Time.timeScale = 3;
             play.SetActive(false);
             ff.SetActive(true);
-            normal = false;
+            speed = 1;
         }
-        else
+        else if (speed == 1)
         {
-            Time.timeScale = 1;
             ff.SetActive(false);
+            ff3.SetActive(true);
+            Time.timeScale = 4;
+            speed = 2;
+        }
+        else if (speed == 2)
+        {
+            Time.timeScale = 1.5f;
+            ff3.SetActive(false);
             play.SetActive(true);
-            normal = true;
+            speed = 0;
         }
     }
 
@@ -39,8 +48,9 @@ public class PlayButton : MonoBehaviour
     {
         Time.timeScale = 1;
         ff.SetActive(false);
+        ff3.SetActive(false);
         play.SetActive(true);
-        normal = true;
+        speed = 0;
 
         button.GetComponent<Button>().onClick.RemoveAllListeners();
         button.GetComponent<Button>().onClick.AddListener(() => GetComponent<MenuManagement>().ShowDayBar());

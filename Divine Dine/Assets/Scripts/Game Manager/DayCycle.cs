@@ -27,7 +27,7 @@ public class DayCycle : MonoBehaviour
     {
         if(active)
         {
-            counter += Time.deltaTime;
+            counter += Time.deltaTime*1.5f;
             if(counter >= 1)
             {
                 min++;
@@ -50,7 +50,7 @@ public class DayCycle : MonoBehaviour
                     {
                         hour = 1;
                     }
-                    else if (hour == 8)
+                    else if (hour == 7)
                     {
                         ending = true;
                         GetComponent<CustomerSpawn>().spawnCustomers(false);
@@ -69,6 +69,14 @@ public class DayCycle : MonoBehaviour
                 if(GetComponent<CustomerSpawn>().allCustomersDead())
                 {
                     active = false;
+
+                    //Check to see if the plot can expand
+                    GameObject[] allGrass = GameObject.FindGameObjectsWithTag("Grass");
+                    for (int i = 0; i < allGrass.Length; i++)
+                    {
+                        allGrass[i].GetComponent<LevelHiding>().Check();
+                    }
+
                     GetComponent<MenuManagement>().ShowMainMenu();
                 }
             }
@@ -79,11 +87,12 @@ public class DayCycle : MonoBehaviour
     {
         if(!active)
         {
+            Time.timeScale = 1.5f;
             day++;
             dayText.text = "Day " + day;
-            timeText.text = "9:00AM";
+            timeText.text = "11:00AM";
 
-            hour = 9;
+            hour = 11;
             min = 0;
             counter = 0;
 
@@ -100,13 +109,32 @@ public class DayCycle : MonoBehaviour
 
     public void Deactivate()
     {
+        //Stop new things from happenin
         active = false;
         GetComponent<CustomerSpawn>().spawnCustomers(false);
+
+        //Kill all current customers
         GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
         foreach(GameObject x in customers)
         {
             Destroy(x);
         }
+
+        //Remove all food
+        GameObject[] food = GameObject.FindGameObjectsWithTag("Food");
+        foreach (GameObject x in food)
+        {
+            Destroy(x);
+        }
+
+        //Check to see if the plot can expand
+        GameObject[] allGrass = GameObject.FindGameObjectsWithTag("Grass");
+        for (int i = 0; i < allGrass.Length; i++)
+        {
+            allGrass[i].GetComponent<LevelHiding>().Check();
+        }
+
+        //Reset button
         GetComponent<PlayButton>().Reset();
     }
 }

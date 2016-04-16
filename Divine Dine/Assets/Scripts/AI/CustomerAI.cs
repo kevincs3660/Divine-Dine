@@ -137,6 +137,8 @@ public class CustomerAI : MonoBehaviour {
 
 		Vector3 tableTop = new Vector3 (nearestTable.transform.position.x, nearestTable.transform.position.y + 1f, nearestTable.transform.position.z);
 		GameObject foodModel = (GameObject)Instantiate (food.gameObject.GetComponent<Food> ().model, tableTop, Quaternion.identity);
+
+        foodModel.tag = "Food";
 		
 		while (timer < eatTime) {
 			timer += Time.deltaTime;

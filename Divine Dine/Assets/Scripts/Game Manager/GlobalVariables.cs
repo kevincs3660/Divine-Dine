@@ -71,12 +71,6 @@ public class GlobalVariables : MonoBehaviour {
             CalculateLevel();
             levelText.GetComponent<Text>().text = "Level " + currentLevel;
 
-            //Check to see if the plot can expand
-            GameObject[] allGrass = GameObject.FindGameObjectsWithTag("Grass");
-            for(int i = 0; i < allGrass.Length; i++)
-            {
-                allGrass[i].GetComponent<LevelHiding>().Check();
-            }
         }
         experienceMeter.GetComponent<RectTransform>().anchorMax = new Vector2(GetLevelPercentage(), 1);
     }
