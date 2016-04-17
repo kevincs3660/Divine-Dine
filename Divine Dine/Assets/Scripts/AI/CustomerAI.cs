@@ -189,8 +189,10 @@ public class CustomerAI : MonoBehaviour {
 		List<GameObject> chairs = new List<GameObject> ();
 
 		// Removes those chairs that are previews or already taken
-		for (int j = 0; j < chairsTag.Length; j++) {
-			if (chairsTag [j].gameObject.GetComponent<PlaceableObject> ().isPreview == false && chairsTag [j].gameObject.GetComponent<PlaceableObject> ().taken == false) {
+		for (int j = 0; j < chairsTag.Length; j++)
+        {
+			if (chairsTag [j].gameObject.GetComponent<PlaceableObject> ().isPreview == false && chairsTag [j].gameObject.GetComponent<PlaceableObject> ().taken == false)
+            {
 				chairs.Add (chairsTag [j]);
 			}
 		}

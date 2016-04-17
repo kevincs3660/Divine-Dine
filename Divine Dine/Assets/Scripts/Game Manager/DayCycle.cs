@@ -68,16 +68,7 @@ public class DayCycle : MonoBehaviour
             {
                 if(GetComponent<CustomerSpawn>().allCustomersDead())
                 {
-                    active = false;
-
-                    //Check to see if the plot can expand
-                    GameObject[] allGrass = GameObject.FindGameObjectsWithTag("Grass");
-                    for (int i = 0; i < allGrass.Length; i++)
-                    {
-                        allGrass[i].GetComponent<LevelHiding>().Check();
-                    }
-
-                    GetComponent<MenuManagement>().ShowMainMenu();
+                    Deactivate();
                 }
             }
         }
@@ -104,20 +95,40 @@ public class DayCycle : MonoBehaviour
             GetComponent<CustomerSpawn>().spawnCustomers(true);
             GetComponent<FoodVariables>().CalculateMarket();
             GetComponent<Management>().PayEmployees();
+            GetComponent<SpawnStaff>().PlaceStaff();
+
+            //Find out where customers can sit
+            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+            foreach (GameObject table in tables)
+            {
+                table.GetComponent<TableScript>().Calculate();
+            }
         }
     }
 
     public void Deactivate()
     {
-        //Stop new things from happenin
+        //Stop new things from happening
         active = false;
         GetComponent<CustomerSpawn>().spawnCustomers(false);
 
         //Kill all current customers
         GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
-        foreach(GameObject x in customers)
+        foreach(GameObject customer in customers)
         {
-            Destroy(x);
+            Destroy(customer);
+        }
+
+        //Kill all staff
+        GameObject[] waiters = GameObject.FindGameObjectsWithTag("Waiter");
+        foreach (GameObject waiter in waiters)
+        {
+            Destroy(waiter);
+        }
+        GameObject[] cooks = GameObject.FindGameObjectsWithTag("Cook");
+        foreach (GameObject cook in cooks)
+        {
+            Destroy(cook);
         }
 
         //Remove all food
@@ -125,6 +136,27 @@ public class DayCycle : MonoBehaviour
         foreach (GameObject x in food)
         {
             Destroy(x);
+        }
+
+        //Reset tables
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+        foreach (GameObject table in tables)
+        {
+            table.GetComponent<TableScript>().Reset();
+        }
+
+        //Reset chairs
+        GameObject[] chairs = GameObject.FindGameObjectsWithTag("Chair");
+        foreach (GameObject chair in chairs)
+        {
+            chair.GetComponent<NavMeshObstacle>().carving = false;
+        }
+
+        //Reset all stoves
+        GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
+        foreach (GameObject stove in stoves)
+        {
+            stove.GetComponent<StoveScript>().Reset();
         }
 
         //Check to see if the plot can expand
@@ -136,5 +168,6 @@ public class DayCycle : MonoBehaviour
 
         //Reset button
         GetComponent<PlayButton>().Reset();
+        GetComponent<MenuManagement>().ShowMainMenu();
     }
 }

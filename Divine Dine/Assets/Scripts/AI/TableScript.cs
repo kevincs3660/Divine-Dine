@@ -19,8 +19,7 @@ public class TableScript : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	public void Calculate () {
 		if (!this.gameObject.GetComponent<PlaceableObject> ().isPreview) {
 			if (!hasChair)
 				checkForChair ();
@@ -29,6 +28,13 @@ public class TableScript : MonoBehaviour {
 		}
 	
 	}
+
+    public void Reset ()
+    {
+        chair = null;
+        hasChair = false;
+        state = tableStates.FREE;
+    }
 
 	private void checkForChair()
 	{

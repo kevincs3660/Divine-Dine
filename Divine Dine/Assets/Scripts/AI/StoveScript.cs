@@ -41,6 +41,13 @@ public class StoveScript : MonoBehaviour {
 		}
 	}
 
+    public void Reset ()
+    {
+        StopAllCoroutines();
+        state = stoveStates.FREE;
+        foodQueue = new Queue<FoodScript>();
+    }
+
 	public void acceptFood(FoodScript food) {
 		//Debug.Log ("STOVE GOT FOOD");
 		foodQueue.Enqueue (food);
@@ -63,6 +70,7 @@ public class StoveScript : MonoBehaviour {
 		state = stoveStates.FOOD_READY;
 		//Instantiate(GameObject.Find("TomatoSoup"), new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 		foodModel = (GameObject)Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+        foodModel.tag = "Food";
 	}
 
 	public int getOrderCount() {

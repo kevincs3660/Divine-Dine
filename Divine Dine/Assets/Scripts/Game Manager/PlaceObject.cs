@@ -140,7 +140,7 @@ public class PlaceObject : MonoBehaviour {
 
                 if (facingFloor.x - placedFloor.x < 0)
                 {
-                    //Debug.Log("90");
+                    Debug.Log("90");
                     placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 90, 0));
                     floorRef.GetComponent<FloorBehavior>().SetRotation(90f);
 
@@ -148,10 +148,12 @@ public class PlaceObject : MonoBehaviour {
                         new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset90,
                         frozenPosition.y,
                         frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset90);
+
+                    placedObject.GetComponent<PlaceableObject>().rotationOffset = 90;
                 }
                 else if (facingFloor.x - placedFloor.x > 0)
                 {
-                    //Debug.Log("270");
+                    Debug.Log("270");
                     placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 270, 0));
                     floorRef.GetComponent<FloorBehavior>().SetRotation(270f);
 
@@ -159,10 +161,12 @@ public class PlaceObject : MonoBehaviour {
                         new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset270,
                         frozenPosition.y,
                         frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset270);
+
+                    placedObject.GetComponent<PlaceableObject>().rotationOffset = 270;
                 }
                 else if (facingFloor.z - placedFloor.z < 0)
                 {
-                    //Debug.Log("0");
+                    Debug.Log("0");
                     placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset, 0));
                     floorRef.GetComponent<FloorBehavior>().SetRotation(0f);
 
@@ -170,10 +174,12 @@ public class PlaceObject : MonoBehaviour {
                         new Vector3(frozenPosition.x,
                         frozenPosition.y,
                         frozenPosition.z);
+
+                    placedObject.GetComponent<PlaceableObject>().rotationOffset = 0;
                 }
                 else if (facingFloor.z - placedFloor.z > 0)
                 {
-                    //Debug.Log("180");
+                    Debug.Log("180");
                     placedObject.transform.eulerAngles = (new Vector3(0, prefabRotationOffset + 180, 0));
                     floorRef.GetComponent<FloorBehavior>().SetRotation(180f);
 
@@ -181,6 +187,8 @@ public class PlaceObject : MonoBehaviour {
                         new Vector3(frozenPosition.x + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().xOffset180,
                         frozenPosition.y,
                         frozenPosition.z + placeablePrefabs[selectedPrefab].GetComponent<PlaceableObject>().zOffset180);
+
+                    placedObject.GetComponent<PlaceableObject>().rotationOffset = 180;
                 }
             }
         }
