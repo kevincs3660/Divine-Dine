@@ -5,8 +5,8 @@ public class Management : MonoBehaviour
 {
     public int costPerWaiter;
     public int costPerCook;
-    private int waiters = 1;
-    private int cooks = 1;
+    private int waiters = 0;
+    private int cooks = 0;
     private int avail = 0;
 
     public void PayEmployees()
@@ -60,8 +60,22 @@ public class Management : MonoBehaviour
     {
         if(avail > 0)
         {
-            cooks++;
-            CheckAvail();
+            GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
+            if (stoves.Length > cooks)
+            {
+                cooks++;
+                CheckAvail();
+            }
+        }
+    }
+
+    public void CheckCooks()
+    {
+        GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
+        if(cooks > stoves.Length)
+        {
+            cooks--;
+            CheckCooks();
         }
     }
 

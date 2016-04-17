@@ -54,30 +54,47 @@ public class PlayButton : MonoBehaviour
         speed = 0;
 
         button.GetComponent<Button>().onClick.RemoveAllListeners();
-        button.GetComponent<Button>().onClick.AddListener(() => GetComponent<MenuManagement>().ShowDayBar());
-        button.GetComponent<Button>().onClick.AddListener(() => GetComponent<DayCycle>().Activate());
         button.GetComponent<Button>().onClick.AddListener(() => Begin());
     }
 
     public void Begin ()
     {
-        button.GetComponent<Button>().onClick.RemoveAllListeners();
-        button.GetComponent<Button>().onClick.AddListener(() => Toggle());
-
-        GetComponent<PlaceObject>().SetActive(false);
-        GetComponent<PlaceMaterial>().EnableColliders();
-        GetComponent<PlaceMaterial>().Disable();
-        GetComponent<Management>().PayEmployees();
-        GetComponent<SpawnStaff>().PlaceStaff();
-        GetComponent<FoodVariables>().CalculateMarket();
-
-        //Find out where customers can sit
-        GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
-        foreach (GameObject table in tables)
+        if(MeetsRequirements())
         {
-            table.GetComponent<TableScript>().Calculate();
-        }
+            //All calculations to begin the day are done here
 
-        GetComponent<CustomerSpawn>().spawnCustomers(true);
+            button.GetComponent<Button>().onClick.RemoveAllListeners();
+            button.GetComponent<Button>().onClick.AddListener(() => Toggle());
+
+            GetComponent<PlaceObject>().SetActive(false);
+            GetComponent<PlaceMaterial>().EnableColliders();
+            GetComponent<PlaceMaterial>().Disable();
+            GetComponent<Management>().PayEmployees();
+            GetComponent<SpawnStaff>().PlaceStaff();
+            GetComponent<FoodVariables>().CalculateMarket();
+
+            //Find out where customers can sit
+            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+            foreach (GameObject table in tables)
+            {
+                table.GetComponent<TableScript>().Calculate();
+            }
+
+            GetComponent<CustomerSpawn>().spawnCustomers(true);
+            GetComponent<DayCycle>().Activate();
+            GetComponent<MenuManagement>().ShowDayBar();
+        }
+    }
+
+    private bool MeetsRequirements()
+    {
+        if(GetComponent<Management>().GetWaiters() > 0)
+        {
+            if(GetComponent<Management>().GetCooks() > 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
