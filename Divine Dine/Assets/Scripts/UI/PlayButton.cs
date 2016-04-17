@@ -17,6 +17,7 @@ public class PlayButton : MonoBehaviour
         play = button.transform.GetChild(0).gameObject;
         ff = button.transform.GetChild(1).gameObject;
         ff3 = button.transform.GetChild(2).gameObject;
+        Reset();
     }
 
     public void Toggle()
@@ -62,5 +63,21 @@ public class PlayButton : MonoBehaviour
     {
         button.GetComponent<Button>().onClick.RemoveAllListeners();
         button.GetComponent<Button>().onClick.AddListener(() => Toggle());
+
+        GetComponent<PlaceObject>().SetActive(false);
+        GetComponent<PlaceMaterial>().EnableColliders();
+        GetComponent<PlaceMaterial>().Disable();
+        GetComponent<Management>().PayEmployees();
+        GetComponent<SpawnStaff>().PlaceStaff();
+        GetComponent<FoodVariables>().CalculateMarket();
+
+        //Find out where customers can sit
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+        foreach (GameObject table in tables)
+        {
+            table.GetComponent<TableScript>().Calculate();
+        }
+
+        GetComponent<CustomerSpawn>().spawnCustomers(true);
     }
 }

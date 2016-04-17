@@ -480,10 +480,13 @@ public class MenuManagement : MonoBehaviour
         ClearAll();
         MenuType = "Flooring";
 
+        GetComponent<PlaceMaterial>().DisableColliders();
+
         homeText.text = "Back";
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(() => ShowStoreMenu());
         homeButton.onClick.AddListener(() => GetComponent<PlaceMaterial>().Disable());
+        homeButton.onClick.AddListener(() => GetComponent<PlaceMaterial>().EnableColliders());
 
         shopScrollIndex = 0;
         LoadFlooring(shopScrollIndex);

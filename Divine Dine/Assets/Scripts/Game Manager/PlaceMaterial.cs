@@ -81,4 +81,46 @@ public class PlaceMaterial : MonoBehaviour
             previewFloor.GetComponent<Renderer>().material.mainTexture = oldTexture;
         }
     }
+
+    public void DisableColliders()
+    {
+        GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
+        foreach (GameObject stove in stoves)
+        {
+            stove.GetComponent<BoxCollider>().enabled = false;
+        }
+
+        GameObject[] chairs = GameObject.FindGameObjectsWithTag("Chair");
+        foreach (GameObject chair in chairs)
+        {
+            chair.GetComponent<BoxCollider>().enabled = false;
+        }
+
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+        foreach (GameObject table in tables)
+        {
+            table.GetComponent<BoxCollider>().enabled = false;
+        }
+    }
+
+    public void EnableColliders()
+    {
+        GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
+        foreach (GameObject stove in stoves)
+        {
+            stove.GetComponent<BoxCollider>().enabled = true;
+        }
+
+        GameObject[] chairs = GameObject.FindGameObjectsWithTag("Chair");
+        foreach (GameObject chair in chairs)
+        {
+            chair.GetComponent<BoxCollider>().enabled = true;
+        }
+
+        GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+        foreach (GameObject table in tables)
+        {
+            table.GetComponent<BoxCollider>().enabled = true;
+        }
+    }
 }

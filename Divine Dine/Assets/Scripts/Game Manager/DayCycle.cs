@@ -91,18 +91,6 @@ public class DayCycle : MonoBehaviour
 
             active = true;
             ending = false;
-
-            GetComponent<CustomerSpawn>().spawnCustomers(true);
-            GetComponent<FoodVariables>().CalculateMarket();
-            GetComponent<Management>().PayEmployees();
-            GetComponent<SpawnStaff>().PlaceStaff();
-
-            //Find out where customers can sit
-            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
-            foreach (GameObject table in tables)
-            {
-                table.GetComponent<TableScript>().Calculate();
-            }
         }
     }
 
