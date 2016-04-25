@@ -11,6 +11,9 @@ public class StoveScript : MonoBehaviour {
 	public bool hasWaiter = false;
 	public Queue<FoodScript> foodQueue;
 	public int foodCount;
+	public GameObject pot;
+	public GameObject cloche;
+	public GameObject clocheDestroy;
 
 	public enum stoveStates {
 		FREE = 0,
@@ -59,17 +62,19 @@ public class StoveScript : MonoBehaviour {
 
 	private IEnumerator cookFood(){
 		float timer = 0;
+		GameObject newPot = (GameObject)Instantiate(pot, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 		
 		while(timer < cookTime) {
 			timer += Time.deltaTime;
 
 			yield return null;
 		}
-
+		Destroy (newPot);
 		//Debug.Log ("FINISHED COOKING");
 		state = stoveStates.FOOD_READY;
 		//Instantiate(GameObject.Find("TomatoSoup"), new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
-		foodModel = (GameObject)Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+		//foodModel = (GameObject)Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
+		clocheDestroy = (GameObject)Instantiate(cloche, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
         foodModel.tag = "Food";
 	}
 
@@ -84,7 +89,8 @@ public class StoveScript : MonoBehaviour {
 
 	public void foodPickedUp() {
 		hasWaiter = false;
-		Destroy (foodModel);
+		//Destroy (foodModel);'
+		Destroy (clocheDestroy);
 		state = stoveStates.FREE;
 		currentFood = null;
 		foodGiven = false;
