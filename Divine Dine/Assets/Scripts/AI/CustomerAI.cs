@@ -20,6 +20,7 @@ public class CustomerAI : MonoBehaviour {
 	private bool ordered = false;
 	public GameObject food;
 	public bool hasWaiter = false;
+	private Animator anim;
 	
 	public enum customerStates {
 		WALKING = 0,
@@ -36,6 +37,9 @@ public class CustomerAI : MonoBehaviour {
 	void Start () {
 		path = new NavMeshPath();
 		agent = this.gameObject.GetComponent<NavMeshAgent>();
+		anim = this.gameObject.GetComponent<Animator> ();
+
+		anim.SetInteger ("Transition", 1);
 		
 		entrance = GameObject.Find ("Entrance");
 		despawnPoint = GameObject.Find ("CustomerDespawnPoint");
