@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PlayButton : MonoBehaviour
 {
     public GameObject button;
+    public GameObject mail;
 
     private int speed;
     private GameObject play;
@@ -65,6 +66,7 @@ public class PlayButton : MonoBehaviour
 
             button.GetComponent<Button>().onClick.RemoveAllListeners();
             button.GetComponent<Button>().onClick.AddListener(() => Toggle());
+            mail.SetActive(true);
 
             GetComponent<PlaceObject>().SetActive(false);
             GetComponent<PlaceMaterial>().EnableColliders();

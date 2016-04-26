@@ -65,7 +65,7 @@ public class CustomerAI : MonoBehaviour {
 		// When the customer reaches the entrance
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f && arrived == false) {
 			//Debug.Log("THE FUN HAS ARRIVED");
-			Debug.Log(chanceToEnterRestaurant);
+			//Debug.Log(chanceToEnterRestaurant);
 			if(Random.value < chanceToEnterRestaurant)
 				arrived = true;
 			else

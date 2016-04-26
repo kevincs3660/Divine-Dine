@@ -56,6 +56,12 @@ public class GlobalVariables : MonoBehaviour {
         AddExperience(roof);
     }
 
+    public void AdvanceQuarterLevel()
+    {
+        int roof = nextLevelXP - baseXP;
+        AddExperience(roof/4);
+    }
+
     public void AddMoney(int amount)
     {
         money += amount;
