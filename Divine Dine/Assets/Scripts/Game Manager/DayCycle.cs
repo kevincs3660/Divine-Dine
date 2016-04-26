@@ -70,6 +70,7 @@ public class DayCycle : MonoBehaviour
                 if(GetComponent<CustomerSpawn>().allCustomersDead())
                 {
                     Deactivate();
+                    GetComponent<FoodVariables>().RandomPrize();
                 }
             }
         }

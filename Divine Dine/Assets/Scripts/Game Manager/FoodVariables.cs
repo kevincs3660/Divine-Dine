@@ -284,7 +284,7 @@ public class FoodVariables : MonoBehaviour
     {
         GameObject prize = RandomIngredient();
         prize.GetComponent<Ingredient>().quatity++;
-        randomIngredientPanel.transform.GetChild(1).GetComponent<Text>().text = "Congratulations! You've received " + prize.ToString().Replace(" (UnityEngine.GameObject)", "") + ".";
+        randomIngredientPanel.transform.GetChild(1).GetComponent<Text>().text = "Congratulations!\n You've received " + prize.ToString().Replace(" (UnityEngine.GameObject)", "") + ".";
         randomIngredientPanel.transform.GetChild(2).GetComponent<Image>().sprite = prize.GetComponent<Ingredient>().image;
         randomIngredientPanel.SetActive(true);
     }

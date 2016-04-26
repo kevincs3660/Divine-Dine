@@ -24,6 +24,7 @@ public class PlaceObject : MonoBehaviour {
     {
         if (active && !canRotate)
         {
+            GetComponent<PaintMaterial>().DisableColliders();
             ShowPreview();
             //Place the new object by left clicking
             if (Input.GetMouseButtonDown(0))
@@ -35,9 +36,13 @@ public class PlaceObject : MonoBehaviour {
         {
             RotateObject();
         }
-        else if (!active && replace && Input.GetMouseButtonDown(0))
+        else if (!active && replace)
         {
-            ReplaceObject();
+            GetComponent<PaintMaterial>().EnableColliders();
+            if(Input.GetMouseButtonDown(0))
+            {
+                ReplaceObject();
+            }
         }
     }
 
@@ -53,6 +58,8 @@ public class PlaceObject : MonoBehaviour {
     public void SetActive(bool boolean)
     {
         active = boolean;
+        if (!active)
+            GetComponent<PaintMaterial>().EnableColliders();
         if (!active && previewObject != null)
             Destroy(previewObject);
     }
