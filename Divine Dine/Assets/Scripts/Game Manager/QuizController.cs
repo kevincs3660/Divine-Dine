@@ -14,6 +14,7 @@ public class QuizController : MonoBehaviour
 
     private int selected;
     private bool correct;
+    private bool tutorial;
 
     //Quizes
     private GameObject choice1;
@@ -46,6 +47,11 @@ public class QuizController : MonoBehaviour
         proceed.SetActive(false);
 
         quizzes[selected].SetActive(true);
+    }
+
+    public void Tutorial(bool set)
+    {
+        tutorial = set;
     }
 
     public void Answer1()
@@ -112,13 +118,18 @@ public class QuizController : MonoBehaviour
         proceed.SetActive(true);
     }
 
-    public void Continue()
+    public void Exit()
     {
         if (correct)
         {
             rewardMenu.SetActive(true);
         }
         quizzes[selected].SetActive(false);
+
+        if(tutorial)
+        {
+            GetComponent<TutorialController>().AcheivedTask(28);
+        }
     }
 
     private void CheckAnswer(int ans)

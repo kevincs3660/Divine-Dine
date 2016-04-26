@@ -9,6 +9,7 @@ public class FoodVariables : MonoBehaviour
     public GameObject[] Desserts;
     public GameObject starterAppetizer;
     public GameObject starterEntree;
+    public GameObject bonusDish;
     public GameObject defaultModel;
     public GameObject randomIngredientPanel;
     public int marketLevel = 0;
@@ -81,6 +82,7 @@ public class FoodVariables : MonoBehaviour
         starterEntree.GetComponent<Food>().level = 1;
         SelectFood(starterAppetizer);
         SelectFood(starterEntree);
+        StarterIngredients();
 
         //First market roll
         CalculateMarket();
@@ -264,6 +266,18 @@ public class FoodVariables : MonoBehaviour
             }
         }
         return myReturn;
+    }
+
+    private void StarterIngredients()
+    {
+        for (int i = 0; i < starterAppetizer.GetComponent<Food>().recipe.Length; i++)
+        {
+            starterAppetizer.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().quatity++;
+        }
+        for (int i = 0; i < bonusDish.GetComponent<Food>().recipe.Length; i++)
+        {
+            bonusDish.GetComponent<Food>().recipe[i].GetComponent<Ingredient>().quatity++;
+        }
     }
 
     public void RandomPrize()

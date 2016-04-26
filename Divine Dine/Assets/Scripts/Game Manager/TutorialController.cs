@@ -8,6 +8,7 @@ public class TutorialController : MonoBehaviour
     public GameObject bottomCanvas;
     public GameObject playButton;
     public GameObject cameraLock;
+    public GameObject mail;
     public int current = 0;
 
     private bool accomplishedTask = true;
@@ -87,6 +88,28 @@ public class TutorialController : MonoBehaviour
         }
     }
 
+    public void Finish()
+    {
+        playButton.GetComponent<Button>().interactable = true;
+        cameraLock.GetComponent<Button>().interactable = true;
+        mainButton1.interactable = true;
+        mainButton2.interactable = true;
+        mainButton3.interactable = true;
+        mainButton4.interactable = true;
+        mainButton5.interactable = true;
+        homeButton.interactable = true;
+        shopBack.interactable = true;
+        shopNext.interactable = true;
+        s_button1.interactable = true;
+        s_button2.interactable = true;
+        s_button3.interactable = true;
+        s_button4.interactable = true;
+
+        tutorials[current].SetActive(false);
+
+        enabled = false;
+    }
+
     private void Special()
     {
         if(current == 2)
@@ -121,6 +144,70 @@ public class TutorialController : MonoBehaviour
             mainButton1.interactable = true;
             s_button1.interactable = true;
             mainButton1.onClick.AddListener(() => Next());
+        }
+        else if (current == 13)
+        {
+            mainButton1.interactable = false;
+            mainButton2.interactable = false;
+            mainButton3.interactable = false;
+            mainButton4.interactable = true;
+        }
+        else if (current == 14)
+        {
+            mainButton1.interactable = false;
+            mainButton2.interactable = false;
+            mainButton3.interactable = false;
+            mainButton4.interactable = false;
+            mainButton5.interactable = false;
+        }
+        else if (current == 15)
+        {
+            mainButton3.interactable = true;
+        }
+        else if (current == 17)
+        {
+            mainButton1.interactable = true;
+            mainButton2.interactable = true;
+        }
+        else if (current == 19)
+        {
+            mainButton1.onClick.AddListener(() => Next());
+        }
+        else if (current == 20)
+        {
+            mainButton1.interactable = false;
+            mainButton2.interactable = false;
+            mainButton3.interactable = true;
+            mainButton4.interactable = false;
+            mainButton5.interactable = false;
+        }
+        else if (current == 26)
+        {
+            accomplishedTask = false;
+            playButton.GetComponent<Button>().interactable = true;
+            GetComponent<PlayButton>().Tutorial(true);
+        }
+        else if (current == 27)
+        {
+            GetComponent<PlayButton>().Tutorial(false);
+            mail.GetComponent<Button>().interactable = false;
+        }
+        else if (current == 28)
+        {
+            accomplishedTask = false;
+            mail.GetComponent<Button>().interactable = true;
+            mail.GetComponent<Button>().onClick.AddListener(() => Hide());
+            GetComponent<QuizController>().Tutorial(true);
+        }
+        else if (current == 29)
+        {
+            GetComponent<QuizController>().Tutorial(false);
+            cameraLock.GetComponent<Button>().interactable = true;
+        }
+        else if (current == 36)
+        {
+            accomplishedTask = false;
+            GetComponent<DayCycle>().Tutorial(true);
         }
     }
 
@@ -172,27 +259,125 @@ public class TutorialController : MonoBehaviour
                 Hide();
             }
         }
-        if(current >= 8)
+        else if (current == 13)
         {
-            if(GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+            if (GetComponent<MenuManagement>().GetMenuType() == "Market")
             {
-                mainButton1.interactable = false;
+                Next();
             }
-            else
+        }
+        else if (current == 15)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "The Market")
             {
+                Next();
+            }
+        }
+        else if (current == 17)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
+            {
+                Next();
+                Next();
                 mainButton1.interactable = true;
             }
         }
-        if(current >= 11)
+        else if (current == 19)
         {
-            if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+            if (GetComponent<MenuManagement>().GetMenuType() == "Menu")
             {
-                mainButton3.interactable = true;
-            }
-            else
-            {
-                mainButton3.interactable = false;
+                Next();
             }
         }
+        else if (current == 20)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "Appetizers")
+            {
+                Next();
+            }
+        }
+        else if (current == 21)
+        {
+            if (GetComponent<FoodVariables>().starterAppetizer.GetComponent<Food>().level == 2 && GetComponent<FoodVariables>().bonusDish.GetComponent<Food>().level == 1)
+            {
+                Next();
+            }
+        }
+        else if (current == 26)
+        {
+            Next();
+        }
+        else if (current == 28)
+        {
+            Next();
+        }
+        else if (current == 36)
+        {
+            Next();
+        }
+
+        if(current >= 2)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management" || GetComponent<MenuManagement>().GetMenuType() == "Store Menu")
+            {
+                mainButton2.interactable = true;
+            }
+            if (current >= 8 && current < 19)
+            {
+                if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+                {
+                    mainButton1.interactable = false;
+                }
+                else
+                {
+                    if(GetComponent<MenuManagement>().GetMenuType() == "Store Menu" || GetComponent<MenuManagement>().GetMenuType() == "Items")
+                    {
+                        mainButton1.interactable = true;
+                    }
+                }
+            }
+            if (current >= 11)
+            {
+                if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+                {
+                    mainButton3.interactable = true;
+                }
+                else
+                {
+                    if (GetComponent<MenuManagement>().GetMenuType() == "Store Menu" || GetComponent<MenuManagement>().GetMenuType() == "Items")
+                    {
+                        mainButton3.interactable = false;
+                    }
+                }
+                if (current >= 13)
+                {
+                    if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+                    {
+                        mainButton4.interactable = true;
+                    }
+                    if (current >= 19)
+                    {
+                        if (GetComponent<MenuManagement>().GetMenuType() == "Market")
+                        {
+                            mainButton4.interactable = true;
+                        }
+                        else if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
+                        {
+                            mainButton1.interactable = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(current >= 24)
+        {
+            mainButton1.interactable = true;
+            mainButton2.interactable = true;
+            mainButton3.interactable = true;
+            mainButton4.interactable = true;
+            mainButton5.interactable = true;
+        }
+
     }
 }

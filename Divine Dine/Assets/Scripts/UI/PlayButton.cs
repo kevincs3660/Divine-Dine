@@ -12,6 +12,8 @@ public class PlayButton : MonoBehaviour
     private GameObject ff;
     private GameObject ff3;
 
+    private bool tutorial = false;
+
     void Start ()
     {
         speed = 0;
@@ -62,6 +64,10 @@ public class PlayButton : MonoBehaviour
     {
         if(MeetsRequirements())
         {
+            if(tutorial)
+            {
+                GetComponent<TutorialController>().AcheivedTask(26);
+            }
             //All calculations to begin the day are done here
 
             button.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -98,5 +104,10 @@ public class PlayButton : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Tutorial(bool set)
+    {
+        tutorial = set;
     }
 }

@@ -10,6 +10,7 @@ public class MenuManagement : MonoBehaviour
     public Color selected;
 
     private string Message = "";
+    private string MenuType2 = "";
 
     //All Menus
     private GameObject mainMenu;
@@ -311,6 +312,7 @@ public class MenuManagement : MonoBehaviour
     {
         ClearAll();
         MenuType = "Main Menu";
+        MenuType2 = "Main Menu";
 
         ResetAllPanelsMainMenu();
         mainText1.text = "Menu";
@@ -331,6 +333,7 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowMenuCustomization()
     {
+        MenuType2 = "Menu";
         ClearAll();
 
         ResetAllPanelsMainMenu();
@@ -361,6 +364,7 @@ public class MenuManagement : MonoBehaviour
     {
         ClearAll();
         MenuType = "Store Menu";
+        MenuType2 = "Store Menu";
 
         ResetAllPanelsMainMenu();
         mainText1.text = "Back";
@@ -380,7 +384,7 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowManagement()
     {
-        MenuType = "Management";
+        MenuType2 = "Management";
         ClearAll();
 
         //Close Button
@@ -411,6 +415,7 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowMarket()
     {
+        MenuType2 = "Market";
         ClearAll();
 
         saleItems = GetComponent<FoodVariables>().GetSaleItems();
@@ -582,6 +587,7 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowFood(GameObject food)
     {
+        MenuType2 = "Food";
         menuScroll.SetActive(false);
         bool canLevel = true;
         f_food_image.SetActive(true);
@@ -875,6 +881,7 @@ public class MenuManagement : MonoBehaviour
 
     public void LoadMarket(int index)
     {
+        MenuType2 = "The Market";
         GameObject ingredient;
         k_title.text = "THE MARKET";
 
@@ -1098,6 +1105,7 @@ public class MenuManagement : MonoBehaviour
     public void LoadIngredients(int index)
     {
         MenuType = "Ingredients";
+        MenuType2 = "Ingredients";
         k_title.text = "YOUR INGREDIENTS";
         myIngredients = GetComponent<FoodVariables>().GetMyIngredients();
         GameObject ingredient;
@@ -1149,6 +1157,7 @@ public class MenuManagement : MonoBehaviour
     public void LoadAppetizers(int index)
     {
         MenuType = "Appetizers";
+        MenuType2 = "Appetizers";
         GameObject food;
 
         if (GetComponent<FoodVariables>().Appetizers.Length > index + 0)
@@ -1749,7 +1758,7 @@ public class MenuManagement : MonoBehaviour
 
     public string GetMenuType()
     {
-        return MenuType;
+        return MenuType2;
     }
 
     public void ResetMenuScrollIndex()

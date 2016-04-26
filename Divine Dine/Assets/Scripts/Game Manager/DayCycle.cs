@@ -14,6 +14,7 @@ public class DayCycle : MonoBehaviour
     private float counter;
     private bool active;
     private bool ending;
+    private bool tutorial;
     private string ampm;
 
     void Start ()
@@ -154,8 +155,19 @@ public class DayCycle : MonoBehaviour
             allGrass[i].GetComponent<LevelHiding>().Check();
         }
 
+        if(tutorial && GetComponent<GlobalVariables>().CurrentLevel() > 1)
+        {
+            GetComponent<TutorialController>().AcheivedTask(36);
+            tutorial = false;
+        }
+
         //Reset button
         GetComponent<PlayButton>().Reset();
         GetComponent<MenuManagement>().ShowMainMenu();
+    }
+
+    public void Tutorial(bool set)
+    {
+        tutorial = set;
     }
 }
