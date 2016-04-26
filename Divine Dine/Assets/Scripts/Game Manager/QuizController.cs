@@ -14,6 +14,7 @@ public class QuizController : MonoBehaviour
 
     private int selected;
     private bool correct;
+    private bool answered;
     private bool tutorial;
 
     //Quizes
@@ -32,6 +33,7 @@ public class QuizController : MonoBehaviour
     public void Generate()
     {
         mailButton.SetActive(false);
+        answered = false;
         selected = Random.Range(0, quizzes.Length);
 
         choice1 = quizzes[selected].transform.GetChild(1).gameObject;
@@ -56,66 +58,81 @@ public class QuizController : MonoBehaviour
 
     public void Answer1()
     {
-        CheckAnswer(1);
-        if(correct)
+        if(!answered)
         {
-            choice1.GetComponent<Button>().GetComponent<Image>().color = right;
-        }
-        else
-        {
-            choice1.GetComponent<Button>().GetComponent<Image>().color = wrong;
-            ShowCorrect();
-        }
+            answered = true;
+            CheckAnswer(1);
+            if (correct)
+            {
+                choice1.GetComponent<Button>().GetComponent<Image>().color = right;
+            }
+            else
+            {
+                choice1.GetComponent<Button>().GetComponent<Image>().color = wrong;
+                ShowCorrect();
+            }
 
-        proceed.SetActive(true);
+            proceed.SetActive(true);
+        }
     }
 
     public void Answer2()
     {
-        CheckAnswer(2);
-        if (correct)
+        if(!answered)
         {
-            choice2.GetComponent<Button>().GetComponent<Image>().color = right;
-        }
-        else
-        {
-            choice2.GetComponent<Button>().GetComponent<Image>().color = wrong;
-            ShowCorrect();
-        }
+            answered = true;
+            CheckAnswer(2);
+            if (correct)
+            {
+                choice2.GetComponent<Button>().GetComponent<Image>().color = right;
+            }
+            else
+            {
+                choice2.GetComponent<Button>().GetComponent<Image>().color = wrong;
+                ShowCorrect();
+            }
 
-        proceed.SetActive(true);
+            proceed.SetActive(true);
+        }
     }
 
     public void Answer3()
     {
-        CheckAnswer(3);
-        if (correct)
+        if(!answered)
         {
-            choice3.GetComponent<Button>().GetComponent<Image>().color = right;
-        }
-        else
-        {
-            choice3.GetComponent<Button>().GetComponent<Image>().color = wrong;
-            ShowCorrect();
-        }
+            answered = true;
+            CheckAnswer(3);
+            if (correct)
+            {
+                choice3.GetComponent<Button>().GetComponent<Image>().color = right;
+            }
+            else
+            {
+                choice3.GetComponent<Button>().GetComponent<Image>().color = wrong;
+                ShowCorrect();
+            }
 
-        proceed.SetActive(true);
+            proceed.SetActive(true);
+        }
     }
 
     public void Answer4()
     {
-        CheckAnswer(4);
-        if (correct)
+        if(!answered)
         {
-            choice4.GetComponent<Button>().GetComponent<Image>().color = right;
+            answered = true;
+            CheckAnswer(4);
+            if (correct)
+            {
+                choice4.GetComponent<Button>().GetComponent<Image>().color = right;
+            }
+            else
+            {
+                choice4.GetComponent<Button>().GetComponent<Image>().color = wrong;
+                ShowCorrect();
+            }
+            proceed.SetActive(true);
         }
-        else
-        {
-            choice4.GetComponent<Button>().GetComponent<Image>().color = wrong;
-            ShowCorrect();
-        }
-
-        proceed.SetActive(true);
     }
 
     public void Exit()
