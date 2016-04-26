@@ -209,7 +209,7 @@ public class FoodVariables : MonoBehaviour
         {
             cost += r.GetComponent<Ingredient>().marketPrice * saleIP;
         }
-        cost *= (food.level * saleLP);
+        cost *= 1 + (food.level * saleLP);
         if(food.isHealthy)
         {
             food.sellPrice = (int)(cost/2);

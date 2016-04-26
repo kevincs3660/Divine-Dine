@@ -185,9 +185,12 @@ public class CustomerAI : MonoBehaviour {
 		anim.SetInteger ("Transition", 1);
 
 		GameObject manager = GameObject.Find ("Game Manager");
-		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (15);
+        manager.GetComponent<FoodVariables>().calculatePrice(food.GetComponent<Food>());
+        Debug.Log("I just made:" + food.GetComponent<Food>().sellPrice + " from " + food.ToString());
+		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (food.GetComponent<Food>().sellPrice);
         manager.gameObject.GetComponent<GlobalVariables>().AddExperience(food.GetComponent<Food>().level);
-		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
+        if(food.GetComponent<Food>().isHealthy)
+		    manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (food.GetComponent<Food>().level);
 	
 		agent.SetDestination (entrance.transform.position);
 		state = customerStates.LEAVING;
