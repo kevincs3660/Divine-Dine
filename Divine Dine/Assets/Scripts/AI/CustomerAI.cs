@@ -21,6 +21,7 @@ public class CustomerAI : MonoBehaviour {
 	public GameObject food;
 	public bool hasWaiter = false;
 	private Animator anim;
+	public float chanceToEnterRestaurant = 0.8f;
 	
 	public enum customerStates {
 		WALKING = 0,
@@ -55,9 +56,15 @@ public class CustomerAI : MonoBehaviour {
 	void Update () {
 
 		// When the customer reaches the entrance
-		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f) {
+		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f && arrived == false) {
 			//Debug.Log("THE FUN HAS ARRIVED");
-			arrived = true;
+			if(Random.value < 0.8)
+				arrived = true;
+			else
+			{
+				agent.SetDestination(despawnPoint.transform.position);
+				state = customerStates.LEAVING;
+			}
 		}
 
 		// If customer has reached entrance, search for tables first, and then open chairs to wait for a table

@@ -7,7 +7,8 @@ public class CustomerTestScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = this.gameObject.GetComponent<Animator> ();
-		anim.Play ("Idle");
+		//anim.Play ("Walk");
+		anim.SetInteger ("Transition", 1);
 	}
 	
 	// Update is called once per frame
