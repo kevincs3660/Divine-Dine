@@ -119,12 +119,8 @@ public class TutorialController : MonoBehaviour
         {
             homeButton.interactable = true;
             mainButton1.interactable = true;
+            s_button1.interactable = true;
             mainButton1.onClick.AddListener(() => Next());
-        }
-        else if (current == 9)
-        {
-            mainButton1.interactable = false;
-            mainButton2.interactable = false;
         }
     }
 
@@ -142,14 +138,61 @@ public class TutorialController : MonoBehaviour
                 }
             }
         }
-        if(current == 7)
+        else if(current == 7)
         {
             GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
             foreach (GameObject table in tables)
             {
-                table.GetComponent<TableScript>().Tutorial();
+                if(!table.GetComponent<PlaceableObject>().isPreview)
+                {
+                    table.GetComponent<TableScript>().Tutorial();
+                }
             }
             Next();
+        }
+        else if (current == 8)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
+            {
+                Next();
+            }
+        }
+        else if(current == 11)
+        {
+            if(GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
+            {
+                tutorials[current].SetActive(true);
+                if (GetComponent<Management>().GetWaiters() > 0 && GetComponent<Management>().GetCooks() > 0)
+                {
+                    Next();
+                }
+            }
+            else
+            {
+                Hide();
+            }
+        }
+        if(current >= 8)
+        {
+            if(GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+            {
+                mainButton1.interactable = false;
+            }
+            else
+            {
+                mainButton1.interactable = true;
+            }
+        }
+        if(current >= 11)
+        {
+            if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+            {
+                mainButton3.interactable = true;
+            }
+            else
+            {
+                mainButton3.interactable = false;
+            }
         }
     }
 }

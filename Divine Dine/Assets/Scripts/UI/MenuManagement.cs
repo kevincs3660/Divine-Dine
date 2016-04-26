@@ -380,6 +380,7 @@ public class MenuManagement : MonoBehaviour
 
     public void ShowManagement()
     {
+        MenuType = "Management";
         ClearAll();
 
         //Close Button
@@ -1744,6 +1745,11 @@ public class MenuManagement : MonoBehaviour
         main3.SetActive(true);
         main4.SetActive(true);
         main5.SetActive(true);
+    }
+
+    public string GetMenuType()
+    {
+        return MenuType;
     }
 
     public void ResetMenuScrollIndex()
