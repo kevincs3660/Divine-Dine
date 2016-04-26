@@ -56,6 +56,7 @@ public class WaiterAI : MonoBehaviour {
 				else {
 					//Debug.Log("Found a stove. Moving there now");
 					currentFood = currentCustomer.giveOrder();
+					anim.SetInteger("Transition", 1);
 					//Debug.Log("Got the order");
 					agent.SetDestination(currentStove.gameObject.transform.position);
 					//currentCustomer = null;
@@ -72,6 +73,7 @@ public class WaiterAI : MonoBehaviour {
 				currentFood = null;
 				currentCustomer = null;
 				state = waiterStates.NOTHING;
+				anim.SetInteger("Transition", 0);
 			}
 
 		if (state == waiterStates.PICKING_UP_ORDER && currentStove != null)
@@ -81,6 +83,7 @@ public class WaiterAI : MonoBehaviour {
 				currentCustomer = currentFood.customer.gameObject.GetComponent<CustomerAI>();
 				agent.SetDestination(currentCustomer.transform.position);
 				state = waiterStates.DELIVERING_ORDER;
+				anim.SetInteger("Transition", 1);
 			}
 
 		if(state == waiterStates.DELIVERING_ORDER && currentCustomer != null)
@@ -89,12 +92,14 @@ public class WaiterAI : MonoBehaviour {
 				currentCustomer.acceptFood();
 				state = waiterStates.NOTHING;
 				currentCustomer = null;
+				anim.SetInteger("Transition", 0);
 			}
 	}
 
 	private void takeCustomerOrder(GameObject customer) {
 		currentCustomer = customer.GetComponent<CustomerAI>();
 		agent.SetDestination (customer.gameObject.transform.position);
+		anim.SetInteger("Transition", 1);
 		//findStove();
 	}
 
@@ -134,6 +139,7 @@ public class WaiterAI : MonoBehaviour {
 					state = waiterStates.PICKING_UP_ORDER;
 					currentStove = stoves[0];
 					agent.SetDestination (stoves[0].gameObject.transform.position);
+					anim.SetInteger("Transition", 1);
 					return;
 					//pickUpFood(stoves[0]);
 				}
@@ -146,6 +152,7 @@ public class WaiterAI : MonoBehaviour {
 		state = waiterStates.PICKING_UP_ORDER;
 		currentStove = stove;
 		agent.SetDestination (stove.gameObject.transform.position);
+		anim.SetInteger("Transition", 1);
 	}
 
 	private void checkForDirtyTable() {

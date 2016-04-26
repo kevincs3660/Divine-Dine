@@ -159,7 +159,7 @@ public class CustomerAI : MonoBehaviour {
 
 		Vector3 tableTop = new Vector3 (nearestTable.transform.position.x, nearestTable.transform.position.y + 1f, nearestTable.transform.position.z);
 		GameObject foodModel = (GameObject)Instantiate (food.gameObject.GetComponent<Food> ().model, tableTop, Quaternion.identity);
-
+		anim.SetInteger ("Transition", 2);
         foodModel.tag = "Food";
 		
 		while (timer < eatTime) {
@@ -182,6 +182,7 @@ public class CustomerAI : MonoBehaviour {
 		NavMeshObstacle chairCarve = nearestTable.gameObject.GetComponent<TableScript>().getChair().GetComponent<NavMeshObstacle>();
 		chairCarve.carving = false;
 		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
+		anim.SetInteger ("Transition", 1);
 
 		GameObject manager = GameObject.Find ("Game Manager");
 		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (15);
