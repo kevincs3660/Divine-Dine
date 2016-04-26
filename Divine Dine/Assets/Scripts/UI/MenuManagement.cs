@@ -474,6 +474,11 @@ public class MenuManagement : MonoBehaviour
         homeButton.onClick.AddListener(() => ShowStoreMenu());
         homeButton.onClick.AddListener(() => GetComponent<PlaceObject>().SetReplace(false));
 
+        shopNext.onClick.RemoveAllListeners();
+        shopBack.onClick.RemoveAllListeners();
+        shopNext.onClick.AddListener(() => ShopLoadNext());
+        shopBack.onClick.AddListener(() => ShopLoadPrevious());
+
         shopScrollIndex = 0;
         LoadItems(shopScrollIndex);
         GetComponent<PlaceObject>().SetReplace(true);
@@ -493,6 +498,11 @@ public class MenuManagement : MonoBehaviour
         homeButton.onClick.AddListener(() => ShowStoreMenu());
         homeButton.onClick.AddListener(() => GetComponent<PaintMaterial>().Disable());
         homeButton.onClick.AddListener(() => GetComponent<PaintMaterial>().EnableColliders());
+
+        shopNext.onClick.RemoveAllListeners();
+        shopBack.onClick.RemoveAllListeners();
+        shopNext.onClick.AddListener(() => ShopLoadNext());
+        shopBack.onClick.AddListener(() => ShopLoadPrevious());
 
         shopScrollIndex = 0;
         LoadFlooring(shopScrollIndex);
@@ -1300,6 +1310,46 @@ public class MenuManagement : MonoBehaviour
         }
         marketScroll.SetActive(false);
         menuScroll.SetActive(true);
+    }
+
+    public void ShopLoadNext()
+    {
+        if(MenuType == "Items")
+        {
+            if(GetComponent<PlaceObject>().placeablePrefabs.Length > 4+shopScrollIndex)
+            {
+                shopScrollIndex += 4;
+                LoadItems(shopScrollIndex);
+            }
+        }
+        else if (MenuType == "Flooring")
+        {
+            if(GetComponent<PaintMaterial>().textures.Length > 4 + shopScrollIndex)
+            {
+                shopScrollIndex += 4;
+                LoadFlooring(shopScrollIndex);
+            }
+        }
+    }
+
+    public void ShopLoadPrevious()
+    {
+        if (MenuType == "Items")
+        {
+            if (shopScrollIndex - 4 >= 0)
+            {
+                shopScrollIndex -= 4;
+                LoadItems(shopScrollIndex);
+            }
+        }
+        else if (MenuType == "Flooring")
+        {
+            if (shopScrollIndex - 4 >= 0)
+            {
+                shopScrollIndex -= 4;
+                LoadFlooring(shopScrollIndex);
+            }
+        }
     }
 
     public void LoadItems(int index)

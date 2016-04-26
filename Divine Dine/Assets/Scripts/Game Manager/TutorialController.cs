@@ -181,6 +181,13 @@ public class TutorialController : MonoBehaviour
             mainButton4.interactable = false;
             mainButton5.interactable = false;
         }
+        else if (current == 24)
+        {
+            s_button4.interactable = true;
+            shopBack.interactable = true;
+            shopNext.interactable = true;
+
+        }
         else if (current == 26)
         {
             accomplishedTask = false;
