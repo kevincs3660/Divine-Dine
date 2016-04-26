@@ -41,7 +41,7 @@ public class CustomerAI : MonoBehaviour {
 		agent = this.gameObject.GetComponent<NavMeshAgent>();
 		anim = this.gameObject.GetComponent<Animator> ();
 
-		anim.Play ("Walk");
+		//anim.Play ("Walk");
 		anim.SetInteger ("Transition", 1);
 		
 		entrance = GameObject.Find ("Entrance");
