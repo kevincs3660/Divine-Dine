@@ -166,7 +166,7 @@ public class CustomerAI : MonoBehaviour {
 		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
 
 		GameObject manager = GameObject.Find ("Game Manager");
-		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (10);
+		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (15);
         manager.gameObject.GetComponent<GlobalVariables>().AddExperience(food.GetComponent<Food>().level);
 		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
 	

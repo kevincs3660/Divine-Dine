@@ -63,7 +63,7 @@ public class StoveScript : MonoBehaviour {
 	private IEnumerator cookFood(){
 		float timer = 0;
 		GameObject newPot = (GameObject)Instantiate(pot, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
-		
+		newPot.tag = "Food";
 		while(timer < cookTime) {
 			timer += Time.deltaTime;
 
@@ -75,7 +75,7 @@ public class StoveScript : MonoBehaviour {
 		//Instantiate(GameObject.Find("TomatoSoup"), new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 		//foodModel = (GameObject)Instantiate(currentFood.recipe.GetComponent<Food>().model, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
 		clocheDestroy = (GameObject)Instantiate(cloche, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + 1, this.gameObject.transform.position.z), Quaternion.identity);
-        foodModel.tag = "Food";
+		clocheDestroy.tag = "Food";
 	}
 
 	public int getOrderCount() {

@@ -85,7 +85,7 @@ public class CustomerSpawn : MonoBehaviour {
 			if(decision > 0.5f)
 				Instantiate (customerMale, spawnPoint.transform.position, Quaternion.identity);
 			else
-				Instantiate (customerFemale, spawnPoint.transform.position + new Vector3(0,-1,0), Quaternion.identity);
+				Instantiate (customerFemale, spawnPoint.transform.position, Quaternion.identity);
 			coroutineStarted = false;
 		}
 	}
