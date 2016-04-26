@@ -6,6 +6,8 @@ public class TutorialController : MonoBehaviour
 {
     public GameObject[] tutorials;
     public GameObject bottomCanvas;
+    public GameObject playButton;
+    public GameObject cameraLock;
     public int current = 0;
 
     private bool accomplishedTask = true;
@@ -42,6 +44,16 @@ public class TutorialController : MonoBehaviour
         s_button2 = bottomCanvas.transform.GetChild(1).transform.GetChild(4).transform.GetChild(0).gameObject.GetComponent<Button>();
         s_button3 = bottomCanvas.transform.GetChild(1).transform.GetChild(5).transform.GetChild(0).gameObject.GetComponent<Button>();
         s_button4 = bottomCanvas.transform.GetChild(1).transform.GetChild(6).transform.GetChild(0).gameObject.GetComponent<Button>();
+
+        playButton.GetComponent<Button>().interactable = false;
+        cameraLock.GetComponent<Button>().interactable = false;
+        mainButton1.interactable = false;
+        mainButton2.interactable = false;
+        mainButton3.interactable = false;
+        mainButton4.interactable = false;
+        mainButton5.interactable = false;
+
+        tutorials[current].SetActive(true);
     }
 
     public void Next()
@@ -70,6 +82,15 @@ public class TutorialController : MonoBehaviour
 
     private void Special()
     {
+        if(current == 2)
+        {
+            mainButton2.interactable = true;
+            mainButton2.onClick.AddListener(() => Next());
+        }
+        if(current == 3)
+        {
+            mainButton2.onClick.AddListener(() => Next());
+        }
 
     }
 }
