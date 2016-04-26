@@ -13,7 +13,7 @@ public class LevelHiding : MonoBehaviour
         manager = GameObject.Find("Game Manager");
         set = false;
         tag = "Grass";
-        GetComponent<Renderer>().material.mainTexture = manager.GetComponent<PlaceMaterial>().textures[0].GetComponent<PlaceableMaterial>().material;
+        GetComponent<Renderer>().material.mainTexture = manager.GetComponent<GlobalVariables>().grassMaterial.GetComponent<PlaceableMaterial>().material;
         Check();
     }
 
@@ -24,7 +24,7 @@ public class LevelHiding : MonoBehaviour
         {
             set = true;
             tag = "Floor";
-            GetComponent<Renderer>().material.mainTexture = manager.GetComponent<PlaceMaterial>().textures[1].GetComponent<PlaceableMaterial>().material;
+            GetComponent<Renderer>().material.mainTexture = manager.GetComponent<PaintMaterial>().textures[manager.GetComponent<PaintMaterial>().currentPrefab].GetComponent<PlaceableMaterial>().material;
         }
     }
 }

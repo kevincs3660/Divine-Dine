@@ -486,13 +486,13 @@ public class MenuManagement : MonoBehaviour
         ClearAll();
         MenuType = "Flooring";
 
-        GetComponent<PlaceMaterial>().DisableColliders();
+        GetComponent<PaintMaterial>().DisableColliders();
 
         homeText.text = "Back";
         homeButton.onClick.RemoveAllListeners();
         homeButton.onClick.AddListener(() => ShowStoreMenu());
-        homeButton.onClick.AddListener(() => GetComponent<PlaceMaterial>().Disable());
-        homeButton.onClick.AddListener(() => GetComponent<PlaceMaterial>().EnableColliders());
+        homeButton.onClick.AddListener(() => GetComponent<PaintMaterial>().Disable());
+        homeButton.onClick.AddListener(() => GetComponent<PaintMaterial>().EnableColliders());
 
         shopScrollIndex = 0;
         LoadFlooring(shopScrollIndex);
@@ -1364,13 +1364,13 @@ public class MenuManagement : MonoBehaviour
 
     public void LoadFlooring(int index)
     {
-        if (GetComponent<PlaceMaterial>().textures.Length > index + 0)
+        if (GetComponent<PaintMaterial>().textures.Length > index + 0)
         {
-            s_text1.text = GetComponent<PlaceMaterial>().textures[shopScrollIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
-            s_text1.text += "\n$" + GetComponent<PlaceMaterial>().textures[shopScrollIndex + 0].GetComponent<PlaceableMaterial>().cashValue.ToString();
+            s_text1.text = GetComponent<PaintMaterial>().textures[shopScrollIndex + 0].ToString().Replace(" (UnityEngine.GameObject)", "");
+            s_text1.text += "\n$" + GetComponent<PaintMaterial>().textures[shopScrollIndex + 0].GetComponent<PlaceableMaterial>().cashValue.ToString();
 
             s_button1.onClick.RemoveAllListeners();
-            s_button1.onClick.AddListener(() => GetComponent<PlaceMaterial>().ReadyMaterial(shopScrollIndex + 0));
+            s_button1.onClick.AddListener(() => GetComponent<PaintMaterial>().ReadyMaterial(shopScrollIndex + 0));
 
             s_scroll1.SetActive(true);
         }
@@ -1378,13 +1378,13 @@ public class MenuManagement : MonoBehaviour
         {
             s_scroll1.SetActive(false);
         }
-        if (GetComponent<PlaceMaterial>().textures.Length > index + 1)
+        if (GetComponent<PaintMaterial>().textures.Length > index + 1)
         {
-            s_text2.text = GetComponent<PlaceMaterial>().textures[shopScrollIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
-            s_text2.text += "\n$" + GetComponent<PlaceMaterial>().textures[shopScrollIndex + 1].GetComponent<PlaceableMaterial>().cashValue.ToString();
+            s_text2.text = GetComponent<PaintMaterial>().textures[shopScrollIndex + 1].ToString().Replace(" (UnityEngine.GameObject)", "");
+            s_text2.text += "\n$" + GetComponent<PaintMaterial>().textures[shopScrollIndex + 1].GetComponent<PlaceableMaterial>().cashValue.ToString();
 
             s_button2.onClick.RemoveAllListeners();
-            s_button2.onClick.AddListener(() => GetComponent<PlaceMaterial>().ReadyMaterial(shopScrollIndex + 1));
+            s_button2.onClick.AddListener(() => GetComponent<PaintMaterial>().ReadyMaterial(shopScrollIndex + 1));
 
             s_scroll2.SetActive(true);
         }
@@ -1392,13 +1392,13 @@ public class MenuManagement : MonoBehaviour
         {
             s_scroll2.SetActive(false);
         }
-        if (GetComponent<PlaceMaterial>().textures.Length > index + 2)
+        if (GetComponent<PaintMaterial>().textures.Length > index + 2)
         {
-            s_text3.text = GetComponent<PlaceMaterial>().textures[shopScrollIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
-            s_text3.text += "\n$" + GetComponent<PlaceMaterial>().textures[shopScrollIndex + 2].GetComponent<PlaceableMaterial>().cashValue.ToString();
+            s_text3.text = GetComponent<PaintMaterial>().textures[shopScrollIndex + 2].ToString().Replace(" (UnityEngine.GameObject)", "");
+            s_text3.text += "\n$" + GetComponent<PaintMaterial>().textures[shopScrollIndex + 2].GetComponent<PlaceableMaterial>().cashValue.ToString();
 
             s_button3.onClick.RemoveAllListeners();
-            s_button3.onClick.AddListener(() => GetComponent<PlaceMaterial>().ReadyMaterial(shopScrollIndex + 2));
+            s_button3.onClick.AddListener(() => GetComponent<PaintMaterial>().ReadyMaterial(shopScrollIndex + 2));
 
             s_scroll3.SetActive(true);
         }
@@ -1406,13 +1406,13 @@ public class MenuManagement : MonoBehaviour
         {
             s_scroll3.SetActive(false);
         }
-        if (GetComponent<PlaceMaterial>().textures.Length > index + 3)
+        if (GetComponent<PaintMaterial>().textures.Length > index + 3)
         {
-            s_text4.text = GetComponent<PlaceMaterial>().textures[shopScrollIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
-            s_text4.text += "\n$" + GetComponent<PlaceMaterial>().textures[shopScrollIndex + 3].GetComponent<PlaceableMaterial>().cashValue.ToString();
+            s_text4.text = GetComponent<PaintMaterial>().textures[shopScrollIndex + 3].ToString().Replace(" (UnityEngine.GameObject)", "");
+            s_text4.text += "\n$" + GetComponent<PaintMaterial>().textures[shopScrollIndex + 3].GetComponent<PlaceableMaterial>().cashValue.ToString();
 
             s_button4.onClick.RemoveAllListeners();
-            s_button4.onClick.AddListener(() => GetComponent<PlaceMaterial>().ReadyMaterial(shopScrollIndex + 3));
+            s_button4.onClick.AddListener(() => GetComponent<PaintMaterial>().ReadyMaterial(shopScrollIndex + 3));
 
             s_scroll4.SetActive(true);
         }

@@ -12,6 +12,8 @@ public class GlobalVariables : MonoBehaviour {
     public GameObject levelText;
     public GameObject moneyText;
 
+    public GameObject grassMaterial;
+
     private int currentLevel;
     private int nextLevelXP;
     private int baseXP;

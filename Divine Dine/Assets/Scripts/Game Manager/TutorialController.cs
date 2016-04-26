@@ -336,7 +336,7 @@ public class TutorialController : MonoBehaviour
                     }
                 }
             }
-            if (current >= 11)
+            if (current >= 11 && current < 24)
             {
                 if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
                 {
@@ -349,22 +349,22 @@ public class TutorialController : MonoBehaviour
                         mainButton3.interactable = false;
                     }
                 }
-                if (current >= 13)
+            }
+            if (current >= 13)
+            {
+                if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
                 {
-                    if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu" || GetComponent<MenuManagement>().GetMenuType() == "Management")
+                    mainButton4.interactable = true;
+                }
+                if (current >= 19)
+                {
+                    if (GetComponent<MenuManagement>().GetMenuType() == "Market")
                     {
                         mainButton4.interactable = true;
                     }
-                    if (current >= 19)
+                    else if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
                     {
-                        if (GetComponent<MenuManagement>().GetMenuType() == "Market")
-                        {
-                            mainButton4.interactable = true;
-                        }
-                        else if (GetComponent<MenuManagement>().GetMenuType() == "Main Menu")
-                        {
-                            mainButton1.interactable = true;
-                        }
+                        mainButton1.interactable = true;
                     }
                 }
             }

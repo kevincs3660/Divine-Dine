@@ -75,8 +75,8 @@ public class PlayButton : MonoBehaviour
             mail.SetActive(true);
 
             GetComponent<PlaceObject>().SetActive(false);
-            GetComponent<PlaceMaterial>().EnableColliders();
-            GetComponent<PlaceMaterial>().Disable();
+            GetComponent<PaintMaterial>().EnableColliders();
+            GetComponent<PaintMaterial>().Disable();
             GetComponent<Management>().PayEmployees();
             GetComponent<SpawnStaff>().PlaceStaff();
             GetComponent<FoodVariables>().CalculateMarket();
