@@ -8,12 +8,21 @@ ModelImporter:
     100000: group4
     100002: //RootNode
     100004: SceneWithStuff9:SceneWithStuff3:pCube9
+    100006: purplecChair
+    100008: purpleChair 1
+    100010: purpleChair 2
     400000: group4
     400002: //RootNode
     400004: SceneWithStuff9:SceneWithStuff3:pCube9
+    400006: purplecChair
+    400008: purpleChair 1
+    400010: purpleChair 2
     2300000: SceneWithStuff9:SceneWithStuff3:pCube9
+    2300002: purpleChair 2
     3300000: SceneWithStuff9:SceneWithStuff3:pCube9
+    3300002: purpleChair 2
     4300000: SceneWithStuff9:SceneWithStuff3:pCube9
+    4300002: purpleChair
   materials:
     importMaterials: 1
     materialName: 0
