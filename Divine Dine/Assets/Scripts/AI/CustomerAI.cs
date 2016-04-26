@@ -41,6 +41,7 @@ public class CustomerAI : MonoBehaviour {
 		agent = this.gameObject.GetComponent<NavMeshAgent>();
 		anim = this.gameObject.GetComponent<Animator> ();
 
+		anim.Play ("Walk");
 		anim.SetInteger ("Transition", 1);
 		
 		entrance = GameObject.Find ("Entrance");
@@ -89,6 +90,7 @@ public class CustomerAI : MonoBehaviour {
 
 		// If the customer is waiting for a table, keep trying to find a table
 		if (state == customerStates.WAITING_FOR_TABLE) {
+			anim.SetInteger("Transition",0);
 			if(findTable()) {
 				NavMeshObstacle chairCarve = nearestChair.GetComponent<NavMeshObstacle> ();
 				PlaceableObject chair = nearestChair.GetComponent<PlaceableObject> ();
@@ -108,6 +110,7 @@ public class CustomerAI : MonoBehaviour {
 		if (state == customerStates.FOUND_TABLE && nearestTable != null) {
 			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.6f) {
 				if(ordered == false) {
+					anim.SetInteger("Transition",0);
 					order ();
 				}
 			}
@@ -117,6 +120,7 @@ public class CustomerAI : MonoBehaviour {
 		if (state == customerStates.LEAVING && Vector3.Distance (entrance.transform.position, agent.nextPosition) <= 0.5f) {
 			agent.SetDestination (despawnPoint.transform.position);
 			left = true;
+			anim.SetInteger("Transition",1);
 		}
 
 		// If the customer has reached the despawn point, die
