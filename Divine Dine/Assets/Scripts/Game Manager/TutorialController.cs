@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class TutorialController : MonoBehaviour
 {
-    GameObject[] tutorials;
-    GameObject bottomCanvas;
+    public GameObject[] tutorials;
+    public GameObject bottomCanvas;
     public int current = 0;
 
     private bool accomplishedTask = true;
