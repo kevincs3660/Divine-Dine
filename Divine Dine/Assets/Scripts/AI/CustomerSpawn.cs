@@ -75,7 +75,7 @@ public class CustomerSpawn : MonoBehaviour {
 		float spawnTimeMax = spawnTimer * 2;
 		float rand = Random.Range (spawnTimer, spawnTimeMax);
 	
-		int spawnCheck = Random.Range (0, 2);
+		float spawnCheck = Random.value
 		Debug.Log ("SPAWNCHECK: " + spawnCheck);
 		while (timer < rand)
 		{
@@ -87,14 +87,14 @@ public class CustomerSpawn : MonoBehaviour {
 		float decision = Random.value;
 		if(spawnCustomersCheck)
 		{
-			if(spawnCheck < 1)
+			if(spawnCheck < 0.5f)
 			{
 				if(decision > 0.5f)
 					Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
 				else
 					Instantiate (customerFemale, spawnPoint1.transform.position, Quaternion.identity);
 			}
-			else if(spawnCheck == 1)
+			else if(spawnCheck > 0.5f)
 			{
 				if(decision > 0.5f)
 					Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
