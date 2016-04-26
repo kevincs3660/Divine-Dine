@@ -20,7 +20,7 @@ public class CustomerAI : MonoBehaviour {
 	private bool ordered = false;
 	public GameObject food;
 	public bool hasWaiter = false;
-	private Animator anim;
+	public Animator anim;
 	
 	public enum customerStates {
 		WALKING = 0,
@@ -38,9 +38,11 @@ public class CustomerAI : MonoBehaviour {
 		path = new NavMeshPath();
 		agent = this.gameObject.GetComponent<NavMeshAgent>();
 		anim = this.gameObject.GetComponent<Animator> ();
-
-		anim.SetInteger ("Transition", 1);
 		
+		//anim.Play ("Idle");
+		//anim.SetInteger ("Transition", 0);
+		//Debug.Log(anim.GetCurrentAnimatorStateInfo (0));
+
 		entrance = GameObject.Find ("Entrance");
 		despawnPoint = GameObject.Find ("CustomerDespawnPoint");
 
@@ -53,6 +55,9 @@ public class CustomerAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if(anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+			Debug.Log ("ANIMA????: " + anim.GetCurrentAnimatorStateInfo (0));
 
 		// When the customer reaches the entrance
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f) {
@@ -166,7 +171,7 @@ public class CustomerAI : MonoBehaviour {
 		nearestTable.GetComponent<TableScript> ().state = TableScript.tableStates.FREE;
 
 		GameObject manager = GameObject.Find ("Game Manager");
-		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (10);
+		manager.gameObject.GetComponent<GlobalVariables> ().AddMoney (15);
         manager.gameObject.GetComponent<GlobalVariables>().AddExperience(food.GetComponent<Food>().level);
 		manager.gameObject.GetComponent<FoodVariables> ().AddMarketPoint (1);
 	
