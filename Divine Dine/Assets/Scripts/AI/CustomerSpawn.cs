@@ -75,8 +75,8 @@ public class CustomerSpawn : MonoBehaviour {
 		float spawnTimeMax = spawnTimer * 2;
 		float rand = Random.Range (spawnTimer, spawnTimeMax);
 	
-		float spawnCheck = Random.value
-		Debug.Log ("SPAWNCHECK: " + spawnCheck);
+		float spawnCheck = Random.value;
+		//Debug.Log ("SPAWNCHECK: " + spawnCheck);
 		while (timer < rand)
 		{
 			timer += Time.deltaTime;
