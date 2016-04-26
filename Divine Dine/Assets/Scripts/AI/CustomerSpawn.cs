@@ -7,7 +7,6 @@ public class CustomerSpawn : MonoBehaviour {
 	public int spawnTimer = 20;
 	public GameObject spawnPoint1;
 	public GameObject spawnPoint2;
-	public GameObject spawnPoint3;
 	//public GameObject entrance;
 	//public GameObject despawnPoint;
 	public GameObject customerMale;
@@ -76,7 +75,8 @@ public class CustomerSpawn : MonoBehaviour {
 		float spawnTimeMax = spawnTimer * 2;
 		float rand = Random.Range (spawnTimer, spawnTimeMax);
 	
-		int spawnCheck = Random.Range (0, 3);
+		int spawnCheck = Random.Range (0, 2);
+		Debug.Log ("SPAWNCHECK: " + spawnCheck);
 		while (timer < rand)
 		{
 			timer += Time.deltaTime;
@@ -87,7 +87,7 @@ public class CustomerSpawn : MonoBehaviour {
 		float decision = Random.value;
 		if(spawnCustomersCheck)
 		{
-			if(spawnCheck == 0)
+			if(spawnCheck < 1)
 			{
 				if(decision > 0.5f)
 					Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
@@ -100,13 +100,6 @@ public class CustomerSpawn : MonoBehaviour {
 					Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
 				else
 					Instantiate (customerFemale, spawnPoint2.transform.position, Quaternion.identity);
-			}
-			if(spawnCheck == 3)
-			{
-				if(decision > 0.5f)
-					Instantiate (customerMale, spawnPoint3.transform.position, Quaternion.identity);
-				else
-					Instantiate (customerFemale, spawnPoint3.transform.position, Quaternion.identity);
 			}
 			coroutineStarted = false;
 		}

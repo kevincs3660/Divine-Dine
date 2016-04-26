@@ -21,7 +21,8 @@ public class CustomerAI : MonoBehaviour {
 	public GameObject food;
 	public bool hasWaiter = false;
 	private Animator anim;
-	public float chanceToEnterRestaurant = 0.8f;
+	public float chanceToEnterRestaurant = 0.35f;
+	private int level;
 	
 	public enum customerStates {
 		WALKING = 0,
@@ -49,6 +50,11 @@ public class CustomerAI : MonoBehaviour {
 			agent.SetDestination(entrance.transform.position);
 		}
 
+		level = GameObject.Find ("Game Manager").GetComponent<GlobalVariables> ().CurrentLevel ();
+		//Debug.Log("CHance before: " + chanceToEnterRestaurant);
+		chanceToEnterRestaurant += level / 50;
+		//Debug.Log("CHANCE AFTER: " + chanceToEnterRestaurant);
+		//Debug.Log ("RANDOM: " + Random.value);
 		eatTime = eatTime * GameObject.Find("Game Manager").GetComponent<GlobalVariables>().gameSpeed;
 	}
 	
@@ -58,7 +64,8 @@ public class CustomerAI : MonoBehaviour {
 		// When the customer reaches the entrance
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f && arrived == false) {
 			//Debug.Log("THE FUN HAS ARRIVED");
-			if(Random.value < 0.8)
+			Debug.Log(chanceToEnterRestaurant);
+			if(Random.value < chanceToEnterRestaurant)
 				arrived = true;
 			else
 			{
