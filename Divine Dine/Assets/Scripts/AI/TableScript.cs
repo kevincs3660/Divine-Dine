@@ -6,7 +6,14 @@ public class TableScript : MonoBehaviour {
 	private GameObject chair;
 	public bool hasChair = false;
 
-	public enum tableStates
+    private GameObject manager;
+
+    void Awake()
+    {
+        manager = GameObject.Find("Game Manager");
+    }
+
+    public enum tableStates
 	{
 		FREE = 0,
 		USED = 1,
@@ -48,7 +55,7 @@ public class TableScript : MonoBehaviour {
 					chair.GetComponent<PlaceableObject>().taken = true;
 					hasChair = true;
 					Debug.Log ("HIT THE SHIT1");
-				}
+                }
 			}
 		}
 		else if (Physics.Raycast (rayPosition, new Vector3 (1f, 0, 0), out hit, 1f)) {
@@ -58,7 +65,7 @@ public class TableScript : MonoBehaviour {
 					chair.GetComponent<PlaceableObject>().taken = true;
 					hasChair = true;
 					Debug.Log ("HIT THE SHIT2");
-				}
+                }
 			}
 		}
 		else if (Physics.Raycast (rayPosition, new Vector3 (0, 0, 1f), out hit, 1f)) {
@@ -68,7 +75,7 @@ public class TableScript : MonoBehaviour {
 					chair.GetComponent<PlaceableObject>().taken = true;
 					hasChair = true;
 					Debug.Log ("HIT THE SHIT3");
-				}
+                }
 			}
 		}
 		else if (Physics.Raycast (rayPosition, new Vector3 (0, 0, -1f), out hit, 1f)) {
@@ -78,10 +85,56 @@ public class TableScript : MonoBehaviour {
 					chair.GetComponent<PlaceableObject>().taken = true;
 					hasChair = true;
 					Debug.Log ("HIT THE SHIT4");
-				}
+                }
 			}
 		}
 	}
+
+    public void Tutorial()
+    {
+        RaycastHit hit;
+        Vector3 rayPosition = new Vector3(this.transform.position.x, this.transform.position.y + 0.5f, this.transform.position.z);
+        if (Physics.Raycast(rayPosition, new Vector3(-1f, 0, 0), out hit, 1f))
+        {
+            if (hit.collider.gameObject.tag == "Chair")
+            {
+                if (!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview)
+                {
+                    manager.GetComponent<TutorialController>().AcheivedTask(7);
+                }
+            }
+        }
+        else if (Physics.Raycast(rayPosition, new Vector3(1f, 0, 0), out hit, 1f))
+        {
+            if (hit.collider.gameObject.tag == "Chair")
+            {
+                if (!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview)
+                {
+                    manager.GetComponent<TutorialController>().AcheivedTask(7);
+                }
+            }
+        }
+        else if (Physics.Raycast(rayPosition, new Vector3(0, 0, 1f), out hit, 1f))
+        {
+            if (hit.collider.gameObject.tag == "Chair")
+            {
+                if (!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview)
+                {
+                    manager.GetComponent<TutorialController>().AcheivedTask(7);
+                }
+            }
+        }
+        else if (Physics.Raycast(rayPosition, new Vector3(0, 0, -1f), out hit, 1f))
+        {
+            if (hit.collider.gameObject.tag == "Chair")
+            {
+                if (!hit.collider.gameObject.GetComponent<PlaceableObject>().isPreview)
+                {
+                    manager.GetComponent<TutorialController>().AcheivedTask(7);
+                }
+            }
+        }
+    }
 
 	private void checkChairIsNear()
 	{
