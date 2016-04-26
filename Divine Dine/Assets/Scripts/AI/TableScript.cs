@@ -38,7 +38,7 @@ public class TableScript : MonoBehaviour {
 
 	private void checkForChair()
 	{
-		Debug.Log ("Checking for thing");
+		//Debug.Log ("Checking for thing");
 		RaycastHit hit;
 		Vector3 rayPosition = new Vector3 (this.transform.position.x, this.transform.position.y +0.5f, this.transform.position.z);
 		if (Physics.Raycast (rayPosition, new Vector3 (-1f, 0, 0), out hit, 1f)) {

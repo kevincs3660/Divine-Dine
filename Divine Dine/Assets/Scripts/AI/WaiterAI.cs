@@ -16,7 +16,6 @@ public class WaiterAI : MonoBehaviour {
 	private bool orderTaken = false;
 	private bool orderPickedUp = false;
 	private bool waitingForStove = false;
-	private Animator anim;
 
 	public enum waiterStates {
 		NOTHING = 0,
@@ -30,16 +29,11 @@ public class WaiterAI : MonoBehaviour {
 
 	void Start () {
 		agent = this.gameObject.GetComponent<NavMeshAgent>();
-		anim = this.gameObject.GetComponent<Animator> ();
-		anim.SetInteger ("Transition", 0);
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		//Debug.Log(anim.GetInteger ("Transition"));
-
 		if(state == waiterStates.NOTHING) {
 			checkForCustomer();
 			if(state == waiterStates.NOTHING)
