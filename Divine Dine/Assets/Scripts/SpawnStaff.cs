@@ -36,29 +36,32 @@ public class SpawnStaff : MonoBehaviour
         GameObject[] stoves = GameObject.FindGameObjectsWithTag("Stove");
         foreach (GameObject stove in stoves)
         {
-            Vector3 spawnPoint;
-            if(stove.GetComponent<PlaceableObject>().rotationOffset == 270)
+            if(remaining > 0)
             {
-                spawnPoint = new Vector3(stove.transform.position.x + 1, stove.transform.position.y, stove.transform.position.z);
-            }
-            else if (stove.GetComponent<PlaceableObject>().rotationOffset == 90)
-            {
-                spawnPoint = new Vector3(stove.transform.position.x - 1, stove.transform.position.y, stove.transform.position.z);
-            }
-            else if (stove.GetComponent<PlaceableObject>().rotationOffset == 180)
-            {
-                spawnPoint = new Vector3(stove.transform.position.x, stove.transform.position.y, stove.transform.position.z + 1);
+                Vector3 spawnPoint;
+                if (stove.GetComponent<PlaceableObject>().rotationOffset == 270)
+                {
+                    spawnPoint = new Vector3(stove.transform.position.x + 1, stove.transform.position.y, stove.transform.position.z);
+                }
+                else if (stove.GetComponent<PlaceableObject>().rotationOffset == 90)
+                {
+                    spawnPoint = new Vector3(stove.transform.position.x - 1, stove.transform.position.y, stove.transform.position.z);
+                }
+                else if (stove.GetComponent<PlaceableObject>().rotationOffset == 180)
+                {
+                    spawnPoint = new Vector3(stove.transform.position.x, stove.transform.position.y, stove.transform.position.z + 1);
+                }
+                else
+                {
+                    spawnPoint = new Vector3(stove.transform.position.x, stove.transform.position.y, stove.transform.position.z - 1);
+                }
+
+                Instantiate(cookPrefab, spawnPoint, waiterPrefab.transform.rotation);
+                remaining--;
             }
             else
             {
-                spawnPoint = new Vector3(stove.transform.position.x, stove.transform.position.y, stove.transform.position.z - 1);
-            }
-
-            Instantiate(cookPrefab, spawnPoint, waiterPrefab.transform.rotation);
-            remaining--;
-            if (remaining == 0)
-            {
-                break;
+                stove.GetComponent<StoveScript>().enabled = false;
             }
         }
     }

@@ -44,6 +44,14 @@ public class PlaceObject : MonoBehaviour {
                 ReplaceObject();
             }
         }
+        if(Input.GetKey(KeyCode.Delete))
+        {
+            if(previewObject != null)
+            {
+                Destroy(previewObject);
+                active = false;
+            }
+        }
     }
 
     //Select a prefab from the list

@@ -58,6 +58,8 @@ public class PlayButton : MonoBehaviour
 
         button.GetComponent<Button>().onClick.RemoveAllListeners();
         button.GetComponent<Button>().onClick.AddListener(() => Begin());
+        button.GetComponent<Button>().onClick.AddListener(() => GetComponent<PlaceObject>().SetReplace(false));
+        button.GetComponent<Button>().onClick.AddListener(() => GetComponent<PaintMaterial>().Disable());
     }
 
     public void Begin ()

@@ -56,6 +56,11 @@ public class DayCycle : MonoBehaviour
                         ending = true;
                         GetComponent<CustomerSpawn>().spawnCustomers(false);
                     }
+                    else if (hour == 8 && ampm == "PM")
+                    {
+                        Deactivate();
+                        GetComponent<FoodVariables>().RandomPrize();
+                    }
 
                     timeText.text = hour + ":00" + ampm;
                 }

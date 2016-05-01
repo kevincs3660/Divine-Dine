@@ -13,6 +13,8 @@ public class Cheats : MonoBehaviour {
     void Start()
     {
         cheatText = cheatBox.transform.GetChild(1).GetComponent<Text>();
+        cheatBox.GetComponent<InputField>().onEndEdit.AddListener(delegate { CheckCheat(); });
+        cheatBox.GetComponent<InputField>().onEndEdit.AddListener(delegate { ToggleCheatBox(false); });
     }
 
 	void Update ()

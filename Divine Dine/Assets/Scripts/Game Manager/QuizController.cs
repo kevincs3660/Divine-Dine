@@ -28,6 +28,10 @@ public class QuizController : MonoBehaviour
     {
         mailButton.SetActive(false);
         rewardMenu.SetActive(false);
+
+        rewardMenu.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => GetComponent<FoodVariables>().RandomPrize());
+        rewardMenu.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => GetComponent<GlobalVariables>().AddMoney(500));
+        rewardMenu.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => GetComponent<GlobalVariables>().AdvanceQuarterLevel());
     }
 
     public void Generate()
@@ -46,6 +50,19 @@ public class QuizController : MonoBehaviour
         choice2.GetComponent<Button>().GetComponent<Image>().color = Color.white;
         choice3.GetComponent<Button>().GetComponent<Image>().color = Color.white;
         choice4.GetComponent<Button>().GetComponent<Image>().color = Color.white;
+
+        choice1.GetComponent<Button>().onClick.RemoveAllListeners();
+        choice2.GetComponent<Button>().onClick.RemoveAllListeners();
+        choice3.GetComponent<Button>().onClick.RemoveAllListeners();
+        choice4.GetComponent<Button>().onClick.RemoveAllListeners();
+
+        choice1.GetComponent<Button>().onClick.AddListener(() => Answer1());
+        choice2.GetComponent<Button>().onClick.AddListener(() => Answer2());
+        choice3.GetComponent<Button>().onClick.AddListener(() => Answer3());
+        choice4.GetComponent<Button>().onClick.AddListener(() => Answer4());
+
+        proceed.GetComponent<Button>().onClick.RemoveAllListeners();
+        proceed.GetComponent<Button>().onClick.AddListener(() => Exit());
         proceed.SetActive(false);
 
         quizzes[selected].SetActive(true);
