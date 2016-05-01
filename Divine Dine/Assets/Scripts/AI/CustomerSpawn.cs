@@ -10,7 +10,9 @@ public class CustomerSpawn : MonoBehaviour {
 	//public GameObject entrance;
 	//public GameObject despawnPoint;
 	public GameObject customerMale;
+	public GameObject customerMale2;
 	public GameObject customerFemale;
+	public GameObject customerFemale2;
 	private bool spawnCustomersCheck = false;
 	// Use this for initialization
 	void Start () {
@@ -85,21 +87,42 @@ public class CustomerSpawn : MonoBehaviour {
 		}
 
 		float decision = Random.value;
+		float decision2 = Random.value;
 		if(spawnCustomersCheck)
 		{
 			if(spawnCheck < 0.5f)
 			{
 				if(decision > 0.5f)
-					Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
+				{
+					if(decision2 > 0.5f)
+						Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
+					else
+						Instantiate (customerMale2, spawnPoint1.transform.position, Quaternion.identity);
+				}
 				else
-					Instantiate (customerFemale, spawnPoint1.transform.position, Quaternion.identity);
+				{
+					if(decision2 > 0.5f)
+						Instantiate (customerFemale, spawnPoint1.transform.position, Quaternion.identity);
+					else
+						Instantiate (customerFemale2, spawnPoint1.transform.position, Quaternion.identity);
+				}
 			}
 			else if(spawnCheck > 0.5f)
 			{
 				if(decision > 0.5f)
-					Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
+				{
+					if(decision2 > 0.5f)
+						Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
+					else
+						Instantiate (customerMale2, spawnPoint2.transform.position, Quaternion.identity);
+				}
 				else
-					Instantiate (customerFemale, spawnPoint2.transform.position, Quaternion.identity);
+				{
+					if(decision2 > 0.5f)
+						Instantiate (customerFemale, spawnPoint2.transform.position, Quaternion.identity);
+					else
+						Instantiate (customerFemale2, spawnPoint2.transform.position, Quaternion.identity);
+				}
 			}
 			coroutineStarted = false;
 		}

@@ -23,6 +23,8 @@ public class CustomerAI : MonoBehaviour {
 	private Animator anim;
 	public float chanceToEnterRestaurant = 0.35f;
 	private int level;
+	//private Vector3 currentDestination = null;
+	//private float destinationTimer = 0;
 	
 	public enum customerStates {
 		WALKING = 0,
@@ -64,12 +66,13 @@ public class CustomerAI : MonoBehaviour {
 
 		// When the customer reaches the entrance
 		if(Vector3.Distance(entrance.transform.position, agent.nextPosition) <= 0.5f && arrived == false) {
-			//Debug.Log("THE FUN HAS ARRIVED");
+			Debug.Log("THE FUN HAS ARRIVED");
 			//Debug.Log(chanceToEnterRestaurant);
 			if(Random.value < chanceToEnterRestaurant)
 				arrived = true;
 			else
 			{
+				Debug.Log("LEAVING");
 				agent.SetDestination(despawnPoint.transform.position);
 				state = customerStates.LEAVING;
 			}
@@ -101,14 +104,14 @@ public class CustomerAI : MonoBehaviour {
 
 		// If the customer has found and reached a chair to wait in, start waiting for a table
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null) {
-			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.6f) {
+			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.3f) {
 				state = customerStates.WAITING_FOR_TABLE;
 			}
 		}
 
 		// If the customer has reached the table, order the food
 		if (state == customerStates.FOUND_TABLE && nearestTable != null) {
-			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.6f) {
+			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.3f) {
 				if(ordered == false) {
 					anim.SetInteger("Transition",0);
 					order ();
