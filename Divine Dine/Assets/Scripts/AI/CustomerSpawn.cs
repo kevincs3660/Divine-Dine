@@ -10,7 +10,6 @@ public class CustomerSpawn : MonoBehaviour {
 	//public GameObject entrance;
 	//public GameObject despawnPoint;
 	public GameObject customerMale;
-	public GameObject customerMale2;
 	public GameObject customerFemale;
 	private bool spawnCustomersCheck = false;
 	// Use this for initialization
@@ -91,26 +90,14 @@ public class CustomerSpawn : MonoBehaviour {
 			if(spawnCheck < 0.5f)
 			{
 				if(decision > 0.5f)
-				{
-					float decision2 = Random.value;
-					if(decision2 > 0.5f)
-						Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
-					else
-						Instantiate (customerMale2, spawnPoint1.transform.position, Quaternion.identity);
-				}
+					Instantiate (customerMale, spawnPoint1.transform.position, Quaternion.identity);
 				else
 					Instantiate (customerFemale, spawnPoint1.transform.position, Quaternion.identity);
 			}
 			else if(spawnCheck > 0.5f)
 			{
 				if(decision > 0.5f)
-				{
-					float decision2 = Random.value;
-					if(decision2 > 0.5f)
-						Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
-					else
-						Instantiate (customerMale2, spawnPoint2.transform.position, Quaternion.identity);
-				}
+					Instantiate (customerMale, spawnPoint2.transform.position, Quaternion.identity);
 				else
 					Instantiate (customerFemale, spawnPoint2.transform.position, Quaternion.identity);
 			}

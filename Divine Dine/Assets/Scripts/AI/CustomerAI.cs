@@ -102,7 +102,6 @@ public class CustomerAI : MonoBehaviour {
 		// If the customer has found and reached a chair to wait in, start waiting for a table
 		if (state == customerStates.FOUND_CHAIR && nearestChair != null) {
 			if(Vector3.Distance (nearestChair.transform.position, agent.nextPosition) <= 0.6f) {
-				rotate();
 				state = customerStates.WAITING_FOR_TABLE;
 			}
 		}
@@ -111,7 +110,6 @@ public class CustomerAI : MonoBehaviour {
 		if (state == customerStates.FOUND_TABLE && nearestTable != null) {
 			if(Vector3.Distance (nearestTable.gameObject.GetComponent<TableScript>().getChair().transform.position, agent.nextPosition) <= 0.6f) {
 				if(ordered == false) {
-					rotate();
 					anim.SetInteger("Transition",0);
 					order ();
 				}
@@ -130,21 +128,6 @@ public class CustomerAI : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 		
-	}
-
-	/*
-	 * Rotates customer to face table
-	 */ 
-	private void rotate() {
-		float rotation = 0;
-		if (nearestChair != null) {
-			rotation = nearestChair.GetComponent<PlaceableObject>().rotationOffset;
-		}
-		else if (nearestTable != null) {
-			rotation = nearestTable.GetComponent<TableScript>().getChair().GetComponent<PlaceableObject>().rotationOffset;
-		}
-
-		this.transform.Rotate (0, rotation, 0);
 	}
 	
 	/*
