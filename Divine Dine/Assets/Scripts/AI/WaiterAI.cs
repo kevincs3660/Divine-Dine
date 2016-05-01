@@ -183,7 +183,7 @@ public class WaiterAI : MonoBehaviour {
 
 		for(int j = 0; j < stovesTag.Length; j++) {
 			//Debug.Log( chairsTag[j].gameObject.transform.position);
-			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null) {
+			if(stovesTag[j].gameObject.GetComponent<PlaceableObject>().isPreview == false && stovesTag[j].gameObject.GetComponent<StoveScript>() != null && stovesTag[j].gameObject.GetComponent<StoveScript>().enabled == true) {
 				stoves.Add(stovesTag[j]);
 			}
 		}
